@@ -13,6 +13,10 @@ import flixel.util.FlxColor;
 import misc.FlxTextFactory;
 import openfl.display.Sprite;
 
+#if play
+import states.PlayState;
+#end
+
 class Main extends Sprite {
 	public function new() {
 		super();
@@ -26,7 +30,9 @@ class Main extends Sprite {
 			startingState = MainMenuState;
 		}
 		#end
-		addChild(new FlxGame(0, 0, startingState, 1, 60, 60, true, false));
+
+		// 160x144 is gameboy resolution
+		addChild(new FlxGame(160, 144, startingState, 1, 60, 60, true, false));
 
 		FlxG.fixedTimestep = false;
 
