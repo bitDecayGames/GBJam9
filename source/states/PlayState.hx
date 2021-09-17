@@ -1,5 +1,6 @@
 package states;
 
+import entities.Bird;
 import flixel.group.FlxGroup;
 import entities.Wind;
 import flixel.addons.transition.FlxTransitionableState;
@@ -14,6 +15,7 @@ class PlayState extends FlxTransitionableState {
 	var player:Player;
 
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
+	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
 
 	override public function create() {
 		super.create();
@@ -39,7 +41,21 @@ class PlayState extends FlxTransitionableState {
 				w.blowOn(p);
 			}
 		);
+
+		FlxG.overlap(player, birds,
+			function (p:Player, b:Bird) {
+				p.hitBy(b);
+			}
+		);
+
 		super.update(elapsed);
+
+		// DEBUG STUFF
+		if (FlxG.keys.justPressed.B) {
+			var bird = new Bird(FlxG.width, FlxG.height/5, Cardinal.W);
+			birds.add(bird);
+			add(bird);
+		}
 	}
 
 	override public function onFocusLost() {
