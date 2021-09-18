@@ -12,7 +12,6 @@ import flixel.addons.transition.TransitionData;
 import flixel.util.FlxColor;
 import misc.FlxTextFactory;
 import openfl.display.Sprite;
-
 #if play
 import states.PlayState;
 #end

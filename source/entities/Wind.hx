@@ -17,6 +17,7 @@ class Wind extends FlxSprite {
 
 		// TODO: Add graphics
 		makeGraphic(1, 1, FlxColor.GRAY);
+		alpha = 0.3;
 
 		this.width = width;
 		this.height = height;
