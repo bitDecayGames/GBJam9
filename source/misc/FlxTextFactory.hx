@@ -44,7 +44,7 @@ class FlxTextFactory {
 	}
 
 	// Formats the text object and returns it for chaining
-	public static function format(txt:FlxText, ?size:Int, ?align:Null<FlxTextAlign>, ?color:Int): FlxText {
+	public static function format(txt:FlxText, ?size:Int, ?align:Null<FlxTextAlign>, ?color:Int):FlxText {
 		txt.setFormat(defaultFont, size == null ? defaultSize : size, color == null ? defaultColor : color, align == null ? defaultAlign : align);
 		return txt;
 	}

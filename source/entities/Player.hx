@@ -83,8 +83,8 @@ class Player extends FlxSprite {
 		}
 	}
 
-	public function hitBy(b:Bird) {
-		b.crash();
+	public function hitBy(b:PlayerDamager) {
+		b.hitPlayer();
 		y += 5;
 		FlxFlicker.flicker(this, 0.3);
 		// punishment of losing any upwards momentum

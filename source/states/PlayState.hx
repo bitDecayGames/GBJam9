@@ -1,17 +1,21 @@
 package states;
 
-import entities.House;
-import flixel.FlxObject;
-import flixel.util.FlxColor;
-import flixel.FlxSprite;
-import entities.Box;
+import entities.ParentedSprite;
+import entities.PlayerDamager;
+import entities.RocketBoom;
 import entities.Bird;
-import flixel.group.FlxGroup;
-import entities.Wind;
-import flixel.addons.transition.FlxTransitionableState;
-import signals.Lifecycle;
+import entities.Box;
+import entities.House;
 import entities.Player;
+import entities.Rocket;
+import entities.Wind;
 import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.group.FlxGroup;
+import flixel.util.FlxColor;
+import signals.Lifecycle;
 import spacial.Cardinal;
 
 using extensions.FlxStateExt;
@@ -24,6 +28,9 @@ class PlayState extends FlxTransitionableState {
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
+	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
+
+	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
 
 	override public function create() {
 		super.create();
@@ -56,6 +63,10 @@ class PlayState extends FlxTransitionableState {
 		// boxes.add(box2);
 		// add(box2);
 
+		var rocket = new Rocket(20, ground.y);
+		rockets.add(rocket);
+		add(rocket);
+
 		player = new Player();
 		add(player);
 	}
@@ -67,6 +78,14 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.overlap(player, birds, function(p:Player, b:Bird) {
 			p.hitBy(b);
+		});
+
+		FlxG.overlap(player, rocketsBooms, function(p:Player, r:ParentedSprite) {
+			// we collide with the sub-particles of the RocketBoom
+			var boom = cast(r.parent, RocketBoom);
+			if (!boom.hasHitPlayer()) {
+				p.hitBy(boom);
+			}
 		});
 
 		FlxG.overlap(player, boxes, function(p:Player, b:Box) {
@@ -106,6 +125,11 @@ class PlayState extends FlxTransitionableState {
 			birds.add(bird);
 			add(bird);
 		}
+	}
+
+	public function addBoom(rocketBoom:RocketBoom) {
+		rocketsBooms.add(rocketBoom);
+		add(rocketBoom);
 	}
 
 	override public function onFocusLost() {

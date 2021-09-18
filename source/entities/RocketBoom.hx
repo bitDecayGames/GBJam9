@@ -1,0 +1,65 @@
+package entities;
+
+import flixel.tweens.FlxEase;
+import flixel.effects.FlxFlicker;
+import flixel.util.FlxColor;
+import flixel.math.FlxPoint;
+import flixel.group.FlxSpriteGroup;
+import flixel.tweens.FlxTween;
+import flixel.FlxG;
+import flixel.FlxSprite;
+
+using extensions.FlxPointExt;
+
+class RocketBoom extends FlxSpriteGroup implements PlayerDamager {
+	// These are in distance from center
+	var radius:Float = 16;
+	var particleCount:Int = 8;
+	var particleFallDistance = 5;
+
+	public var damagedPlayer = false;
+
+	public function new(x:Float, y:Float) {
+		super(x, y);
+
+		createParticles();
+	}
+
+	private function createParticles() {
+		var inc = 360 / particleCount;
+		var p = FlxPoint.get();
+		var temp:FlxPoint;
+		for (angle in 0...particleCount) {
+			temp = p.pointOnCircumference(angle * inc, radius);
+			var particle = new ParentedSprite(temp.x, temp.y);
+			particle.parent = this;
+			particle.makeGraphic(4, 4, FlxColor.YELLOW);
+			add(particle);
+			var life = FlxG.random.float(0.75, 2);
+			FlxFlicker.flicker(particle, life, FlxG.random.float(0.05, 0.1));
+			FlxTween.tween(particle, {
+				alpha: 0
+			}, life, {
+				ease: FlxEase.quadInOut
+			});
+			FlxTween.linearMotion(particle, particle.x, particle.y, particle.x, particle.y + particleFallDistance, life, {
+				ease: FlxEase.quadInOut,
+				onComplete: (t) -> {
+					kill();
+				}
+			});
+		}
+	}
+
+	override public function update(delta:Float) {
+		super.update(delta);
+	}
+
+	public function hitPlayer():Void {
+		damagedPlayer = true;
+	}
+
+	public function hasHitPlayer():Bool {
+		return damagedPlayer;
+	}
+}

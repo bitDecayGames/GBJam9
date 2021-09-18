@@ -24,7 +24,6 @@ class House extends FlxSprite {
 		var boxCenter = b.x + b.width / 2;
 		var accuracy = x + width / 2 - boxCenter;
 
-
 		// TODO: This is pseudo-temporary. I just want to see how close it lands right now
 		b.color = FlxColor.BLACK;
 

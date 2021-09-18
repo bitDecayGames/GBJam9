@@ -6,7 +6,7 @@ import input.InputCalcuator;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
-class Bird extends FlxSprite {
+class Bird extends FlxSprite implements PlayerDamager {
 	var speed:Float = 30;
 
 	public function new(x:Float, y:Float, direction:Cardinal) {
@@ -23,8 +23,13 @@ class Bird extends FlxSprite {
 		super.update(delta);
 	}
 
-	public function crash() {
+	public function hitPlayer() {
 		// TODO: actually go into death animation and fall from the sky
 		kill();
+	}
+
+	public function hasHitPlayer():Bool {
+		// TODO: Don't need to keep state as the bird kills itself at the moment
+		return false;
 	}
 }
