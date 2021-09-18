@@ -1,6 +1,5 @@
 package states;
 
-import misc.FlxTextFactory;
 import entities.House;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
