@@ -39,6 +39,12 @@ class FlxTextFactory {
 	**/
 	public static function make(text:String, ?x:Float, ?y:Float, ?size:Int, ?align:Null<FlxTextAlign>, ?color:Int):FlxText {
 		var txt = new FlxText(x, y, text);
+		format(txt, size, align, color);
+		return txt;
+	}
+
+	// Formats the text object and returns it for chaining
+	public static function format(txt:FlxText, ?size:Int, ?align:Null<FlxTextAlign>, ?color:Int): FlxText {
 		txt.setFormat(defaultFont, size == null ? defaultSize : size, color == null ? defaultColor : color, align == null ? defaultAlign : align);
 		return txt;
 	}

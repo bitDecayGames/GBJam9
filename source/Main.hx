@@ -51,6 +51,7 @@ class Main extends Sprite {
 		FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.35);
 		FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.35);
 
-		FlxTextFactory.defaultFont = AssetPaths.Brain_Slab_8__ttf;
+		// TODO: if we want another font, we gotta figure out how to get it to work at low resolution
+		// FlxTextFactory.defaultFont = AssetPaths.Brain_Slab_8__ttf;
 	}
 }

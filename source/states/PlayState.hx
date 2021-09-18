@@ -1,5 +1,7 @@
 package states;
 
+import misc.FlxTextFactory;
+import entities.House;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
@@ -22,6 +24,7 @@ class PlayState extends FlxTransitionableState {
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
+	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
 
 	override public function create() {
 		super.create();
@@ -34,6 +37,10 @@ class PlayState extends FlxTransitionableState {
 		ground.immovable = true;
 		add(ground);
 
+		var house = new House(50, ground.y);
+		activeHouses.add(house);
+		add(house);
+
 		var wind = new Wind(0, 0, 200, 16, Cardinal.E);
 		winds.add(wind);
 		add(wind);
@@ -42,13 +49,13 @@ class PlayState extends FlxTransitionableState {
 		winds.add(wind2);
 		add(wind2);
 
-		var box = new Box(30, 70);
+		var box = new Box(90, 70);
 		boxes.add(box);
 		add(box);
 
-		var box2 = new Box(60, 80);
-		boxes.add(box2);
-		add(box2);
+		// var box2 = new Box(60, 80);
+		// boxes.add(box2);
+		// add(box2);
 
 		player = new Player();
 		add(player);
@@ -70,6 +77,16 @@ class PlayState extends FlxTransitionableState {
 		});
 
 		FlxG.collide(player, ground);
+
+		// check boxes against houses first
+		FlxG.overlap(boxes, activeHouses, (b, h) -> {
+			trace("box touching house");
+			if (b.dropped) {
+				trace("box triggered house!");
+				h.packageArrived(b);
+				activeHouses.remove(h);
+			}
+		});
 
 		FlxG.overlap(boxes, ground, (b, g) -> {
 			FlxObject.separate(b, g);

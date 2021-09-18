@@ -1,9 +1,6 @@
 package entities;
 
 import const.WorldConstants;
-import spacial.Cardinal;
-import input.SimpleController;
-import input.InputCalcuator;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
