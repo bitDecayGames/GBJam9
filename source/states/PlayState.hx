@@ -24,6 +24,8 @@ class PlayState extends FlxTransitionableState {
 	var player:Player;
 	var ground:FlxSprite;
 
+	var bounds:FlxGroup = new FlxGroup();
+
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
@@ -42,6 +44,22 @@ class PlayState extends FlxTransitionableState {
 		ground.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
 		ground.immovable = true;
 		add(ground);
+		bounds.add(ground);
+
+		var ceiling = new FlxSprite(0, -16);
+		ceiling.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
+		ceiling.immovable = true;
+		bounds.add(ceiling);
+
+		var leftWall = new FlxSprite(-16, 0);
+		leftWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
+		leftWall.immovable = true;
+		bounds.add(leftWall);
+
+		var rightWall = new FlxSprite(FlxG.width, 0);
+		rightWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
+		rightWall.immovable = true;
+		bounds.add(rightWall);
 
 		var house = new House(50, ground.y);
 		activeHouses.add(house);
@@ -72,29 +90,29 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	override public function update(elapsed:Float) {
-		FlxG.overlap(player, winds, function(p:Player, w:Wind) {
-			w.blowOn(p);
+		FlxG.overlap(player.balloon, winds, function(balloon:ParentedSprite, w:Wind) {
+			w.blowOn(balloon);
 		});
 
-		FlxG.overlap(player, birds, function(p:Player, b:Bird) {
-			p.hitBy(b);
+		FlxG.overlap(player.balloon, birds, function(balloon:ParentedSprite, b:Bird) {
+			cast(balloon.parent, Player).hitBy(b);
 		});
 
-		FlxG.overlap(player, rocketsBooms, function(p:Player, r:ParentedSprite) {
+		FlxG.overlap(player.balloon, rocketsBooms, function(balloon:ParentedSprite, r:ParentedSprite) {
 			// we collide with the sub-particles of the RocketBoom
 			var boom = cast(r.parent, RocketBoom);
 			if (!boom.hasHitPlayer()) {
-				p.hitBy(boom);
+				cast(balloon.parent, Player).hitBy(boom);
 			}
 		});
 
-		FlxG.overlap(player, boxes, function(p:Player, b:Box) {
+		FlxG.overlap(player.balloon, boxes, function(balloon:ParentedSprite, b:Box) {
 			if (!b.attached && !b.dropped) {
-				p.addBox(b);
+				cast(balloon.parent, Player).addBox(b);
 			}
 		});
 
-		FlxG.collide(player, ground);
+		FlxG.collide(player.balloon, bounds);
 
 		// check boxes against houses first
 		FlxG.overlap(boxes, activeHouses, (b, h) -> {

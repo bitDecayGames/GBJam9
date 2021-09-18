@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.group.FlxSpriteGroup;
 import flixel.FlxG;
 import const.WorldConstants;
 import flixel.effects.FlxFlicker;
@@ -8,9 +9,11 @@ import input.InputCalcuator;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
-class Player extends FlxSprite {
+class Player extends FlxSpriteGroup {
 	// amount of rope between each box
 	private static inline var BOX_SPACING:Float = 4;
+
+	public var balloon:ParentedSprite;
 
 	var speed:Float = 30;
 	var playerNum = 0;
@@ -31,18 +34,22 @@ class Player extends FlxSprite {
 	public function new() {
 		super();
 
+		balloon = new ParentedSprite();
+		balloon.parent = this;
 		// TODO: rig up all the animation stuff
-		loadGraphic(AssetPaths.balloon__png);
+		balloon.loadGraphic(AssetPaths.balloon__png);
 
-		maxVelocity.set(maxHorizontalSpeed, maxVerticalSpeed);
+		add(balloon);
+
+		balloon.maxVelocity.set(maxHorizontalSpeed, maxVerticalSpeed);
 	}
 
 	override public function update(delta:Float) {
 		// Balloon burner
 		if (SimpleController.pressed(Button.UP, playerNum)) {
-			acceleration.y = riseAccel;
+			balloon.acceleration.y = riseAccel;
 		} else {
-			acceleration.y = fallAccel;
+			balloon.acceleration.y = fallAccel;
 		}
 
 		// Box dropping
@@ -57,12 +64,12 @@ class Player extends FlxSprite {
 			}
 		}
 
-		if (acceleration.x == 0) {
+		if (balloon.acceleration.x == 0) {
 			// decay velocity x
-			if (velocity.x != 0.0) {
-				velocity.x -= (velocity.x * horizontalDecay) * delta;
-				if (Math.abs(velocity.x) < 0.01) {
-					velocity.x = 0;
+			if (balloon.velocity.x != 0.0) {
+				balloon.velocity.x -= (balloon.velocity.x * horizontalDecay) * delta;
+				if (Math.abs(balloon.velocity.x) < 0.01) {
+					balloon.velocity.x = 0;
 				}
 			}
 		}
@@ -71,26 +78,26 @@ class Player extends FlxSprite {
 		super.update(delta);
 
 		// reset x-accel after each frame so wind can work properly
-		acceleration.x = 0;
+		balloon.acceleration.x = 0;
 
 		// cap our falling speed to keep that floaty balloon feeling
-		velocity.y = Math.min(maxFallSpeed, velocity.y);
+		balloon.velocity.y = Math.min(maxFallSpeed, balloon.velocity.y);
 
 		for (i in 0...boxes.length) {
-			boxes[i].x = this.x + width / 2 - boxes[i].width / 2;
-			boxes[i].y = y + height + BOX_SPACING + i * (boxes[i].height + BOX_SPACING);
-			boxes[i].velocity.set(velocity.x, velocity.y);
+			boxes[i].x = balloon.x + width / 2 - boxes[i].width / 2;
+			boxes[i].y = balloon.y + height + BOX_SPACING + i * (boxes[i].height + BOX_SPACING);
+			boxes[i].velocity.set(balloon.velocity.x, balloon.velocity.y);
 		}
 	}
 
 	public function hitBy(b:PlayerDamager) {
 		b.hitPlayer();
-		y += 5;
+		balloon.y += 5;
 		FlxFlicker.flicker(this, 0.3);
 		// punishment of losing any upwards momentum
 		// TODO: Is this really punishment?
-		acceleration.y = 0;
-		velocity.y = 0;
+		balloon.acceleration.y = 0;
+		balloon.velocity.y = 0;
 	}
 
 	public function addBox(b:Box) {
