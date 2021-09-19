@@ -2,7 +2,6 @@ package entities;
 
 import flixel.util.FlxColor;
 import misc.FlxTextFactory;
-import com.bitdecay.textpop.TextPop;
 import flixel.FlxSprite;
 
 class House extends FlxSprite {
@@ -28,6 +27,7 @@ class House extends FlxSprite {
 		b.color = FlxColor.BLACK;
 
 		// TODO: figure out how to make this render well
-		TextPop.pop(Std.int(x), Std.int(y), '${Math.abs(Std.int(accuracy))}');
+		// TODO: need to use Bitmap Fonts... meaning TextPop won't work as-is
+		// TextPop.pop(Std.int(x), Std.int(y), '${Math.abs(Std.int(accuracy))}');
 	}
 }

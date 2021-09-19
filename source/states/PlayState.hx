@@ -1,5 +1,6 @@
 package states;
 
+import ui.font.BitmapText.PressStart;
 import entities.ParentedSprite;
 import entities.PlayerDamager;
 import entities.RocketBoom;
@@ -40,53 +41,14 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.camera.pixelPerfectRender = true;
 
-		ground = new FlxSprite(0, FlxG.height - 16);
-		ground.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
-		ground.immovable = true;
-		add(ground);
-		bounds.add(ground);
+		// var font = new PressStart(30, 30, "Instance of a BitmapFont");
+		// add(font);
 
-		var ceiling = new FlxSprite(0, -16);
-		ceiling.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
-		ceiling.immovable = true;
-		bounds.add(ceiling);
+		setupScreenBounds();
 
-		var leftWall = new FlxSprite(-16, 0);
-		leftWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
-		leftWall.immovable = true;
-		bounds.add(leftWall);
+		setupTestObjects();
 
-		var rightWall = new FlxSprite(FlxG.width, 0);
-		rightWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
-		rightWall.immovable = true;
-		bounds.add(rightWall);
-
-		var house = new House(50, ground.y);
-		activeHouses.add(house);
-		add(house);
-
-		var wind = new Wind(0, 0, 200, 16, Cardinal.E);
-		winds.add(wind);
-		add(wind);
-
-		var wind2 = new Wind(0, 120, 200, 8, Cardinal.W);
-		winds.add(wind2);
-		add(wind2);
-
-		var box = new Box(90, 70);
-		boxes.add(box);
-		add(box);
-
-		// var box2 = new Box(60, 80);
-		// boxes.add(box2);
-		// add(box2);
-
-		var rocket = new Rocket(20, ground.y);
-		rockets.add(rocket);
-		add(rocket);
-
-		player = new Player();
-		add(player);
+		// TODO: When loading the level, make sure to update FlxG.worldBounds to ensure collisions work throughout level
 	}
 
 	override public function update(elapsed:Float) {
@@ -143,6 +105,58 @@ class PlayState extends FlxTransitionableState {
 			birds.add(bird);
 			add(bird);
 		}
+	}
+
+	public function setupScreenBounds() {
+		ground = new FlxSprite(0, FlxG.height - 16);
+		ground.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
+		ground.immovable = true;
+		add(ground);
+		bounds.add(ground);
+
+		var ceiling = new FlxSprite(0, -16);
+		ceiling.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
+		ceiling.immovable = true;
+		bounds.add(ceiling);
+
+		var leftWall = new FlxSprite(-16, 0);
+		leftWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
+		leftWall.immovable = true;
+		bounds.add(leftWall);
+
+		var rightWall = new FlxSprite(FlxG.width, 0);
+		rightWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
+		rightWall.immovable = true;
+		bounds.add(rightWall);
+	}
+
+	function setupTestObjects() {
+		var house = new House(50, ground.y);
+		activeHouses.add(house);
+		add(house);
+
+		var wind = new Wind(0, 0, 200, 16, Cardinal.E);
+		winds.add(wind);
+		add(wind);
+
+		var wind2 = new Wind(0, 120, 200, 8, Cardinal.W);
+		winds.add(wind2);
+		add(wind2);
+
+		var box = new Box(90, 70);
+		boxes.add(box);
+		add(box);
+
+		// var box2 = new Box(60, 80);
+		// boxes.add(box2);
+		// add(box2);
+
+		var rocket = new Rocket(20, ground.y);
+		rockets.add(rocket);
+		add(rocket);
+
+		player = new Player();
+		add(player);
 	}
 
 	public function addBoom(rocketBoom:RocketBoom) {
