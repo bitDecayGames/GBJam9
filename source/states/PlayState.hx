@@ -33,6 +33,7 @@ class PlayState extends FlxTransitionableState {
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
+	var bombs:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
 
@@ -49,11 +50,11 @@ class PlayState extends FlxTransitionableState {
 
 		setupTestObjects();
 
-		var mockPoints = new PressStart(8, FlxG.height - 17, "Score\n1234");
-		add(mockPoints);
+		// var mockPoints = new PressStart(8, FlxG.height - 17, "Score\n1234");
+		// add(mockPoints);
 
-		var mockTime = new PressStart(FlxG.width - 8 * 6, FlxG.height - 17, "  Time\n1:35:14");
-		add(mockTime);
+		// var mockTime = new PressStart(FlxG.width - 8 * 6, FlxG.height - 17, "  Time\n1:35:14");
+		// add(mockTime);
 
 		// TODO: When loading the level, make sure to update FlxG.worldBounds to ensure collisions work throughout level
 	}
@@ -102,6 +103,10 @@ class PlayState extends FlxTransitionableState {
 		}, (b, g) -> {
 			// only collide boxes with ground if they aren't attached to the player
 			return !b.attached;
+		});
+
+		FlxG.overlap(bombs, ground, (b, g) -> {
+			b.kill();
 		});
 
 		super.update(elapsed);
@@ -169,6 +174,11 @@ class PlayState extends FlxTransitionableState {
 	public function addBoom(rocketBoom:RocketBoom) {
 		rocketsBooms.add(rocketBoom);
 		add(rocketBoom);
+	}
+
+	public function addBomb(bomb:FlxSprite) {
+		bombs.add(bomb);
+		add(bomb);
 	}
 
 	override public function onFocusLost() {
