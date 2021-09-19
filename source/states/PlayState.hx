@@ -1,5 +1,6 @@
 package states;
 
+import ui.font.BitmapText;
 import ui.font.BitmapText.PressStart;
 import entities.ParentedSprite;
 import entities.PlayerDamager;
@@ -47,6 +48,12 @@ class PlayState extends FlxTransitionableState {
 		setupScreenBounds();
 
 		setupTestObjects();
+
+		var mockPoints = new PressStart(8, FlxG.height - 17, "Score\n1234");
+		add(mockPoints);
+
+		var mockTime = new PressStart(FlxG.width - 8 * 6, FlxG.height - 17, "  Time\n1:35:14");
+		add(mockTime);
 
 		// TODO: When loading the level, make sure to update FlxG.worldBounds to ensure collisions work throughout level
 	}
