@@ -19,7 +19,14 @@ class Player extends FlxSpriteGroup {
 
 	public var balloon:ParentedSprite;
 
-	public var aimIndicator:FlxSprite;
+	var aimIndicator:FlxSprite;
+	var aimDirection = 0;
+	var aimOffsets = [
+		0 => FlxPoint.get(-4, 20),
+		1 => FlxPoint.get(0, 28),
+		2 => FlxPoint.get(8, 28),
+		3 => FlxPoint.get(12, 20),
+	];
 
 	var speed:Float = 30;
 	var playerNum = 0;
@@ -57,9 +64,12 @@ class Player extends FlxSpriteGroup {
 
 	private function buildIndicator() {
 		aimIndicator = new FlxSprite();
-		aimIndicator.loadGraphic(AssetPaths.indicator__png, true, 32, 32);
-		aimIndicator.animation.add("direction", [0, 1, 2, 3], 0, false);
-		aimIndicator.animation.play("direction", 0);
+		aimIndicator.loadGraphic(AssetPaths.indicators__png, true, 8, 8);
+		aimIndicator.animation.add("0", [0, 1], 2, true);
+		aimIndicator.animation.add("1", [2, 3], 2, true);
+		aimIndicator.animation.add("2", [2, 3], 2, true, true);
+		aimIndicator.animation.add("3", [0, 1], 2, true, true);
+		aimIndicator.animation.play('${aimDirection}');
 
 		add(aimIndicator);
 	}
@@ -85,21 +95,19 @@ class Player extends FlxSpriteGroup {
 		}
 
 		if (SimpleController.just_pressed(Button.LEFT, playerNum)) {
-			var curFrame = aimIndicator.animation.frameIndex;
-			var nextFrame = Std.int(Math.max(0, curFrame - 1));
-			aimIndicator.animation.frameIndex = nextFrame;
+			aimDirection = Std.int(Math.max(0, aimDirection - 1));
+			aimIndicator.animation.play('${aimDirection}');
 		}
 
 		if (SimpleController.just_pressed(Button.RIGHT, playerNum)) {
-			var curFrame = aimIndicator.animation.frameIndex;
-			var nextFrame = Std.int(Math.min(3, curFrame + 1));
-			aimIndicator.animation.frameIndex = nextFrame;
+			aimDirection = Std.int(Math.min(3, aimDirection + 1));
+			aimIndicator.animation.play('${aimDirection}');
 		}
 
 		if (SimpleController.just_pressed(Button.A, playerNum)) {
 			var pos = FlxPoint.get(balloon.x + balloon.width / 2 - 2, balloon.y + balloon.height - 8);
 			var vel = FlxPoint.get();
-			switch (aimIndicator.animation.frameIndex) {
+			switch (aimDirection) {
 				case 0:
 					vel.set(-20, 0);
 					pos.x -= 5;
@@ -138,8 +146,9 @@ class Player extends FlxSpriteGroup {
 		super.update(delta);
 
 		// Keep our indicator aligned
-		aimIndicator.x = balloon.x + balloon.width / 2 - aimIndicator.width / 2;
-		aimIndicator.y = balloon.y + balloon.height / 2 - aimIndicator.height / 2;
+		aimIndicator.x = balloon.x + aimOffsets[aimDirection].x;
+		aimIndicator.y = balloon.y + aimOffsets[aimDirection].y;
+
 
 		// reset x-accel after each frame so wind can work properly
 		balloon.acceleration.x = 0;
