@@ -105,6 +105,12 @@ class PlayState extends FlxTransitionableState {
 			return !b.attached;
 		});
 
+		FlxG.overlap(bombs, birds, (bo, bi) -> {
+			// TODO: Hook up fancier deaths
+			bo.kill();
+			bi.kill();
+		});
+
 		FlxG.overlap(bombs, ground, (b, g) -> {
 			b.kill();
 		});
