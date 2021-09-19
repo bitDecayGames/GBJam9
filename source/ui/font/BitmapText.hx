@@ -1,5 +1,6 @@
 package ui.font;
 
+import haxe.Exception;
 import flixel.math.FlxRect;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
@@ -27,8 +28,11 @@ class BitmapText extends flixel.text.FlxBitmapText {
 
 	@:allow(PressStart)
 	static function createPressStartFont():FlxBitmapFont {
+		// Base font information
 		var path = AssetPaths.PressStart2P_regular_8__png;
 		var chars = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+		var spaceWidth = 5;
+		var height = 9;
 
 		var graphic = FlxG.bitmap.add(path);
 		var frame = graphic.imageFrame.frame;
@@ -40,9 +44,7 @@ class BitmapText extends flixel.text.FlxBitmapText {
 		var curWidth = 0;
 		var bottom = bmd.height - 1;
 		for (x in 0...bmd.width) {
-			trace(StringTools.hex(bmd.getPixel(x, bottom), 8));
 			if (bmd.getPixel(x, bottom) == 0xfbf236) {
-				trace("match");
 				if (curWidth > 0) {
 					widths.push(curWidth + 1);
 				}
@@ -55,21 +57,13 @@ class BitmapText extends flixel.text.FlxBitmapText {
 			widths.push(curWidth + 1);
 		}
 
-		trace(widths.length);
-		trace(chars.length);
-		trace(font.frames.length);
-		trace(widths);
-
-		var spaceWidth = 5;
-		var height = 9;
+		if (widths.length != chars.length) {
+			throw new Exception('Font image and charset have mismatched lengths: ${widths.length} and ${chars.length}');
+		}
 		var x = 0;
 
 		for (i in 0...chars.length) {
 			var code = chars.charCodeAt(i);
-			trace('index: ${i}');
-			trace('code: ${code}');
-			trace('char: ${chars.charAt(i)}');
-			trace('width: ${widths[i]}');
 			font.addCharFrame(code, FlxRect.get(x, 0, widths[i], height), FlxPoint.get(), widths[i]);
 			x += widths[i];
 		}
