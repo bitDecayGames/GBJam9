@@ -1,5 +1,6 @@
 package states;
 
+import levels.ogmo.Level;
 import ui.font.BitmapText;
 import ui.font.BitmapText.PressStart;
 import entities.ParentedSprite;
@@ -23,10 +24,14 @@ import spacial.Cardinal;
 using extensions.FlxStateExt;
 
 class PlayState extends FlxTransitionableState {
+
+	var scrollSpeed = 3;
+
 	var player:Player;
 	var ground:FlxSprite;
 
 	var bounds:FlxGroup = new FlxGroup();
+	var walls:FlxGroup = new FlxGroup();
 
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
@@ -43,10 +48,23 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.camera.pixelPerfectRender = true;
 
+		var level = new Level(AssetPaths.test__json, this);
+		#if debug
+		trace('statics: ${level.staticEntities}');
+		trace('triggers: ${level.triggeredEntities}');
+		#end
+
+		// stretch it a bit outside the level bounds to make sure off-screen stuff works properly
+		FlxG.worldBounds.set(-100, -100, level.layer.widthInTiles * 8 + 100, level.layer.heightInTiles * 8 + 100);
+
 		// var font = new PressStart(30, 30, "Instance of a BitmapFont");
 		// add(font);
 
 		setupScreenBounds();
+
+		for (marker in level.staticEntities) {
+			marker.maker();
+		}
 
 		setupTestObjects();
 
@@ -55,11 +73,24 @@ class PlayState extends FlxTransitionableState {
 
 		// var mockTime = new PressStart(FlxG.width - 8 * 6, FlxG.height - 17, "  Time\n1:35:14");
 		// add(mockTime);
-
-		// TODO: When loading the level, make sure to update FlxG.worldBounds to ensure collisions work throughout level
 	}
 
-	override public function update(elapsed:Float) {
+	override public function update(delta:Float) {
+		FlxG.collide(player.balloon, bounds);
+		FlxG.overlap(player.balloon, walls, function(balloon:ParentedSprite, wall:FlxSprite) {
+			// check left wall
+			if (wall == walls.members[0]) {
+				balloon.velocity.set(scrollSpeed, balloon.velocity.y);
+				balloon.x = wall.x + wall.width + 1;
+			}
+
+			// check right wall
+			if (wall == walls.members[1]) {
+				balloon.velocity.set(scrollSpeed, balloon.velocity.y);
+				balloon.x = wall.x - balloon.width - 1;
+			}
+		});
+
 		FlxG.overlap(player.balloon, winds, function(balloon:ParentedSprite, w:Wind) {
 			w.blowOn(balloon);
 		});
@@ -82,13 +113,9 @@ class PlayState extends FlxTransitionableState {
 			}
 		});
 
-		FlxG.collide(player.balloon, bounds);
-
 		// check boxes against houses first
 		FlxG.overlap(boxes, activeHouses, (b, h) -> {
-			trace("box touching house");
 			if (b.dropped) {
-				trace("box triggered house!");
 				h.packageArrived(b);
 				activeHouses.remove(h);
 			}
@@ -115,7 +142,10 @@ class PlayState extends FlxTransitionableState {
 			b.kill();
 		});
 
-		super.update(elapsed);
+		FlxG.camera.scroll.x += scrollSpeed * delta;
+		alignBounds();
+
+		super.update(delta);
 
 		// DEBUG STUFF
 		if (FlxG.keys.justPressed.B) {
@@ -140,18 +170,30 @@ class PlayState extends FlxTransitionableState {
 		var leftWall = new FlxSprite(-16, 0);
 		leftWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
 		leftWall.immovable = true;
-		bounds.add(leftWall);
+		walls.add(leftWall);
 
 		var rightWall = new FlxSprite(FlxG.width, 0);
 		rightWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
 		rightWall.immovable = true;
-		bounds.add(rightWall);
+		walls.add(rightWall);
+	}
+
+	function alignBounds() {
+		// ceiling
+		cast(bounds.members[1], FlxSprite).x = FlxG.camera.scroll.x;
+
+		// left wall
+		var left = cast(walls.members[0], FlxSprite);
+		left.x = FlxG.camera.scroll.x - left.width;
+
+		// right wall
+		cast(walls.members[1], FlxSprite).x = FlxG.camera.scroll.x + FlxG.width;
 	}
 
 	function setupTestObjects() {
-		var house = new House(50, ground.y);
-		activeHouses.add(house);
-		add(house);
+		// var house = new House(50, ground.y);
+		// activeHouses.add(house);
+		// add(house);
 
 		var wind = new Wind(0, 0, 200, 16, Cardinal.E);
 		winds.add(wind);
@@ -174,6 +216,7 @@ class PlayState extends FlxTransitionableState {
 		add(rocket);
 
 		player = new Player();
+		player.x = 30;
 		add(player);
 	}
 
@@ -185,6 +228,16 @@ class PlayState extends FlxTransitionableState {
 	public function addBomb(bomb:FlxSprite) {
 		bombs.add(bomb);
 		add(bomb);
+	}
+
+	public function addBird(bird:Bird) {
+		birds.add(bird);
+		add(bird);
+	}
+
+	public function addHouse(house:House) {
+		activeHouses.add(house);
+		add(house);
 	}
 
 	override public function onFocusLost() {

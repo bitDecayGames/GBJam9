@@ -10,7 +10,8 @@ class House extends FlxSprite {
 	var perfectMaxDist:Float = 6;
 
 	public function new(x:Float, y:Float) {
-		super(x, y);
+		// offset by 16 due to how collisions are built for houses
+		super(x, y + 24);
 		loadGraphic(AssetPaths.house__png);
 		offset.y = height;
 	}

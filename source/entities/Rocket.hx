@@ -25,7 +25,6 @@ class Rocket extends FlxSprite {
 		if (!triggered && FlxG.keys.justPressed.R) {
 			FlxTween.linearMotion(this, x, y, x, y - altitude, speed, false, {
 				onComplete: (t) -> {
-					trace("rocket goes pop");
 					kill();
 
 					// TODO: SFX

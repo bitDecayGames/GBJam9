@@ -9,7 +9,7 @@ class Wind extends FlxSprite {
 	var direction:Cardinal;
 
 	// TODO: Do we want all wind to be the same strength?
-	var strength:Float = 3;
+	var strength:Float = 10;
 
 	public function new(x:Float, y:Float, width:Float, height:Float, dir:Cardinal) {
 		super(x, y);

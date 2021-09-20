@@ -1,5 +1,12 @@
 package levels.ogmo;
 
+import entities.House;
+import flixel.FlxG;
+import spacial.Cardinal;
+import entities.Bird;
+import flixel.math.FlxPoint;
+import states.PlayState;
+import flixel.FlxSprite;
 import flixel.FlxBasic;
 import flixel.FlxObject;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
@@ -12,21 +19,44 @@ import flixel.tile.FlxTilemap;
 class Level {
 	public var layer:FlxTilemap;
 
-	public function new(level:String) {
-		var loader = new FlxOgmo3Loader("<AssetPath to ogmo file>", level);
-		layer = loader.loadTilemap("<AssetPath to tilemap for layer>", "<layer name>");
+	public var takeoff:FlxSprite;
+	public var landing:FlxSprite;
+	public var triggeredEntities:Array<EntityMarker> = new Array();
+	public var staticEntities:Array<EntityMarker> = new Array();
 
-		var objects = new FlxGroup();
+	public function new(level:String, state:PlayState) {
+		var loader = new FlxOgmo3Loader(AssetPaths.project__ogmo, level);
+		layer = loader.loadTilemap(AssetPaths.player__png, "layout");
 
 		loader.loadEntities((entityData) -> {
-			var obj:FlxBasic;
 			switch (entityData.name) {
-				case "<entity name>":
-					obj = new FlxObject();
+				case "bird":
+					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
+					if (entityData.values.direction == "E") {
+						// if the bird is flying left-to-right, we spawn it one screen width late
+						triggerPoint.x += FlxG.width;
+					}
+					triggeredEntities.push(new EntityMarker(
+						entityData.name,
+						triggerPoint,
+						() -> {
+							state.addBird(new Bird(entityData.x, entityData.y, Cardinal.W));
+						}
+					));
+				case "house":
+					// spawn houses up front, as they are static
+					staticEntities.push(new EntityMarker(
+						entityData.name,
+						FlxPoint.get(entityData.x, entityData.y),
+						() -> {
+							state.addHouse(new House(entityData.x, entityData.y));
+						}
+					));
+				case "para_box":
+					// obj = new FlxObject();
 				default:
 					throw 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';
 			}
-			objects.add(obj);
-		}, "<entity layer name>");
+		}, "entities");
 	}
 }
