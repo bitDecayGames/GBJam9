@@ -17,6 +17,10 @@ class Bird extends FlxSprite implements PlayerDamager {
 		var velVec = direction.asVector();
 		velocity.x = velVec.scale(speed).x;
 		velVec.put();
+
+		if (direction == E) {
+			x -= width;
+		}
 	}
 
 	override public function update(delta:Float) {

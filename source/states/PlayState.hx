@@ -24,6 +24,8 @@ import spacial.Cardinal;
 using extensions.FlxStateExt;
 
 class PlayState extends FlxTransitionableState {
+	public static inline var WALL_WIDTH = 16;
+
 	var level:Level;
 	var scrollSpeed = 3;
 
@@ -106,7 +108,16 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function doCollisions() {
+		// Keep player in bounds
+
+		// TODO: For some reason the player warps to the right side of the screen sometimes...
+		//    it seems to happen both with collide AND overlap. Need to dig more
 		FlxG.collide(player.balloon, ceiling);
+		// FlxG.overlap(player.balloon, ceiling, (b, c) -> {
+		// 	b.velocity.set(b.velocity.x, 0);
+		// 	b.y = ceiling.y + ceiling.height + 1;
+		// });
+
 		FlxG.collide(level.layer, player.balloon);
 		FlxG.overlap(player.balloon, walls, function(balloon:ParentedSprite, wall:FlxSprite) {
 			// check left wall
@@ -180,24 +191,23 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	public function setupScreenBounds() {
-		ceiling = new FlxSprite(0, -16);
-		ceiling.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
+		ceiling = new FlxSprite(0, -WALL_WIDTH);
+		// XXX: Might be better to make a small graphic, then adjust width/height
+		ceiling.makeGraphic(Std.int(level.layer.width), WALL_WIDTH, FlxColor.BROWN);
 		ceiling.immovable = true;
 
-		var leftWall = new FlxSprite(-16, 0);
-		leftWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
+		var leftWall = new FlxSprite(-WALL_WIDTH, 0);
+		leftWall.makeGraphic(WALL_WIDTH, FlxG.height, FlxColor.BROWN);
 		leftWall.immovable = true;
 		walls.add(leftWall);
 
 		var rightWall = new FlxSprite(FlxG.width, 0);
-		rightWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
+		rightWall.makeGraphic(WALL_WIDTH, FlxG.height, FlxColor.BROWN);
 		rightWall.immovable = true;
 		walls.add(rightWall);
 	}
 
 	function alignBounds() {
-		cast(ceiling, FlxSprite).x = FlxG.camera.scroll.x;
-
 		// left wall
 		var left = cast(walls.members[0], FlxSprite);
 		left.x = FlxG.camera.scroll.x - left.width;

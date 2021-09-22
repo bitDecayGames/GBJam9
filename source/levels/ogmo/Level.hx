@@ -38,7 +38,7 @@ class Level {
 					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
 					if (entityData.values.direction == "E") {
 						// if the bird is flying left-to-right, we spawn it one screen width late
-						triggerPoint.x += FlxG.width;
+						triggerPoint.x += FlxG.width + PlayState.WALL_WIDTH;
 					}
 					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
 						state.addBird(new Bird(entityData.x, entityData.y, Cardinal.fromString(entityData.values.direction)));
