@@ -35,12 +35,14 @@ class Player extends FlxSpriteGroup {
 	var horizontalDecay:Float = 0.30;
 
 	// All in units/second
-	var fallAccel:Float = WorldConstants.GRAVITY / 4;
+	var fallAccel:Float = WorldConstants.GRAVITY / 8;
 	var riseAccel:Float = -WorldConstants.GRAVITY / 3;
+	var forceFallAccel:Float = WorldConstants.GRAVITY / 3;
 
 	var maxHorizontalSpeed:Float = 10;
 	var maxVerticalSpeed:Float = 25;
-	var maxFallSpeed:Float = 10;
+	var maxFallSpeed:Float = 5;
+	var maxForceFallSpeed:Float = 10;
 
 	var boxes:Array<Box> = new Array();
 
@@ -80,6 +82,10 @@ class Player extends FlxSpriteGroup {
 			balloon.acceleration.y = riseAccel;
 		} else {
 			balloon.acceleration.y = fallAccel;
+		}
+
+		if (SimpleController.pressed(Button.DOWN, playerNum)) {
+			balloon.acceleration.y = forceFallAccel;
 		}
 
 		// Box dropping
@@ -154,7 +160,15 @@ class Player extends FlxSpriteGroup {
 		balloon.acceleration.x = 0;
 
 		// cap our falling speed to keep that floaty balloon feeling
-		balloon.velocity.y = Math.min(maxFallSpeed, balloon.velocity.y);
+
+		if (SimpleController.pressed(Button.DOWN)) {
+			balloon.velocity.y = Math.min(maxForceFallSpeed, balloon.velocity.y);
+		} else {
+			// TODO: Do we want to have acceleration to get to this speed if the player lets go of down?
+			//       Right now, if the player is holding down and then lets go, they instantly slow down
+			//       to this speed
+			balloon.velocity.y = Math.min(maxFallSpeed, balloon.velocity.y);
+		}
 
 		for (i in 0...boxes.length) {
 			boxes[i].x = balloon.x + balloon.width / 2 - boxes[i].width / 2;
@@ -170,7 +184,10 @@ class Player extends FlxSpriteGroup {
 		// punishment of losing any upwards momentum
 		// TODO: Is this really punishment?
 		balloon.acceleration.y = 0;
-		balloon.velocity.y = 0;
+		balloon.velocity.y = maxFallSpeed;
+
+		// TODO: Do we want to impact how the player can throw rock/bombs?
+		// potentially add cooldown
 	}
 
 	public function addBox(b:Box) {

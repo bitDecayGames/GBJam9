@@ -70,7 +70,9 @@
       "nodeDisplay": 0,
       "nodeGhost": true,
       "tags": [],
-      "values": []
+      "values": [],
+      "texture": "images/house/house.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAxElEQVR42u1VQQ6DMAwzz+CXfTGv2HlMTCuqRNLYySQuVLLoobUdpxFYXtsO4Bb8tLFn1nGvtfZFhQOd6Fjst9/plYwmFK7TQEW8YkJOwKq8koSUgCdeMUEnwFSeMUElMBP39qyJ08AMM/G+IhMBrv0cCa2eW3NvnRk5PA0olXsmAoEoibgFHpQzUgsYYgXB6P5PKGkMVFxspAkubrbH/XtdTWS44P1WvVeuGGC4HgOpR2gJWwbkR8iODpNAagwfA3cY+AApZ1mPjxZ5wAAAAABJRU5ErkJggg=="
     },
     {
       "exportID": "06910497",
@@ -114,7 +116,9 @@
           "choices": ["E", "W"],
           "defaults": 0
         }
-      ]
+      ],
+      "texture": "images/bird/bird.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAALUlEQVR42mNgoAD8R2Zg4H+SkhA2iIENgwBUEUIHMkYyDWEnmiSmo4hSgC4JAJKHOwp7R1o9AAAAAElFTkSuQmCC"
     },
     {
       "exportID": "06963184",

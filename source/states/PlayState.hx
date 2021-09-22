@@ -25,13 +25,14 @@ using extensions.FlxStateExt;
 
 class PlayState extends FlxTransitionableState {
 
+	var level:Level;
 	var scrollSpeed = 3;
 
 	var player:Player;
 	var ground:FlxSprite;
 
 	var bounds:FlxGroup = new FlxGroup();
-	var walls:FlxGroup = new FlxGroup();
+	var walls:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
@@ -48,7 +49,7 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.camera.pixelPerfectRender = true;
 
-		var level = new Level(AssetPaths.test__json, this);
+		level = new Level(AssetPaths.test__json, this);
 		#if debug
 		trace('statics: ${level.staticEntities}');
 		trace('triggers: ${level.triggeredEntities}');
@@ -76,6 +77,33 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	override public function update(delta:Float) {
+		doCollisions();
+
+		checkSpawns();
+
+		FlxG.camera.scroll.x += scrollSpeed * delta;
+		alignBounds();
+
+		super.update(delta);
+
+		// DEBUG STUFF
+		if (FlxG.keys.justPressed.B) {
+			var bird = new Bird(FlxG.width, FlxG.height / 5, Cardinal.W);
+			birds.add(bird);
+			add(bird);
+		}
+	}
+
+	function checkSpawns() {
+		for (marker in level.triggeredEntities) {
+			if (walls.members[1].overlapsPoint(marker.location)) {
+				marker.maker();
+				level.triggeredEntities.remove(marker);
+			}
+		}
+	}
+
+	function doCollisions() {
 		FlxG.collide(player.balloon, bounds);
 		FlxG.overlap(player.balloon, walls, function(balloon:ParentedSprite, wall:FlxSprite) {
 			// check left wall
@@ -141,18 +169,6 @@ class PlayState extends FlxTransitionableState {
 		FlxG.overlap(bombs, ground, (b, g) -> {
 			b.kill();
 		});
-
-		FlxG.camera.scroll.x += scrollSpeed * delta;
-		alignBounds();
-
-		super.update(delta);
-
-		// DEBUG STUFF
-		if (FlxG.keys.justPressed.B) {
-			var bird = new Bird(FlxG.width, FlxG.height / 5, Cardinal.W);
-			birds.add(bird);
-			add(bird);
-		}
 	}
 
 	public function setupScreenBounds() {

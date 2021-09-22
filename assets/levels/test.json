@@ -32,7 +32,7 @@
         {"name": "house", "id": 0, "_eid": "06909092", "x": 48, "y": 104, "originX": 0, "originY": 0},
         {"name": "house", "id": 1, "_eid": "06909092", "x": 96, "y": 104, "originX": 0, "originY": 0},
         {"name": "house", "id": 2, "_eid": "06909092", "x": 136, "y": 104, "originX": 0, "originY": 0},
-        {"name": "house", "id": 3, "_eid": "06909092", "x": 432, "y": 112, "originX": 0, "originY": 0},
+        {"name": "house", "id": 3, "_eid": "06909092", "x": 432, "y": 104, "originX": 0, "originY": 0},
         {
           "name": "bird",
           "id": 4,
