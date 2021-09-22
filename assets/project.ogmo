@@ -24,7 +24,7 @@
       "exportID": "06901549",
       "exportMode": 0,
       "arrayMode": 0,
-      "defaultTileset": "test"
+      "defaultTileset": "ground"
     },
     {
       "definition": "entity",
@@ -205,6 +205,6 @@
     }
   ],
   "tilesets": [
-    {"label": "test", "path": "images/balloon/player.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAABgCAYAAADVenpJAAAEp0lEQVR42u2cYW4jIQxGfY3eMvf/sV1tpUiUNcbGhoT2IUWplDzbGALMdPyJKO1z0MTZ4C/luy+r75Yh+Iv5/suPx+Pba2YE/mL++aEGeozA383LaNb0cG8E/gfw1ux5NsvIiO/Znu/3q5bX2Aif9R/tvzUArQ2L1/rb29jhX7QA+sSMPq9in8F7Wc1Oxn/WhvUdj43Zd7TPq/yL9qX+F9F/rq0AXlY7lUbYwak25b+i/1Eb/d9Wf604sv5FC2C0FLWfjwLwsCPey+7wn+2/Fatmw1q+vQe6Cv+uA4TjNAl/Kb80AZ4zaTUAbTk66R/+4ZsAo+Vktt/MliLvfhWZQJX+K/pv2Yjwmo1K/2LtI9YAjfbwkweZav+r/Y8cYL39sGxU+v92Dzl6OaLdifKyGh/wW+4/2/8VGy0funRT+Iz/4QCM9pzmIKEGYJ1arQQ+/Vg3M9pTeKX/2Z46m4D9IGq8cnr/707eaBy0z6v8q0FY79Y/I+Dv5KX/hVnvowDg7+XdRmb/j4a/l3ctI7MAMrynEzv9vzvvyV02/6YRz2NFWX42CTJJOBF/hs/0uzL/255JO2Uj638HeyLuKhtinDKX+aiNTBxZ/5n+r/qePOolR3OfnkGXrwKnfX5O2it+/eprYRXYZsd7FoiyGW4l1lVuV77LZuOJVWDHL+sUU5nvyjET7fmx7lZqeAJk7LS3XqN2LP/WYEb7rz2zl40xevKvyLUZUOgywjF4q3Z6e9WTZ6X/mUEcfH9plcxMouG+lDI0GLwVW6vxrPhf6X8mZxW5rhwzdV+RRKuyVXUWeSemKj/pvZ9Go9FoNKG+Hn0A6ut/tz6AVcPnqU+Hv4y3bphYhYjwP4Onvh59gHlt+UwfYMbO6vNnbITP+l/RB5gVce7WB1j1jz4A+gDoAwj6AOgD3KQPYPGCPgD82+sDwF+uD+AJILKMrSyBO/1X9N+jMZDZAqv8S7S23LsHRQ9UJ2v7xdA3yOgjyGGNgQr/krkcybDWKTzCvtJGRV+sq5AjubQgq8Z+FICXnf2SLX2A9k7Wqv+ef4UNjbduhI1Wjqx/0ZaRfrloky+GQgf8fbxaVGAVGswC8Njw8CMb/X+zov69/Ktj2JU/9YHR0Z02cVaaaMu7N3mzBAy1bRb8e/lXx7ArfzITiFiGnQmIlmVFHnWu9p/hM/mLDn6Vf+9y8jJeNtYEvgOf7XtF/FufSTtV6/YT9QFO+O9n0df7n4+P9lIlxGdsZOLI+s/0X2M9fDtI1TkL20EfAH0A9AHQB0AfAH0A9AHQB0AfAH0A9AHQB0AfYHc/q/ODPgCNRqPRKvYS6uvRB6C+Hn0A6usFfQDq6wV9AOrrBX0A9AEEfQD0AdAHQB8AfQD0AdAHgEcfAB59APQB0AdAHwB9APQB0AdAHwB9APj79QFmL299+g4+Wt9fzb9DDJX5HxrJ6ANIQFxh1omV2vyR/ywvC/oAK3y00ic7fsMA0AdAHwB9APQB0Af4lfoA/+rLu0uVEJ+xkYkj6z/Tf4318O0gVecsbAd9APQB0AdAHwB9APQB0AdAHwB9APQB0AdAHwB9gN39RB+ARqPRaIfbXyGOC0oP4lTyAAAAAElFTkSuQmCC", "tileWidth": 16, "tileHeight": 32, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
+    {"label": "ground", "path": "images/tilesets/ground.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAQCAYAAABDebxFAAAAg0lEQVR42mNgIAz+D3FM2IMFBQVEYXxqYXKkmEeOPejqGIiNQUocBAKUeorcgKBqDNILExNgNEmigw2PepBYD5KSx+iVH0eTKD08SOvYpFs1MVCBQdMYxOYgeteHo3kQ5sGhCkjKg/gwkmFEqyNWDyX2EetBhuHck4ADbD2CwUzD3A0AnGVEs9r0KLIAAAAASUVORK5CYII=", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
   ]
 }

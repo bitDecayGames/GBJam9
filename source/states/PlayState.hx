@@ -30,7 +30,7 @@ class PlayState extends FlxTransitionableState {
 	var player:Player;
 	var ground:FlxSprite;
 
-	var bounds:FlxGroup = new FlxGroup();
+	var ceiling:FlxSprite = new FlxSprite();
 	var walls:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
@@ -61,6 +61,8 @@ class PlayState extends FlxTransitionableState {
 		// add(font);
 
 		setupScreenBounds();
+
+		add(level.layer);
 
 		for (marker in level.staticEntities) {
 			marker.maker();
@@ -104,7 +106,8 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function doCollisions() {
-		FlxG.collide(player.balloon, bounds);
+		FlxG.collide(player.balloon, ceiling);
+		FlxG.collide(level.layer, player.balloon);
 		FlxG.overlap(player.balloon, walls, function(balloon:ParentedSprite, wall:FlxSprite) {
 			// check left wall
 			if (wall == walls.members[0]) {
@@ -149,16 +152,21 @@ class PlayState extends FlxTransitionableState {
 			}
 		});
 
-		FlxG.overlap(boxes, ground, (b, g) -> {
-			FlxObject.separate(b, g);
-			// stop the box if it collides with the ground
-			b.velocity.set(0, 0);
-			// make sure the box isn't inside the ground
-			b.y = g.y - b.height;
-		}, (b, g) -> {
-			// only collide boxes with ground if they aren't attached to the player
-			return !b.attached;
-		});
+		for (box in boxes) {
+			level.layer.overlapsWithCallback(box, (g, b) -> {
+				// only collide boxes with ground if they aren't attached to the player
+				if (box.attached) {
+					return false;
+				}
+
+				FlxObject.separate(b, g);
+				// stop the box if it collides with the ground
+				b.velocity.set(0, 0);
+				// make sure the box isn't inside the ground
+				b.y = g.y - b.height;
+				return true;
+			});
+		}
 
 		FlxG.overlap(bombs, birds, (bo, bi) -> {
 			// TODO: Hook up fancier deaths
@@ -166,22 +174,15 @@ class PlayState extends FlxTransitionableState {
 			bi.kill();
 		});
 
-		FlxG.overlap(bombs, ground, (b, g) -> {
+		FlxG.collide(level.layer, bombs, (g, b) -> {
 			b.kill();
 		});
 	}
 
 	public function setupScreenBounds() {
-		ground = new FlxSprite(0, FlxG.height - 16);
-		ground.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
-		ground.immovable = true;
-		add(ground);
-		bounds.add(ground);
-
-		var ceiling = new FlxSprite(0, -16);
+		ceiling = new FlxSprite(0, -16);
 		ceiling.makeGraphic(FlxG.width, 16, FlxColor.BROWN);
 		ceiling.immovable = true;
-		bounds.add(ceiling);
 
 		var leftWall = new FlxSprite(-16, 0);
 		leftWall.makeGraphic(16, FlxG.height, FlxColor.BROWN);
@@ -195,8 +196,7 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function alignBounds() {
-		// ceiling
-		cast(bounds.members[1], FlxSprite).x = FlxG.camera.scroll.x;
+		cast(ceiling, FlxSprite).x = FlxG.camera.scroll.x;
 
 		// left wall
 		var left = cast(walls.members[0], FlxSprite);
@@ -227,9 +227,9 @@ class PlayState extends FlxTransitionableState {
 		// boxes.add(box2);
 		// add(box2);
 
-		var rocket = new Rocket(20, ground.y);
-		rockets.add(rocket);
-		add(rocket);
+		// var rocket = new Rocket(20, ground.y);
+		// rockets.add(rocket);
+		// add(rocket);
 
 		player = new Player();
 		player.x = 30;

@@ -28,7 +28,8 @@ class Level {
 
 	public function new(level:String, state:PlayState) {
 		var loader = new FlxOgmo3Loader(AssetPaths.project__ogmo, level);
-		layer = loader.loadTilemap(AssetPaths.player__png, "layout");
+
+		layer = loader.loadTilemap(AssetPaths.ground__png, "layout");
 
 		loader.loadEntities((entityData) -> {
 			switch (entityData.name) {
