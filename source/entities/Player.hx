@@ -155,7 +155,6 @@ class Player extends FlxSpriteGroup {
 		aimIndicator.x = balloon.x + aimOffsets[aimDirection].x;
 		aimIndicator.y = balloon.y + aimOffsets[aimDirection].y;
 
-
 		// reset x-accel after each frame so wind can work properly
 		balloon.acceleration.x = 0;
 

@@ -93,4 +93,27 @@ enum abstract Cardinal(Int) from Int to Int {
 			return N;
 		}
 	}
+
+	public static function fromString(str:String):Cardinal {
+		return switch (str.toUpperCase()) {
+			case "N":
+				N;
+			case "NE":
+				NE;
+			case "E":
+				E;
+			case "SE":
+				SE;
+			case "S":
+				S;
+			case "SW":
+				SW;
+			case "W":
+				W;
+			case "NW":
+				NW;
+			default:
+				NONE;
+		}
+	}
 }

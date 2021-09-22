@@ -5,8 +5,6 @@ import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
 class Box extends FlxSprite {
-	var speed:Float = 30;
-
 	public var attached = false;
 	public var dropped = false;
 

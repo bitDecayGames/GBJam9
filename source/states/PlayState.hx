@@ -24,7 +24,6 @@ import spacial.Cardinal;
 using extensions.FlxStateExt;
 
 class PlayState extends FlxTransitionableState {
-
 	var level:Level;
 	var scrollSpeed = 3;
 
@@ -79,7 +78,7 @@ class PlayState extends FlxTransitionableState {
 	override public function update(delta:Float) {
 		doCollisions();
 
-		checkSpawns();
+		checkTriggers();
 
 		FlxG.camera.scroll.x += scrollSpeed * delta;
 		alignBounds();
@@ -94,8 +93,9 @@ class PlayState extends FlxTransitionableState {
 		}
 	}
 
-	function checkSpawns() {
+	function checkTriggers() {
 		for (marker in level.triggeredEntities) {
+			// TODO: Probably should make a dedicated box to check these collisions against
 			if (walls.members[1].overlapsPoint(marker.location)) {
 				marker.maker();
 				level.triggeredEntities.remove(marker);
@@ -211,17 +211,17 @@ class PlayState extends FlxTransitionableState {
 		// activeHouses.add(house);
 		// add(house);
 
-		var wind = new Wind(0, 0, 200, 16, Cardinal.E);
-		winds.add(wind);
-		add(wind);
+		// var wind = new Wind(0, 0, 200, 16, Cardinal.E);
+		// winds.add(wind);
+		// add(wind);
 
-		var wind2 = new Wind(0, 120, 200, 8, Cardinal.W);
-		winds.add(wind2);
-		add(wind2);
+		// var wind2 = new Wind(0, 120, 200, 8, Cardinal.W);
+		// winds.add(wind2);
+		// add(wind2);
 
-		var box = new Box(90, 70);
-		boxes.add(box);
-		add(box);
+		// var box = new Box(90, 70);
+		// boxes.add(box);
+		// add(box);
 
 		// var box2 = new Box(60, 80);
 		// boxes.add(box2);
@@ -254,6 +254,16 @@ class PlayState extends FlxTransitionableState {
 	public function addHouse(house:House) {
 		activeHouses.add(house);
 		add(house);
+	}
+
+	public function addWind(wind:Wind) {
+		winds.add(wind);
+		add(wind);
+	}
+
+	public function addBox(box:Box) {
+		boxes.add(box);
+		add(box);
 	}
 
 	override public function onFocusLost() {

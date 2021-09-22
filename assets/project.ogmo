@@ -78,7 +78,7 @@
       "exportID": "06910497",
       "name": "bird",
       "limit": -1,
-      "size": {"x": 16, "y": 16},
+      "size": {"x": 8, "y": 8},
       "origin": {"x": 0, "y": 0},
       "originAnchored": true,
       "shape": {
@@ -95,7 +95,7 @@
       "color": "#0002ffff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {"x": 8, "y": 8},
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,
@@ -124,7 +124,7 @@
       "exportID": "06963184",
       "name": "para_box",
       "limit": -1,
-      "size": {"x": 16, "y": 16},
+      "size": {"x": 8, "y": 16},
       "origin": {"x": 0, "y": 0},
       "originAnchored": true,
       "shape": {
@@ -141,7 +141,7 @@
       "color": "#0d8900ff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {"x": 8, "y": 16},
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,
@@ -154,7 +154,54 @@
       "nodeDisplay": 0,
       "nodeGhost": true,
       "tags": [],
-      "values": []
+      "values": [
+        {"name": "delay", "definition": "Integer", "display": 2, "defaults": 4, "bounded": false, "min": 0, "max": 18}
+      ]
+    },
+    {
+      "exportID": "28048261",
+      "name": "wind",
+      "limit": -1,
+      "size": {"x": 16, "y": 16},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#7babe997",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 16, "y": 16},
+      "resizeableX": true,
+      "resizeableY": true,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [
+        {
+          "name": "direction",
+          "definition": "Enum",
+          "display": 1,
+          "choices": ["E", "W", "N", "S"],
+          "defaults": 0
+        },
+        {"name": "strength", "definition": "Integer", "display": 1, "defaults": 10, "bounded": false, "min": 0, "max": 100}
+      ]
     }
   ],
   "tilesets": [
