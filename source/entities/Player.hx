@@ -18,16 +18,20 @@ class Player extends FlxSpriteGroup {
 
 	private static inline var RISE_ANIM = "rise";
 	private static inline var IDLE_ANIM = "idle";
+	private static inline var BLOW_LEFT = "_left";
+	private static inline var BLOW_RIGHT = "_right";
+
+	public var nextAnim:String = IDLE_ANIM;
 
 	public var balloon:ParentedSprite;
 
 	var aimIndicator:FlxSprite;
 	var aimDirection = 0;
 	var aimOffsets = [
-		0 => FlxPoint.get(-4, 20),
-		1 => FlxPoint.get(0, 28),
-		2 => FlxPoint.get(8, 28),
-		3 => FlxPoint.get(12, 20),
+		0 => FlxPoint.get(-8, 17),
+		1 => FlxPoint.get(-4, 25),
+		2 => FlxPoint.get(4, 25),
+		3 => FlxPoint.get(8, 17),
 	];
 
 	var speed:Float = 30;
@@ -61,8 +65,16 @@ class Player extends FlxSpriteGroup {
 		// TODO: rig up all the animation stuff
 		balloon.loadGraphic(AssetPaths.player__png, true, 16, 32);
 
+		balloon.height = 24;
+		balloon.width = 10;
+		balloon.offset.set(4, 3);
+
 		balloon.animation.add(IDLE_ANIM, [0]);
+		balloon.animation.add(IDLE_ANIM + BLOW_RIGHT, [5, 6, 7], 4);
+		balloon.animation.add(IDLE_ANIM + BLOW_LEFT, [3, 2, 1], 4);
 		balloon.animation.add(RISE_ANIM, [8, 16], 4);
+		balloon.animation.add(RISE_ANIM + BLOW_RIGHT, [13, 21, 14, 22, 15, 23], 8);
+		balloon.animation.add(RISE_ANIM + BLOW_LEFT, [9, 17, 10, 18, 11, 19], 8);
 		balloon.animation.play(IDLE_ANIM);
 
 		add(balloon);
@@ -83,13 +95,14 @@ class Player extends FlxSpriteGroup {
 	}
 
 	override public function update(delta:Float) {
+		nextAnim = IDLE_ANIM;
+
 		// Balloon burner
 		if (SimpleController.pressed(Button.UP, playerNum)) {
 			// TODO: SFX Play fire sound
-			balloon.animation.play(RISE_ANIM);
+			nextAnim = RISE_ANIM;
 			balloon.acceleration.y = riseAccel;
 		} else {
-			balloon.animation.play(IDLE_ANIM);
 			balloon.acceleration.y = fallAccel;
 		}
 
@@ -155,7 +168,14 @@ class Player extends FlxSpriteGroup {
 			// TODO: SFX play drop rock/bomb sound
 		}
 
-		if (balloon.acceleration.x == 0) {
+		if (balloon.acceleration.x != 0) {
+			// update animation accordingly
+			if (balloon.acceleration.x > 0) {
+				nextAnim += BLOW_RIGHT;
+			} else {
+				nextAnim += BLOW_LEFT;
+			}
+		} else {
 			// decay velocity x
 			if (balloon.velocity.x != 0.0) {
 				balloon.velocity.x -= (balloon.velocity.x * horizontalDecay) * delta;
@@ -164,6 +184,8 @@ class Player extends FlxSpriteGroup {
 				}
 			}
 		}
+
+		balloon.animation.play(nextAnim);
 
 		// apply update
 		super.update(delta);
