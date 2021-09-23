@@ -62,7 +62,6 @@ class Player extends FlxSpriteGroup {
 	private function buildBalloon() {
 		balloon = new ParentedSprite();
 		balloon.parent = this;
-		// TODO: rig up all the animation stuff
 		balloon.loadGraphic(AssetPaths.player__png, true, 16, 32);
 
 		balloon.height = 24;
@@ -70,11 +69,11 @@ class Player extends FlxSpriteGroup {
 		balloon.offset.set(4, 3);
 
 		balloon.animation.add(IDLE_ANIM, [0]);
-		balloon.animation.add(IDLE_ANIM + BLOW_RIGHT, [5, 6, 7], 4);
-		balloon.animation.add(IDLE_ANIM + BLOW_LEFT, [3, 2, 1], 4);
+		balloon.animation.add(IDLE_ANIM + BLOW_RIGHT, [5, 6, 7], 2);
+		balloon.animation.add(IDLE_ANIM + BLOW_LEFT, [3, 2, 1], 2);
 		balloon.animation.add(RISE_ANIM, [8, 16], 4);
-		balloon.animation.add(RISE_ANIM + BLOW_RIGHT, [13, 21, 14, 22, 15, 23], 8);
-		balloon.animation.add(RISE_ANIM + BLOW_LEFT, [9, 17, 10, 18, 11, 19], 8);
+		balloon.animation.add(RISE_ANIM + BLOW_RIGHT, [13, 21, 14, 22, 15, 23], 4);
+		balloon.animation.add(RISE_ANIM + BLOW_LEFT, [9, 17, 10, 18, 11, 19], 4);
 		balloon.animation.play(IDLE_ANIM);
 
 		add(balloon);
