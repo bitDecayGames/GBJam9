@@ -77,7 +77,6 @@ class PlayState extends FlxTransitionableState {
 		add(rocketsBooms);
 		add(birds);
 
-
 		for (marker in level.staticEntities) {
 			marker.maker();
 		}

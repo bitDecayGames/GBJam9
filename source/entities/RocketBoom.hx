@@ -2,12 +2,10 @@ package entities;
 
 import flixel.tweens.FlxEase;
 import flixel.effects.FlxFlicker;
-import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxTween;
 import flixel.FlxG;
-import flixel.FlxSprite;
 
 using extensions.FlxPointExt;
 
@@ -36,7 +34,6 @@ class RocketBoom extends FlxSpriteGroup implements PlayerDamager {
 			particle.loadGraphic(AssetPaths.sparks__png, true, 8, 8);
 			particle.animation.add("play", [0, 1, 2], FlxG.random.int(5, 10));
 			particle.animation.play("play");
-			// particle.makeGraphic(4, 4, FlxColor.YELLOW);
 			add(particle);
 			var life = FlxG.random.float(0.75, 2);
 			FlxFlicker.flicker(particle, life, FlxG.random.float(0.05, 0.1));

@@ -1,20 +1,16 @@
 package levels.ogmo;
 
-import entities.Rocket;
-import entities.Box;
-import entities.Wind;
-import entities.House;
-import flixel.FlxG;
-import spacial.Cardinal;
 import entities.Bird;
-import flixel.math.FlxPoint;
-import states.PlayState;
+import entities.Box;
+import entities.House;
+import entities.Rocket;
+import entities.Wind;
+import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxBasic;
-import flixel.FlxObject;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
-import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
 import flixel.tile.FlxTilemap;
+import states.PlayState;
 
 /**
  * Template for loading an Ogmo level file

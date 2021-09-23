@@ -7,7 +7,6 @@ import flixel.FlxG;
 import const.WorldConstants;
 import flixel.effects.FlxFlicker;
 import input.SimpleController;
-import input.InputCalcuator;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
