@@ -36,5 +36,7 @@ class Wind extends FlxSprite {
 		vec.copyFrom(direction).scale(strength);
 		other.acceleration.set(vec.x, other.acceleration.y);
 		vec.put();
+
+		// TODO: SFX Play blowing noise
 	}
 }

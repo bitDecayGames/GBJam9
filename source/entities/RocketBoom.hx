@@ -33,15 +33,13 @@ class RocketBoom extends FlxSpriteGroup implements PlayerDamager {
 			temp = p.pointOnCircumference(angle * inc, radius);
 			var particle = new ParentedSprite(temp.x, temp.y);
 			particle.parent = this;
-			particle.makeGraphic(4, 4, FlxColor.YELLOW);
+			particle.loadGraphic(AssetPaths.sparks__png, true, 8, 8);
+			particle.animation.add("play", [0, 1, 2], FlxG.random.int(5, 10));
+			particle.animation.play("play");
+			// particle.makeGraphic(4, 4, FlxColor.YELLOW);
 			add(particle);
 			var life = FlxG.random.float(0.75, 2);
 			FlxFlicker.flicker(particle, life, FlxG.random.float(0.05, 0.1));
-			FlxTween.tween(particle, {
-				alpha: 0
-			}, life, {
-				ease: FlxEase.quadInOut
-			});
 			FlxTween.linearMotion(particle, particle.x, particle.y, particle.x, particle.y + particleFallDistance, life, {
 				ease: FlxEase.quadInOut,
 				onComplete: (t) -> {

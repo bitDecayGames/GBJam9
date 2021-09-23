@@ -30,5 +30,7 @@ class House extends FlxSprite {
 		// TODO: figure out how to make this render well
 		// TODO: need to use Bitmap Fonts... meaning TextPop won't work as-is
 		// TextPop.pop(Std.int(x), Std.int(y), '${Math.abs(Std.int(accuracy))}');
+
+		// TODO: SFX play sound based on accurace (good, ok, bad sound)
 	}
 }

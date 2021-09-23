@@ -17,6 +17,9 @@ class Player extends FlxSpriteGroup {
 	// amount of rope between each box
 	private static inline var BOX_SPACING:Float = 4;
 
+	private static inline var RISE_ANIM = "rise";
+	private static inline var IDLE_ANIM = "idle";
+
 	public var balloon:ParentedSprite;
 
 	var aimIndicator:FlxSprite;
@@ -57,7 +60,11 @@ class Player extends FlxSpriteGroup {
 		balloon = new ParentedSprite();
 		balloon.parent = this;
 		// TODO: rig up all the animation stuff
-		balloon.loadGraphic(AssetPaths.balloon__png);
+		balloon.loadGraphic(AssetPaths.player__png, true, 16, 32);
+
+		balloon.animation.add(IDLE_ANIM, [0]);
+		balloon.animation.add(RISE_ANIM, [8, 16], 4);
+		balloon.animation.play(IDLE_ANIM);
 
 		add(balloon);
 
@@ -79,12 +86,17 @@ class Player extends FlxSpriteGroup {
 	override public function update(delta:Float) {
 		// Balloon burner
 		if (SimpleController.pressed(Button.UP, playerNum)) {
+			// TODO: SFX Play fire sound
+			balloon.animation.play(RISE_ANIM);
 			balloon.acceleration.y = riseAccel;
 		} else {
+			balloon.animation.play(IDLE_ANIM);
 			balloon.acceleration.y = fallAccel;
 		}
 
 		if (SimpleController.pressed(Button.DOWN, playerNum)) {
+			// TODO: Fall animation
+			// TODO: SFX play deflating sound
 			balloon.acceleration.y = forceFallAccel;
 		}
 
@@ -93,19 +105,23 @@ class Player extends FlxSpriteGroup {
 			var box = boxes.pop();
 			if (box == null) {
 				// no box to cut
+				// TODO: SFX play error noise
 			} else {
 				// drop the box!
+				// TODO: SFX play release sound
 				box.attached = false;
 				box.dropped = true;
 			}
 		}
 
 		if (SimpleController.just_pressed(Button.LEFT, playerNum)) {
+			// TODO: SFX Play selector sound
 			aimDirection = Std.int(Math.max(0, aimDirection - 1));
 			aimIndicator.animation.play('${aimDirection}');
 		}
 
 		if (SimpleController.just_pressed(Button.RIGHT, playerNum)) {
+			// TODO: SFX Play selector sound
 			aimDirection = Std.int(Math.min(3, aimDirection + 1));
 			aimIndicator.animation.play('${aimDirection}');
 		}
@@ -136,6 +152,8 @@ class Player extends FlxSpriteGroup {
 
 			// XXX: hacky. Probably better to pass in some function callback
 			cast(FlxG.state, PlayState).addBomb(toss);
+
+			// TODO: SFX play drop rock/bomb sound
 		}
 
 		if (balloon.acceleration.x == 0) {

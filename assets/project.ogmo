@@ -155,7 +155,7 @@
       "nodeGhost": true,
       "tags": [],
       "values": [
-        {"name": "delay", "definition": "Integer", "display": 2, "defaults": 4, "bounded": false, "min": 0, "max": 18}
+        {"name": "delay", "definition": "Integer", "display": 2, "defaults": 4, "bounded": false, "min": 0, "max": 20}
       ]
     },
     {
@@ -202,6 +202,47 @@
         },
         {"name": "strength", "definition": "Integer", "display": 1, "defaults": 10, "bounded": false, "min": 0, "max": 100}
       ]
+    },
+    {
+      "exportID": "36300185",
+      "name": "rocket",
+      "limit": -1,
+      "size": {"x": 8, "y": 8},
+      "origin": {"x": 0, "y": -4},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 8, "y": 8},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [
+        {"name": "delay", "definition": "Integer", "display": 2, "defaults": 9, "bounded": false, "min": 0, "max": 20},
+        {"name": "alt", "definition": "Integer", "display": 0, "defaults": 9, "bounded": false, "min": 0, "max": 18}
+      ],
+      "texture": "images/rocket/rocket.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAH0lEQVR42mP4Jyn5H4QZGBhAGBMMBgX/gQCnJFUUAADGSSnDKLd2jQAAAABJRU5ErkJggg=="
     }
   ],
   "tilesets": [

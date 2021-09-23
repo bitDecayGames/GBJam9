@@ -1,5 +1,6 @@
 package levels.ogmo;
 
+import entities.Rocket;
 import entities.Box;
 import entities.Wind;
 import entities.House;
@@ -49,6 +50,15 @@ class Level {
 					triggerPoint.x += entityData.values.delay * 8;
 					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
 						state.addBox(new Box(entityData.x, entityData.y));
+					}));
+				case "rocket":
+					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
+					// delay is number of tiles
+					triggerPoint.x += entityData.values.delay * 8;
+					var rocket = new Rocket(entityData.x, entityData.y, entityData.values.alt * 8);
+					state.addRocket(rocket);
+					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
+						rocket.fly();
 					}));
 
 				// START Statics

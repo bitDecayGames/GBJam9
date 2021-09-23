@@ -1,9 +1,9 @@
 package entities;
 
+import flixel.FlxG;
+import const.WorldConstants;
+import flixel.FlxObject;
 import spacial.Cardinal;
-import input.SimpleController;
-import input.InputCalcuator;
-import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
 class Bird extends FlxSprite implements PlayerDamager {
@@ -11,8 +11,13 @@ class Bird extends FlxSprite implements PlayerDamager {
 
 	public function new(x:Float, y:Float, direction:Cardinal) {
 		super(x, y);
-		// TODO: rig up all the animation stuff
-		loadGraphic(AssetPaths.bird__png);
+		loadGraphic(AssetPaths.fly__png, true, 8, 8);
+
+		animation.add(Cardinal.E.asString(), [for (i in 0...6) i], 5);
+		animation.add(Cardinal.W.asString(), [for (i in 0...6) i], 5, true, true);
+		animation.add("die", [6]);
+
+		animation.play(direction.asString());
 
 		var velVec = direction.asVector();
 		velocity.x = velVec.scale(speed).x;
@@ -25,11 +30,18 @@ class Bird extends FlxSprite implements PlayerDamager {
 
 	override public function update(delta:Float) {
 		super.update(delta);
+
+		if (y > FlxG.height) {
+			kill();
+		}
 	}
 
 	public function hitPlayer() {
-		// TODO: actually go into death animation and fall from the sky
-		kill();
+		allowCollisions = FlxObject.NONE;
+		animation.play("die");
+		acceleration.y = WorldConstants.GRAVITY;
+
+		// TODO: SFX bird death
 	}
 
 	public function hasHitPlayer():Bool {

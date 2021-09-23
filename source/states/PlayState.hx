@@ -35,14 +35,16 @@ class PlayState extends FlxTransitionableState {
 	var ceiling:FlxSprite = new FlxSprite();
 	var walls:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 
+	var playerGroup:FlxTypedGroup<Player> = new FlxTypedGroup();
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
+	var houses:FlxTypedGroup<House> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
-	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
 	var bombs:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
-
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
+
+	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
 
 	override public function create() {
 		super.create();
@@ -64,7 +66,17 @@ class PlayState extends FlxTransitionableState {
 
 		setupScreenBounds();
 
+		// Adding these in proper rending order
+		add(winds);
 		add(level.layer);
+		add(houses);
+		add(playerGroup);
+		add(bombs);
+		add(boxes);
+		add(rockets);
+		add(rocketsBooms);
+		add(birds);
+
 
 		for (marker in level.staticEntities) {
 			marker.maker();
@@ -171,6 +183,7 @@ class PlayState extends FlxTransitionableState {
 				}
 
 				FlxObject.separate(b, g);
+
 				// stop the box if it collides with the ground
 				b.velocity.set(0, 0);
 				// make sure the box isn't inside the ground
@@ -217,63 +230,39 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function setupTestObjects() {
-		// var house = new House(50, ground.y);
-		// activeHouses.add(house);
-		// add(house);
-
-		// var wind = new Wind(0, 0, 200, 16, Cardinal.E);
-		// winds.add(wind);
-		// add(wind);
-
-		// var wind2 = new Wind(0, 120, 200, 8, Cardinal.W);
-		// winds.add(wind2);
-		// add(wind2);
-
-		// var box = new Box(90, 70);
-		// boxes.add(box);
-		// add(box);
-
-		// var box2 = new Box(60, 80);
-		// boxes.add(box2);
-		// add(box2);
-
-		// var rocket = new Rocket(20, ground.y);
-		// rockets.add(rocket);
-		// add(rocket);
-
+		// TODO: Load player from ogmo level
 		player = new Player();
 		player.x = 30;
-		add(player);
+		playerGroup.add(player);
 	}
 
 	public function addBoom(rocketBoom:RocketBoom) {
 		rocketsBooms.add(rocketBoom);
-		add(rocketBoom);
 	}
 
 	public function addBomb(bomb:FlxSprite) {
 		bombs.add(bomb);
-		add(bomb);
 	}
 
 	public function addBird(bird:Bird) {
 		birds.add(bird);
-		add(bird);
 	}
 
 	public function addHouse(house:House) {
+		houses.add(house);
 		activeHouses.add(house);
-		add(house);
 	}
 
 	public function addWind(wind:Wind) {
 		winds.add(wind);
-		add(wind);
 	}
 
 	public function addBox(box:Box) {
 		boxes.add(box);
-		add(box);
+	}
+
+	public function addRocket(rocket:Rocket) {
+		rockets.add(rocket);
 	}
 
 	override public function onFocusLost() {

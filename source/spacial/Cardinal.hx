@@ -116,4 +116,27 @@ enum abstract Cardinal(Int) from Int to Int {
 				NONE;
 		}
 	}
+
+	public function asString():String {
+		return switch (this) {
+			case N:
+				"N";
+			case NE:
+				"NE";
+			case E:
+				"E";
+			case SE:
+				"SE";
+			case S:
+				"S";
+			case SW:
+				"SW";
+			case W:
+				"W";
+			case NW:
+				"NW";
+			default:
+				"NONE";
+		}
+	}
 }

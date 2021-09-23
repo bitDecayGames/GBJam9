@@ -12,7 +12,7 @@ class EntityMarker {
 		location = l;
 		#if debug
 		maker = () -> {
-			trace('triggering ${name}');
+			trace('triggering ${name} at x: ${location.x}');
 			makerFunc();
 		}
 		#else
