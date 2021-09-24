@@ -26,7 +26,7 @@ class Player extends FlxSpriteGroup {
 	public var balloon:ParentedSprite;
 
 	var aimIndicator:FlxSprite;
-	var aimDirection = 0;
+	var aimDirection = 3;
 	var aimOffsets = [
 		0 => FlxPoint.get(-8, 17),
 		1 => FlxPoint.get(-4, 25),

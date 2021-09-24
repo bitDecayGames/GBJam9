@@ -37,11 +37,15 @@ class Bird extends FlxSprite implements PlayerDamager {
 	}
 
 	public function hitPlayer() {
+		// TODO: SFX bird hits balloon
+		die();
+	}
+
+	public function die() {
+		// TODO: SFX bird dies
 		allowCollisions = FlxObject.NONE;
 		animation.play("die");
 		acceleration.y = WorldConstants.GRAVITY;
-
-		// TODO: SFX bird death
 	}
 
 	public function hasHitPlayer():Bool {

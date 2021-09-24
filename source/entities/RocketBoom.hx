@@ -15,20 +15,25 @@ class RocketBoom extends FlxSpriteGroup implements PlayerDamager {
 	var particleCount:Int = 8;
 	var particleFallDistance = 5;
 
+	var boomOrigin:FlxPoint;
+
 	public var damagedPlayer = false;
 
 	public function new(x:Float, y:Float) {
-		super(x, y);
+		// TODO: We create the parent object at the origin and track the correct
+		//       position because of weirdness with how collisions between two
+		//       FlxSpriteGroups seem to behave
+		super();
+		boomOrigin = FlxPoint.get(x, y);
 
 		createParticles();
 	}
 
 	private function createParticles() {
 		var inc = 360 / particleCount;
-		var p = FlxPoint.get();
 		var temp:FlxPoint;
 		for (angle in 0...particleCount) {
-			temp = p.pointOnCircumference(angle * inc, radius);
+			temp = boomOrigin.pointOnCircumference(angle * inc, radius);
 			var particle = new ParentedSprite(temp.x, temp.y);
 			particle.parent = this;
 			particle.loadGraphic(AssetPaths.sparks__png, true, 8, 8);
