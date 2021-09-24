@@ -122,6 +122,7 @@ class Player extends FlxSpriteGroup {
 				// TODO: SFX play release sound
 				box.attached = false;
 				box.dropped = true;
+				box.released();
 			}
 		}
 
@@ -208,8 +209,7 @@ class Player extends FlxSpriteGroup {
 		}
 
 		for (i in 0...boxes.length) {
-			boxes[i].x = balloon.x + balloon.width / 2 - boxes[i].width / 2;
-			boxes[i].y = balloon.y + balloon.height + BOX_SPACING + i * (boxes[i].height + BOX_SPACING);
+			boxes[i].alignTo(balloon.x + balloon.width / 2, balloon.y + balloon.height + BOX_SPACING + i * (8 + BOX_SPACING));
 			boxes[i].velocity.set(balloon.velocity.x, balloon.velocity.y);
 		}
 	}
@@ -230,6 +230,7 @@ class Player extends FlxSpriteGroup {
 	public function addBox(b:Box) {
 		if (!boxes.contains(b)) {
 			b.attached = true;
+			b.grabbable = false;
 			boxes.push(b);
 		}
 	}

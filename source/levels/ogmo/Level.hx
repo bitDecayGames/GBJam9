@@ -45,7 +45,7 @@ class Level {
 					// delay is number of tiles
 					triggerPoint.x += entityData.values.delay * 8;
 					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
-						state.addBox(new Box(entityData.x, entityData.y));
+						state.addBox(new Box(entityData.x, entityData.y, entityData.values.open_at * 8));
 					}));
 				case "rocket":
 					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);

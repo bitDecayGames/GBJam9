@@ -160,12 +160,6 @@ class PlayState extends FlxTransitionableState {
 			}
 		});
 
-		FlxG.overlap(player.balloon, boxes, function(balloon:ParentedSprite, b:Box) {
-			if (!b.attached && !b.dropped) {
-				cast(balloon.parent, Player).addBox(b);
-			}
-		});
-
 		// check boxes against houses first
 		FlxG.overlap(boxes, activeHouses, (b, h) -> {
 			if (b.dropped) {
@@ -174,19 +168,29 @@ class PlayState extends FlxTransitionableState {
 			}
 		});
 
+		// boxes are FlxSpriteGroups which have a lot of weirdness... so loop through manually
 		for (box in boxes) {
-			level.layer.overlapsWithCallback(box, (g, b) -> {
+			// Boxes vs player
+			FlxG.overlap(player.balloon, box.box, (balloon, b) -> {
+				if (box.grabbable) {
+					cast(balloon.parent, Player).addBox(box);
+				}
+			});
+
+			// Boxes vs level
+			level.layer.overlapsWithCallback(box.box, (g, b) -> {
 				// only collide boxes with ground if they aren't attached to the player
 				if (box.attached) {
 					return false;
 				}
 
-				FlxObject.separate(b, g);
+				// XXX: So ugly...
+				cast(cast(b, ParentedSprite).parent, Box).hitLevel(g);
 
 				// stop the box if it collides with the ground
-				b.velocity.set(0, 0);
+				// b.velocity.set(0, 0);
 				// make sure the box isn't inside the ground
-				b.y = g.y - b.height;
+				// b.y = g.y - b.height;
 				return true;
 			});
 		}

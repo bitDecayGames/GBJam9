@@ -155,7 +155,8 @@
       "nodeGhost": true,
       "tags": [],
       "values": [
-        {"name": "delay", "definition": "Integer", "display": 2, "defaults": 4, "bounded": false, "min": 0, "max": 20}
+        {"name": "delay", "definition": "Integer", "display": 2, "defaults": 4, "bounded": false, "min": 0, "max": 20},
+        {"name": "open_at", "definition": "Integer", "display": 2, "defaults": 4, "bounded": false, "min": 0, "max": 18}
       ]
     },
     {
