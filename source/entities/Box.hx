@@ -57,9 +57,22 @@ class Box extends FlxSpriteGroup {
 	override public function update(delta:Float) {
 		super.update(delta);
 
+		if (attached) {
+			// the player grabbed us too quickly, no need to open chute
+			openStarted = true;
+		}
+
 		if (!openStarted && y >= openY) {
 			openStarted = true;
 			chute.animation.play("open");
+		}
+	}
+
+	public function closeChute() {
+		if (chute.animation.name == "open") {
+			chute.animation.play("close");
+		} else {
+			chute.animation.play("hidden");
 		}
 	}
 

@@ -24,6 +24,9 @@ class Player extends FlxSpriteGroup {
 
 	public var nextAnim:String = IDLE_ANIM;
 
+
+	var controllable = false;
+
 	var balloon:ParentedSprite;
 
 	var aimIndicator:FlxSprite;
@@ -53,11 +56,13 @@ class Player extends FlxSpriteGroup {
 
 	var boxes:Array<Box> = new Array();
 
-	public function new() {
+	public function new(x:Float, y:Float) {
 		super();
 
 		buildBalloon();
 		buildIndicator();
+
+		setPosition(x, y - height);
 	}
 
 	private function buildBalloon() {
@@ -94,80 +99,17 @@ class Player extends FlxSpriteGroup {
 		add(aimIndicator);
 	}
 
+	public function takeControl() {
+		controllable = true;
+	}
+
 	override public function update(delta:Float) {
 		nextAnim = IDLE_ANIM;
 
-		// Balloon burner
-		if (SimpleController.pressed(Button.UP, playerNum)) {
-			// TODO: SFX Play fire sound
-			nextAnim = RISE_ANIM;
-			acceleration.y = riseAccel;
-		} else {
-			acceleration.y = fallAccel;
-		}
+		// by default we fall unless something in controls tells us otherwise
+		acceleration.y = fallAccel;
 
-		if (SimpleController.pressed(Button.DOWN, playerNum)) {
-			// TODO: Fall animation
-			// TODO: SFX play deflating sound
-			acceleration.y = forceFallAccel;
-		}
-
-		// Box dropping
-		if (SimpleController.just_pressed(Button.B, playerNum)) {
-			var box = boxes.pop();
-			if (box == null) {
-				// no box to cut
-				// TODO: SFX play error noise
-			} else {
-				// drop the box!
-				// TODO: SFX play release sound
-				box.attached = false;
-				box.dropped = true;
-				box.released();
-			}
-		}
-
-		if (SimpleController.just_pressed(Button.LEFT, playerNum)) {
-			// TODO: SFX Play selector sound
-			aimDirection = Std.int(Math.max(0, aimDirection - 1));
-			aimIndicator.animation.play('${aimDirection}');
-		}
-
-		if (SimpleController.just_pressed(Button.RIGHT, playerNum)) {
-			// TODO: SFX Play selector sound
-			aimDirection = Std.int(Math.min(3, aimDirection + 1));
-			aimIndicator.animation.play('${aimDirection}');
-		}
-
-		if (SimpleController.just_pressed(Button.A, playerNum)) {
-			var pos = FlxPoint.get(balloon.x + balloon.width / 2 - 2, balloon.y + balloon.height - 8);
-			var vel = FlxPoint.get();
-			switch (aimDirection) {
-				case 0:
-					vel.set(-20, 0);
-					pos.x -= 5;
-				case 1:
-					vel.set(-10, 10);
-					pos.x -= 5;
-				case 2:
-					vel.set(10, 10);
-					pos.x += 5;
-				case 3:
-					vel.set(20, 0);
-					pos.x += 5;
-			}
-			vel.addPoint(velocity);
-
-			var toss = new FlxSprite(pos.x, pos.y);
-			toss.makeGraphic(4, 4, FlxColor.BLUE);
-			toss.velocity.copyFrom(vel);
-			toss.acceleration.y = WorldConstants.GRAVITY;
-
-			// XXX: hacky. Probably better to pass in some function callback
-			cast(FlxG.state, PlayState).addBomb(toss);
-
-			// TODO: SFX play drop rock/bomb sound
-		}
+		checkControls();
 
 		if (acceleration.x != 0) {
 			// update animation accordingly
@@ -215,6 +157,80 @@ class Player extends FlxSpriteGroup {
 		}
 	}
 
+	function checkControls() {
+		if (controllable) {
+			// Balloon burner
+			if (SimpleController.pressed(Button.UP, playerNum)) {
+				// TODO: SFX Play fire sound
+				nextAnim = RISE_ANIM;
+				acceleration.y = riseAccel;
+			}
+
+			if (SimpleController.pressed(Button.DOWN, playerNum)) {
+				// TODO: Fall animation
+				// TODO: SFX play deflating sound
+				acceleration.y = forceFallAccel;
+			}
+
+			// Box dropping
+			if (SimpleController.just_pressed(Button.B, playerNum)) {
+				var box = boxes.pop();
+				if (box == null) {
+					// no box to cut
+					// TODO: SFX play error noise
+				} else {
+					// drop the box!
+					// TODO: SFX play release sound
+					box.attached = false;
+					box.dropped = true;
+					box.released();
+				}
+			}
+
+			if (SimpleController.just_pressed(Button.LEFT, playerNum)) {
+				// TODO: SFX Play selector sound
+				aimDirection = Std.int(Math.max(0, aimDirection - 1));
+				aimIndicator.animation.play('${aimDirection}');
+			}
+
+			if (SimpleController.just_pressed(Button.RIGHT, playerNum)) {
+				// TODO: SFX Play selector sound
+				aimDirection = Std.int(Math.min(3, aimDirection + 1));
+				aimIndicator.animation.play('${aimDirection}');
+			}
+
+			if (SimpleController.just_pressed(Button.A, playerNum)) {
+				var pos = FlxPoint.get(balloon.x + balloon.width / 2 - 2, balloon.y + balloon.height - 8);
+				var vel = FlxPoint.get();
+				switch (aimDirection) {
+					case 0:
+						vel.set(-20, 0);
+						pos.x -= 5;
+					case 1:
+						vel.set(-10, 10);
+						pos.x -= 5;
+					case 2:
+						vel.set(10, 10);
+						pos.x += 5;
+					case 3:
+						vel.set(20, 0);
+						pos.x += 5;
+				}
+				vel.addPoint(velocity);
+
+				var toss = new FlxSprite(pos.x, pos.y);
+				toss.makeGraphic(4, 4, FlxColor.BLUE);
+				toss.velocity.copyFrom(vel);
+				toss.acceleration.y = WorldConstants.GRAVITY;
+
+				// XXX: hacky. Probably better to pass in some function callback
+				cast(FlxG.state, PlayState).addBomb(toss);
+
+				// TODO: SFX play drop rock/bomb sound
+			}
+		}
+	}
+
 	public function hitBy(b:PlayerDamager) {
 		b.hitPlayer();
 		y += 5;
@@ -230,6 +246,7 @@ class Player extends FlxSpriteGroup {
 
 	public function addBox(b:Box) {
 		if (!boxes.contains(b)) {
+			b.closeChute();
 			b.attached = true;
 			b.grabbable = false;
 			boxes.push(b);

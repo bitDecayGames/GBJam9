@@ -1,5 +1,7 @@
 package states;
 
+import flixel.effects.FlxFlicker;
+import input.SimpleController;
 import levels.ogmo.Level;
 import ui.font.BitmapText;
 import ui.font.BitmapText.PressStart;
@@ -27,10 +29,14 @@ class PlayState extends FlxTransitionableState {
 	public static inline var WALL_WIDTH = 16;
 
 	var level:Level;
+
+	var levelStarted = false;
 	var scrollSpeed = 3;
 
 	var player:Player;
 	var ground:FlxSprite;
+
+	var launchText:BitmapText;
 
 	var ceiling:FlxSprite = new FlxSprite();
 	var walls:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
@@ -51,6 +57,10 @@ class PlayState extends FlxTransitionableState {
 		Lifecycle.startup.dispatch();
 
 		FlxG.camera.pixelPerfectRender = true;
+
+		#if hitbox
+		FlxG.debugger.drawDebug = true;
+		#end
 
 		level = new Level(AssetPaths.test__json, this);
 		#if debug
@@ -84,6 +94,10 @@ class PlayState extends FlxTransitionableState {
 
 		setupTestObjects();
 
+		launchText = new PressStart(30, 30, "Press UP to\n take off! ");
+		FlxFlicker.flicker(launchText, 0, 0.5);
+		add(launchText);
+
 		// var mockPoints = new PressStart(8, FlxG.height - 17, "Score\n1234");
 		// add(mockPoints);
 
@@ -92,11 +106,29 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	override public function update(delta:Float) {
+
+		if (!levelStarted) {
+			if (SimpleController.just_pressed(Button.UP)) {
+				levelStarted = true;
+				FlxFlicker.stopFlickering(launchText);
+				launchText.kill();
+				player.takeControl();
+
+				// TODO: Need to make the player feel like they took control
+				player.velocity.y = -10;
+			}
+		}
+
+		if (levelStarted) {
+			#if !noscroll
+			FlxG.camera.scroll.x += scrollSpeed * delta;
+			#end
+		}
+
 		doCollisions();
 
 		checkTriggers();
 
-		FlxG.camera.scroll.x += scrollSpeed * delta;
 		alignBounds();
 
 		super.update(delta);
@@ -121,28 +153,32 @@ class PlayState extends FlxTransitionableState {
 
 	function doCollisions() {
 		// Keep player in bounds
-
-		// TODO: For some reason the player warps to the right side of the screen sometimes...
-		//    it seems to happen both with collide AND overlap. Need to dig more
-		FlxG.overlap(player, ceiling, (b, c) -> {
+		// XXX: WE are doing brute checks against x and y positions because collisions are really jacked up with FlxSpriteGroups
+		if (player.y < 0) {
 			player.velocity.y = 0;
-			player.y = ceiling.y + ceiling.height + 1;
-		});
+			player.y = 0;
+		}
 
+		if (player.x < camera.scroll.x) {
+			// player.velocity.x = 0;
+			player.x = camera.scroll.x;
+		}
+
+		// TODO: This width calculation may not be good as it takes the indicator into account
+		if (player.x > camera.scroll.x + camera.width - player.width) {
+			// player.velocity.x = 0;
+			player.x = camera.scroll.x + camera.width - player.width;
+		}
+
+		// TODO: the FlxSpriteGroup drifts because of this... need to figure out a different way to handle this
 		FlxG.collide(level.layer, player);
-		FlxG.overlap(player, walls, function(p:Player, wall:FlxSprite) {
-			// check left wall
-			if (wall == walls.members[0]) {
-				p.velocity.set(scrollSpeed, p.velocity.y);
-				p.x = wall.x + wall.width + 1;
-			}
 
-			// check right wall
-			if (wall == walls.members[1]) {
-				p.velocity.set(scrollSpeed, p.velocity.y);
-				p.x = wall.x - p.width - 1;
-			}
-		});
+		// TODO: This seems even more buggy. wtf.
+		// level.layer.overlapsWithCallback(player, (l, b) -> {
+		// 	player.y = l.y - 24 - 5;
+		// 	player.velocity.y = 0;
+		// 	return true;
+		// });
 
 		FlxG.overlap(player, winds, function(p:Player, w:Wind) {
 			w.blowOn(player);
@@ -157,7 +193,6 @@ class PlayState extends FlxTransitionableState {
 			var boom = cast(r.parent, RocketBoom);
 			if (!boom.hasHitPlayer()) {
 				player.hitBy(boom);
-				FlxG.vcr.pause();
 			}
 		});
 
@@ -235,9 +270,9 @@ class PlayState extends FlxTransitionableState {
 
 	function setupTestObjects() {
 		// TODO: Load player from ogmo level
-		player = new Player();
-		player.x = 30;
-		playerGroup.add(player);
+		// player = new Player();
+		// player.x = 30;
+		// playerGroup.add(player);
 	}
 
 	public function addBoom(rocketBoom:RocketBoom) {
@@ -267,6 +302,11 @@ class PlayState extends FlxTransitionableState {
 
 	public function addRocket(rocket:Rocket) {
 		rockets.add(rocket);
+	}
+
+	public function addPlayer(player:Player) {
+		this.player = player;
+		playerGroup.add(player);
 	}
 
 	override public function onFocusLost() {

@@ -200,7 +200,7 @@
       "hasNodes": false,
       "nodeLimit": 0,
       "nodeDisplay": 0,
-      "nodeGhost": true,
+      "nodeGhost": false,
       "tags": [],
       "values": [
         {
@@ -291,6 +291,42 @@
       "values": [],
       "texture": "images/house/friendly_house.png",
       "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAi0lEQVR42u2U0QrAIAhF+2T//6XRw2CZOq9kRCRclBF58rZKOTiqUNeVzS3lA7QgoiEvA2jNJEkANUM/AJ0d6rgi2QPH7ZjWnHtt5Q9sjgWAdL+ytc8ErgXbAHgeFu8DBKzpPyC1dCK0HgDe4LW0hkdkrwsQuoRSY2Vz7BJ6fx3PBNLegTMBUFkAqB6qvepCxDFSsgAAAABJRU5ErkJggg=="
+    },
+    {
+      "exportID": "50638821",
+      "name": "takeoff",
+      "limit": -1,
+      "size": {"x": 16, "y": 8},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#1e2559ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 16, "y": 16},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": []
     }
   ],
   "tilesets": [
