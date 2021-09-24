@@ -18,6 +18,23 @@
   "entityTags": [],
   "layers": [
     {
+      "definition": "entity",
+      "name": "entities",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "06910307",
+      "requiredTags": [],
+      "excludedTags": []
+    },
+    {
+      "definition": "tile",
+      "name": "decor",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "45615181",
+      "exportMode": 0,
+      "arrayMode": 0,
+      "defaultTileset": "ground"
+    },
+    {
       "definition": "tile",
       "name": "layout",
       "gridSize": {"x": 8, "y": 8},
@@ -25,14 +42,6 @@
       "exportMode": 0,
       "arrayMode": 0,
       "defaultTileset": "ground"
-    },
-    {
-      "definition": "entity",
-      "name": "entities",
-      "gridSize": {"x": 8, "y": 8},
-      "exportID": "06910307",
-      "requiredTags": [],
-      "excludedTags": []
     }
   ],
   "entities": [
