@@ -136,6 +136,26 @@
           "originX": 0,
           "originY": -4,
           "values": {"delay": 8, "alt": 11}
+        },
+        {
+          "name": "para_box",
+          "id": 17,
+          "_eid": "06963184",
+          "x": 144,
+          "y": 0,
+          "originX": 0,
+          "originY": 0,
+          "values": {"delay": 4, "open_at": 4}
+        },
+        {
+          "name": "para_box",
+          "id": 18,
+          "_eid": "06963184",
+          "x": 176,
+          "y": 0,
+          "originX": 0,
+          "originY": 0,
+          "values": {"delay": 8, "open_at": 1}
         }
       ]
     }
