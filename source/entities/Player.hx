@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.FlxObject;
 import flixel.math.FlxPoint;
 import states.PlayState;
 import flixel.group.FlxSpriteGroup;
@@ -23,7 +24,7 @@ class Player extends FlxSpriteGroup {
 
 	public var nextAnim:String = IDLE_ANIM;
 
-	public var balloon:ParentedSprite;
+	var balloon:ParentedSprite;
 
 	var aimIndicator:FlxSprite;
 	var aimDirection = 3;
@@ -78,7 +79,7 @@ class Player extends FlxSpriteGroup {
 
 		add(balloon);
 
-		balloon.maxVelocity.set(maxHorizontalSpeed, maxVerticalSpeed);
+		maxVelocity.set(maxHorizontalSpeed, maxVerticalSpeed);
 	}
 
 	private function buildIndicator() {
@@ -89,7 +90,7 @@ class Player extends FlxSpriteGroup {
 		aimIndicator.animation.add("2", [2, 3], 2, true, true);
 		aimIndicator.animation.add("3", [0, 1], 2, true, true);
 		aimIndicator.animation.play('${aimDirection}');
-
+		aimIndicator.allowCollisions = FlxObject.NONE;
 		add(aimIndicator);
 	}
 
@@ -100,15 +101,15 @@ class Player extends FlxSpriteGroup {
 		if (SimpleController.pressed(Button.UP, playerNum)) {
 			// TODO: SFX Play fire sound
 			nextAnim = RISE_ANIM;
-			balloon.acceleration.y = riseAccel;
+			acceleration.y = riseAccel;
 		} else {
-			balloon.acceleration.y = fallAccel;
+			acceleration.y = fallAccel;
 		}
 
 		if (SimpleController.pressed(Button.DOWN, playerNum)) {
 			// TODO: Fall animation
 			// TODO: SFX play deflating sound
-			balloon.acceleration.y = forceFallAccel;
+			acceleration.y = forceFallAccel;
 		}
 
 		// Box dropping
@@ -155,7 +156,7 @@ class Player extends FlxSpriteGroup {
 					vel.set(20, 0);
 					pos.x += 5;
 			}
-			vel.addPoint(balloon.velocity);
+			vel.addPoint(velocity);
 
 			var toss = new FlxSprite(pos.x, pos.y);
 			toss.makeGraphic(4, 4, FlxColor.BLUE);
@@ -168,19 +169,19 @@ class Player extends FlxSpriteGroup {
 			// TODO: SFX play drop rock/bomb sound
 		}
 
-		if (balloon.acceleration.x != 0) {
+		if (acceleration.x != 0) {
 			// update animation accordingly
-			if (balloon.acceleration.x > 0) {
+			if (acceleration.x > 0) {
 				nextAnim += BLOW_RIGHT;
 			} else {
 				nextAnim += BLOW_LEFT;
 			}
 		} else {
 			// decay velocity x
-			if (balloon.velocity.x != 0.0) {
-				balloon.velocity.x -= (balloon.velocity.x * horizontalDecay) * delta;
-				if (Math.abs(balloon.velocity.x) < 0.01) {
-					balloon.velocity.x = 0;
+			if (velocity.x != 0.0) {
+				velocity.x -= (velocity.x * horizontalDecay) * delta;
+				if (Math.abs(velocity.x) < 0.01) {
+					velocity.x = 0;
 				}
 			}
 		}
@@ -195,33 +196,33 @@ class Player extends FlxSpriteGroup {
 		aimIndicator.y = balloon.y + aimOffsets[aimDirection].y;
 
 		// reset x-accel after each frame so wind can work properly
-		balloon.acceleration.x = 0;
+		acceleration.x = 0;
 
 		// cap our falling speed to keep that floaty balloon feeling
 
 		if (SimpleController.pressed(Button.DOWN)) {
-			balloon.velocity.y = Math.min(maxForceFallSpeed, balloon.velocity.y);
+			velocity.y = Math.min(maxForceFallSpeed, velocity.y);
 		} else {
 			// TODO: Do we want to have acceleration to get to this speed if the player lets go of down?
 			//       Right now, if the player is holding down and then lets go, they instantly slow down
 			//       to this speed
-			balloon.velocity.y = Math.min(maxFallSpeed, balloon.velocity.y);
+			velocity.y = Math.min(maxFallSpeed, velocity.y);
 		}
 
 		for (i in 0...boxes.length) {
 			boxes[i].alignTo(balloon.x + balloon.width / 2, balloon.y + balloon.height + BOX_SPACING + i * (8 + BOX_SPACING));
-			boxes[i].velocity.set(balloon.velocity.x, balloon.velocity.y);
+			boxes[i].velocity.set(velocity.x, velocity.y);
 		}
 	}
 
 	public function hitBy(b:PlayerDamager) {
 		b.hitPlayer();
-		balloon.y += 5;
+		y += 5;
 		FlxFlicker.flicker(this, 0.3);
 		// punishment of losing any upwards momentum
 		// TODO: Is this really punishment?
-		balloon.acceleration.y = 0;
-		balloon.velocity.y = maxFallSpeed;
+		acceleration.y = 0;
+		velocity.y = maxFallSpeed;
 
 		// TODO: Do we want to impact how the player can throw rock/bombs?
 		// potentially add cooldown

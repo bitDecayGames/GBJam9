@@ -123,40 +123,40 @@ class PlayState extends FlxTransitionableState {
 
 		// TODO: For some reason the player warps to the right side of the screen sometimes...
 		//    it seems to happen both with collide AND overlap. Need to dig more
-		FlxG.collide(player.balloon, ceiling);
-		// FlxG.overlap(player.balloon, ceiling, (b, c) -> {
-		// 	b.velocity.set(b.velocity.x, 0);
-		// 	b.y = ceiling.y + ceiling.height + 1;
-		// });
+		FlxG.overlap(player, ceiling, (b, c) -> {
+			player.velocity.y = 0;
+			player.y = ceiling.y + ceiling.height + 1;
+		});
 
-		FlxG.collide(level.layer, player.balloon);
-		FlxG.overlap(player.balloon, walls, function(balloon:ParentedSprite, wall:FlxSprite) {
+		FlxG.collide(level.layer, player);
+		FlxG.overlap(player, walls, function(p:Player, wall:FlxSprite) {
 			// check left wall
 			if (wall == walls.members[0]) {
-				balloon.velocity.set(scrollSpeed, balloon.velocity.y);
-				balloon.x = wall.x + wall.width + 1;
+				p.velocity.set(scrollSpeed, p.velocity.y);
+				p.x = wall.x + wall.width + 1;
 			}
 
 			// check right wall
 			if (wall == walls.members[1]) {
-				balloon.velocity.set(scrollSpeed, balloon.velocity.y);
-				balloon.x = wall.x - balloon.width - 1;
+				p.velocity.set(scrollSpeed, p.velocity.y);
+				p.x = wall.x - p.width - 1;
 			}
 		});
 
-		FlxG.overlap(player.balloon, winds, function(balloon:ParentedSprite, w:Wind) {
-			w.blowOn(balloon);
+		FlxG.overlap(player, winds, function(p:Player, w:Wind) {
+			w.blowOn(player);
 		});
 
-		FlxG.overlap(player.balloon, birds, function(balloon:ParentedSprite, b:Bird) {
-			cast(balloon.parent, Player).hitBy(b);
+		FlxG.overlap(player, birds, function(p:Player, b:Bird) {
+			player.hitBy(b);
 		});
 
-		FlxG.overlap(player.balloon, rocketsBooms, function(balloon:ParentedSprite, r:ParentedSprite) {
+		FlxG.overlap(player, rocketsBooms, function(p:Player, r:ParentedSprite) {
 			// we collide with the sub-particles of the RocketBoom
 			var boom = cast(r.parent, RocketBoom);
 			if (!boom.hasHitPlayer()) {
-				cast(balloon.parent, Player).hitBy(boom);
+				player.hitBy(boom);
+				FlxG.vcr.pause();
 			}
 		});
 
@@ -171,7 +171,7 @@ class PlayState extends FlxTransitionableState {
 		// boxes are FlxSpriteGroups which have a lot of weirdness... so loop through manually
 		for (box in boxes) {
 			// Boxes vs player
-			FlxG.overlap(player.balloon, box.box, (balloon, b) -> {
+			FlxG.overlap(player, box.box, (balloon, b) -> {
 				if (box.grabbable) {
 					cast(balloon.parent, Player).addBox(box);
 				}
