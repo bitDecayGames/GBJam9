@@ -17,6 +17,7 @@ import states.PlayState;
 **/
 class Level {
 	public var layer:FlxTilemap;
+	public var decor:FlxTilemap;
 
 	public var takeoff:FlxSprite;
 	public var landing:FlxSprite;
@@ -26,7 +27,8 @@ class Level {
 	public function new(level:String, state:PlayState) {
 		var loader = new FlxOgmo3Loader(AssetPaths.project__ogmo, level);
 
-		layer = loader.loadTilemap(AssetPaths.ground__png, "layout");
+		layer = loader.loadTilemap(AssetPaths.ground_new__png, "layout");
+		decor = loader.loadTilemap(AssetPaths.ground_new__png, "decor");
 
 		loader.loadEntities((entityData) -> {
 			switch (entityData.name) {
@@ -59,7 +61,10 @@ class Level {
 
 				// START Statics
 				case "house":
-					// spawn houses up front, as they are static
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						state.addHouse(new House(entityData.x, entityData.y));
+					}));
+				case "friendlyHouse":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addHouse(new House(entityData.x, entityData.y));
 					}));
@@ -69,7 +74,12 @@ class Level {
 							Cardinal.fromString(entityData.values.direction), entityData.values.strength));
 					}));
 				default:
-					throw 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';
+					var msg = 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';
+					#if debug
+					trace(msg);
+					#else
+					throw msg;
+					#end
 			}
 		}, "entities");
 	}

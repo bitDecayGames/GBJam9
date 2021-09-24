@@ -68,6 +68,7 @@ class PlayState extends FlxTransitionableState {
 
 		// Adding these in proper rending order
 		add(winds);
+		add(level.decor);
 		add(level.layer);
 		add(houses);
 		add(playerGroup);
