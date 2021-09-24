@@ -244,9 +244,47 @@
       ],
       "texture": "images/rocket/rocket.png",
       "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAH0lEQVR42mP4Jyn5H4QZGBhAGBMMBgX/gQCnJFUUAADGSSnDKLd2jQAAAABJRU5ErkJggg=="
+    },
+    {
+      "exportID": "45199929",
+      "name": "friendlyHouse",
+      "limit": -1,
+      "size": {"x": 32, "y": 24},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 32, "y": 24},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [],
+      "texture": "images/house/friendly_house.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAi0lEQVR42u2U0QrAIAhF+2T//6XRw2CZOq9kRCRclBF58rZKOTiqUNeVzS3lA7QgoiEvA2jNJEkANUM/AJ0d6rgi2QPH7ZjWnHtt5Q9sjgWAdL+ytc8ErgXbAHgeFu8DBKzpPyC1dCK0HgDe4LW0hkdkrwsQuoRSY2Vz7BJ6fx3PBNLegTMBUFkAqB6qvepCxDFSsgAAAABJRU5ErkJggg=="
     }
   ],
   "tilesets": [
-    {"label": "ground", "path": "images/tilesets/ground.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAQCAYAAABDebxFAAAAg0lEQVR42mNgIAz+D3FM2IMFBQVEYXxqYXKkmEeOPejqGIiNQUocBAKUeorcgKBqDNILExNgNEmigw2PepBYD5KSx+iVH0eTKD08SOvYpFs1MVCBQdMYxOYgeteHo3kQ5sGhCkjKg/gwkmFEqyNWDyX2EetBhuHck4ADbD2CwUzD3A0AnGVEs9r0KLIAAAAASUVORK5CYII=", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
+    {"label": "ground", "path": "images/tilesets/ground_new.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABQCAYAAACpv3NFAAACBklEQVR42u1a0ZLDIAjMJ+f/X3LtzKVHPEQxoNDszmSsJjW6AiJh2xrY9/1Yeb3xGka13CbgM5jfF17qtKQDppM462TQ//5X9k/LBgm+kFbGeqVDSsBqFQgrAY+xAXfEd/R5ej+EBJTGqmw7jRdnIM/JcIaPM3hlX7ABEyTgSH7Z7fM9q9G6p+lv5D2M32AjAR57+Az1sJCgY7WejxBKJ0E9zLPOtVXq8Qh4vASMElCuctnGSUYXARodn2UPLHcRqAAImGTBrdVDmpj7LjArHgAVAAEJCPCMB6SXAE+/ACoQnQBvr9CMgAhSYLUNcucBFwngBjw7LgAbYEVAVpjaAI1f3fPcnQEaTq47qJo5ImwWVWY/VEQtDcP61/C40eD+RKtyDFUcV7vUZbR0kwDa791BKiYj1ivtvgSkkgAPFUglAbABsAGwAY+0AWmcHy6Vziw/IJsn6EZAlsucgFomKPPCS+IT/V3qV/kfqe8yM6yVfOVCQNKAyHoCFn8XiC0BE74LQAWQJ4g8wWfnCX6fDVDmCcIILiNAOkdIqfWc1xmOgJqb2nKTG357tb0l6lNVoGXRvU532l3BlQBpZTxPeJqxTFMB6X5HLi4bkeGeC0PACgnQ2oDQBEgBTeleShX4SglYTUAZHVpCgGZ74gZZq0shrpEDGFxhAAAAAAAAAAAAAAAAJX4Ag+Maga0WDOAAAAAASUVORK5CYII=", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
   ]
 }
