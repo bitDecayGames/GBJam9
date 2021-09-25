@@ -1,5 +1,6 @@
 package levels.ogmo;
 
+import flixel.group.FlxGroup;
 import entities.Landing;
 import entities.Player;
 import entities.Bird;
@@ -20,6 +21,7 @@ import states.PlayState;
 class Level {
 	public var layer:FlxTilemap;
 	public var decor:FlxTilemap;
+	public var bgDecals:FlxGroup;
 
 	public var takeoff:FlxSprite;
 	public var landing:FlxSprite;
@@ -31,6 +33,8 @@ class Level {
 
 		layer = loader.loadTilemap(AssetPaths.ground_new__png, "layout");
 		decor = loader.loadTilemap(AssetPaths.ground_new__png, "decor");
+
+		bgDecals = loader.loadDecals("background", "assets/");
 
 		loader.loadEntities((entityData) -> {
 			switch (entityData.name) {
@@ -48,9 +52,16 @@ class Level {
 					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
 					// delay is number of tiles
 					triggerPoint.x += entityData.values.delay * 8;
-					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
+					var marker = new EntityMarker(entityData.name, triggerPoint, () -> {
 						state.addBox(new Box(entityData.x, entityData.y, entityData.values.open_at * 8));
-					}));
+					});
+
+					// to let us have stuff spawn immediately
+					if (entityData.x < FlxG.width) {
+						staticEntities.push(marker);
+					} else {
+						triggeredEntities.push(marker);
+					}
 				case "rocket":
 					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
 					// delay is number of tiles
@@ -81,7 +92,7 @@ class Level {
 					}));
 				case "landing":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
-						state.addLanding(new Landing(entityData.x, entityData.y));
+						state.addLanding(new Landing(entityData.x, entityData.y, entityData.width));
 					}));
 				default:
 					var msg = 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';

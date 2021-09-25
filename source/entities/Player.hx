@@ -56,6 +56,9 @@ class Player extends FlxSpriteGroup {
 
 	var boxes:Array<Box> = new Array();
 
+	public var collisionWidth = 10;
+	public var collisionHeight = 24;
+
 	public function new(x:Float, y:Float) {
 		super();
 
@@ -70,8 +73,8 @@ class Player extends FlxSpriteGroup {
 		balloon.parent = this;
 		balloon.loadGraphic(AssetPaths.player__png, true, 16, 32);
 
-		balloon.height = 24;
-		balloon.width = 10;
+		balloon.height = collisionHeight;
+		balloon.width = collisionWidth;
 		balloon.offset.set(4, 3);
 
 		balloon.animation.add(IDLE_ANIM, [0]);
@@ -246,7 +249,7 @@ class Player extends FlxSpriteGroup {
 
 	public function addBox(b:Box) {
 		if (!boxes.contains(b)) {
-			b.closeChute();
+			b.closeChute(true);
 			b.attached = true;
 			b.grabbable = false;
 			boxes.push(b);
