@@ -1,5 +1,6 @@
 package states;
 
+import entities.Landing;
 import flixel.effects.FlxFlicker;
 import input.SimpleController;
 import levels.ogmo.Level;
@@ -45,6 +46,7 @@ class PlayState extends FlxTransitionableState {
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
 	var houses:FlxTypedGroup<House> = new FlxTypedGroup();
+	var landing:FlxTypedGroup<Landing> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
 	var bombs:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
@@ -81,6 +83,7 @@ class PlayState extends FlxTransitionableState {
 		add(level.decor);
 		add(level.layer);
 		add(houses);
+		add(landing);
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
@@ -171,7 +174,12 @@ class PlayState extends FlxTransitionableState {
 		}
 
 		// TODO: the FlxSpriteGroup drifts because of this... need to figure out a different way to handle this
-		FlxG.collide(level.layer, player);
+		// FlxG.collide(level.layer, player);
+
+		// XXX: Very hacky as the collisions don't work well with sprites inside of a FlxSpriteGroup
+		if (player.y + 24 > 128) {
+			player.y = 128 - 24;
+		}
 
 		// TODO: This seems even more buggy. wtf.
 		// level.layer.overlapsWithCallback(player, (l, b) -> {
@@ -307,6 +315,10 @@ class PlayState extends FlxTransitionableState {
 	public function addPlayer(player:Player) {
 		this.player = player;
 		playerGroup.add(player);
+	}
+
+	public function addLanding(l:Landing) {
+		landing.add(l);
 	}
 
 	override public function onFocusLost() {
