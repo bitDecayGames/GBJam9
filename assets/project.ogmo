@@ -42,6 +42,17 @@
       "exportMode": 0,
       "arrayMode": 0,
       "defaultTileset": "ground"
+    },
+    {
+      "definition": "decal",
+      "name": "background",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "58436151",
+      "folder": "",
+      "includeImageSequence": true,
+      "scaleable": false,
+      "rotatable": false,
+      "values": []
     }
   ],
   "entities": [
@@ -81,7 +92,7 @@
       "tags": [],
       "values": [],
       "texture": "images/house/house.png",
-      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAxElEQVR42u1VQQ6DMAwzz+CXfTGv2HlMTCuqRNLYySQuVLLoobUdpxFYXtsO4Bb8tLFn1nGvtfZFhQOd6Fjst9/plYwmFK7TQEW8YkJOwKq8koSUgCdeMUEnwFSeMUElMBP39qyJ08AMM/G+IhMBrv0cCa2eW3NvnRk5PA0olXsmAoEoibgFHpQzUgsYYgXB6P5PKGkMVFxspAkubrbH/XtdTWS44P1WvVeuGGC4HgOpR2gJWwbkR8iODpNAagwfA3cY+AApZ1mPjxZ5wAAAAABJRU5ErkJggg=="
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAzElEQVR42u1WQQ7DMAjjG/1l/n/oqrRKFal2MFBphw0JlUOCjQlNzC77fMkv8Iz1fa210ys5bCTqpn7HnlHJTCKS6yZQAa+QCCuAKq8oEVKAgVdIyAoolWdISAqswFmskrgJrHwFPswj4f0LHv2cE6Keo7lHa+YcDMMilTMSDoCnhN8C5pE1oRYoiSPujO57QEliJsmlSprIpc02itnkRGJj1yo75T3etw16JtefQOoQImBEIHwI1dFRFEiN4e8SQLcWe3gqBLx344xxAIkjROu/stN+AAAAAElFTkSuQmCC"
     },
     {
       "exportID": "06910497",
@@ -290,13 +301,13 @@
       "tags": [],
       "values": [],
       "texture": "images/house/friendly_house.png",
-      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAi0lEQVR42u2U0QrAIAhF+2T//6XRw2CZOq9kRCRclBF58rZKOTiqUNeVzS3lA7QgoiEvA2jNJEkANUM/AJ0d6rgi2QPH7ZjWnHtt5Q9sjgWAdL+ytc8ErgXbAHgeFu8DBKzpPyC1dCK0HgDe4LW0hkdkrwsQuoRSY2Vz7BJ6fx3PBNLegTMBUFkAqB6qvepCxDFSsgAAAABJRU5ErkJggg=="
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAk0lEQVR42u2WQQoAIQhFO7L33zS0CCb7lkpGRIIoQ+Qbf0kpXWwZ5Hln8ZHHAxQjoi5uAyjFkCOAHOETgEYOsV2eqIHjciwrzrUexR9sjAQGl/WK9nM68CQ4BkAzWLQDyLCm/WDJ0R9Z8w6gGs/RGm6evR6A6xCiwsLmtkOovTqaDoTNgbsBuE7odTMDQHce7VvjB3eJ+LLaVCccAAAAAElFTkSuQmCC"
     },
     {
       "exportID": "50638821",
       "name": "takeoff",
       "limit": -1,
-      "size": {"x": 16, "y": 8},
+      "size": {"x": 8, "y": 8},
       "origin": {"x": 0, "y": 0},
       "originAnchored": true,
       "shape": {
@@ -313,7 +324,7 @@
       "color": "#1e2559ff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {"x": 8, "y": 8},
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,
@@ -332,7 +343,7 @@
       "exportID": "53695392",
       "name": "landing",
       "limit": -1,
-      "size": {"x": 48, "y": 8},
+      "size": {"x": 72, "y": 8},
       "origin": {"x": 0, "y": 0},
       "originAnchored": true,
       "shape": {
@@ -349,7 +360,7 @@
       "color": "#ff0000ff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 48, "y": 8},
+      "tileSize": {"x": 72, "y": 8},
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,
@@ -363,9 +374,125 @@
       "nodeGhost": true,
       "tags": [],
       "values": []
+    },
+    {
+      "exportID": "58263586",
+      "name": "tree",
+      "limit": -1,
+      "size": {"x": 32, "y": 24},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 32, "y": 24},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [
+        {"name": "frame", "definition": "Integer", "display": 1, "defaults": 0, "bounded": false, "min": 0, "max": 4}
+      ],
+      "texture": "images/tree/tree.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAAqklEQVR42tWW3QqAIAyF98i+/40RJNjaTzvORcKhYOL53GxJ9JPRFVnxPPPWmqhhZsRyzc8xP7l4fBVC3bmlTAgIQIJBIB6LzLV9Y87nRSEgA+kdzYJb26hSMxCBGGullyAChjSnG/kKCJoBsrqctLh1MNFeYJpI/d+ZR6kQnmnq/8DTjp1rIKSZC/G6+8EF8c0FZVe6kQzUAPCbUGkZpE+wCqIHVX4g4XEA4TqDfrRZeEAAAAAASUVORK5CYII="
+    },
+    {
+      "exportID": "58347565",
+      "name": "truck",
+      "limit": -1,
+      "size": {"x": 24, "y": 16},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 24, "y": 16},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [],
+      "texture": "images/truck/truck.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAAAaUlEQVR42u2SQQoAIQwD/Ya/7P8P28WDEDTbRrZHB4IItYnW1i4XghPVNR+wtczAzKhUE880miFzrzyZFxr4L4NMzMCf3qXDmSbh8E7Ssnp6A3xHSCE1x/ro625DxHTK0Jf6byCdRFT/ArtwQ0XdpZ3nAAAAAElFTkSuQmCC"
+    },
+    {
+      "exportID": "58352190",
+      "name": "big_truck",
+      "limit": -1,
+      "size": {"x": 24, "y": 16},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 24, "y": 16},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [],
+      "texture": "images/truck/bigTruck.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAAAhklEQVR42rVUQQ7AIAjzG/6S/x9k8aBBArZq1qTJZlgrHVrKCgV8gpL8VfzaRFk8GYjI5IBfe+7Aikdrt5GdRjSf2a6oDnpdqzUkMqF338UsxjuK7KgDwkCvz0EWEYqL/hjRxLkaBDugRX192IEfQTQ1Viwb4TAmf4rRP9nU5xhXA3sN7Oo/vLdEiS0ttV0AAAAASUVORK5CYII="
     }
   ],
   "tilesets": [
-    {"label": "ground", "path": "images/tilesets/ground_new.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABQCAYAAACpv3NFAAACBklEQVR42u1a0ZLDIAjMJ+f/X3LtzKVHPEQxoNDszmSsJjW6AiJh2xrY9/1Yeb3xGka13CbgM5jfF17qtKQDppM462TQ//5X9k/LBgm+kFbGeqVDSsBqFQgrAY+xAXfEd/R5ej+EBJTGqmw7jRdnIM/JcIaPM3hlX7ABEyTgSH7Z7fM9q9G6p+lv5D2M32AjAR57+Az1sJCgY7WejxBKJ0E9zLPOtVXq8Qh4vASMElCuctnGSUYXARodn2UPLHcRqAAImGTBrdVDmpj7LjArHgAVAAEJCPCMB6SXAE+/ACoQnQBvr9CMgAhSYLUNcucBFwngBjw7LgAbYEVAVpjaAI1f3fPcnQEaTq47qJo5ImwWVWY/VEQtDcP61/C40eD+RKtyDFUcV7vUZbR0kwDa791BKiYj1ivtvgSkkgAPFUglAbABsAGwAY+0AWmcHy6Vziw/IJsn6EZAlsucgFomKPPCS+IT/V3qV/kfqe8yM6yVfOVCQNKAyHoCFn8XiC0BE74LQAWQJ4g8wWfnCX6fDVDmCcIILiNAOkdIqfWc1xmOgJqb2nKTG357tb0l6lNVoGXRvU532l3BlQBpZTxPeJqxTFMB6X5HLi4bkeGeC0PACgnQ2oDQBEgBTeleShX4SglYTUAZHVpCgGZ74gZZq0shrpEDGFxhAAAAAAAAAAAAAAAAJX4Ag+Maga0WDOAAAAAASUVORK5CYII=", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
+    {"label": "ground", "path": "images/tilesets/ground_new.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABQCAYAAACpv3NFAAACzklEQVR42u1cW27EIAzMNfaWe/+PpkpVKmoZY5OxMVmQIpSQ5TE7fmAIx9FJ7/f7zHwdAalu7KT3dX5dV6rv6/JSxv2O1k/LhGe+qYX8lZD/ZK++Vvk0AD5GBDYAAPqi6M6VhwDQU0hFeXEKsnSWU270WV0P9x7X/hYBhJlb/MLZeQXa3TJLfSPtMH4DhgGeNtyR/hAGpZNrDaD1IGoPs9xzzxr3x5ld0X0cA0YBoP8yfcYxQwWARcaj9AHSimwR2AAEaXC0eEgDc7cC0fGALQIbgMQARMcDlmKAp1+wRSA7AN5eIQyADCxAmUFuPuDCAK7D0XGBrQNQAKyaoDrA4ldr3rvTQeDg1EHVlSPCsKgyu1CRNQeG9f+Hx0Gd+6v46/USFdnscjcGrLiy5AKApBglrd7T+KhydxGoO8DltJOtMu49boAa00nu8wAwOngrEE0GeIuAhqajg5fqlcq3EtxmcCHnh9tK1xughgHNPXqr5FAAVrlKn0dMIVWC4k5Q2mBpoO5Aa6WW/kaqm+z86m6+4gDQWBIRgBUDIikAmLkuYPEFpjDAe10ApgRXFQGIGexp28yBTw0jeh7r0vsDtO8I+dg/Lezf/6FlK0cvjGinyq0czgBp8Mi2rPN/IT9cFJOVAQg/oBdjcGNATV8NA7z8gBQMiPIDWrqr822BvxWINpEQK/AUAEamzY/wA6y0NwFwV6trf4/wA3oKr/Hu4WrXPf0CyxpD6900DED6AeEMkOg7wgCrH+DKgJXiARYr8EgzOGwFvL/Lu/ndYsyXoRJC0V+mksjv3E9jn95+OgCo0twMiOiAZKo+VgSKlxbRvuQRThWBX2/NNVm2sc2ioMv6gLbeNCdEWBYieu6qZQ6Q7pwgaa3eci7I8sfk1Ov9mu0sjzsnyLJ95Q4IKc8JGpmG0vPGUp0TpN1eJilC7RycPr9Sdj8AbgrrOmf7Ad+6cm7p3zusuAAAAABJRU5ErkJggg==", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
   ]
 }
