@@ -1,5 +1,8 @@
 package states;
 
+import input.SimpleController;
+import flixel.FlxSprite;
+import flixel.math.FlxPoint;
 import states.transitions.Trans;
 import states.transitions.SwirlTransition;
 import com.bitdecay.analytics.Bitlytics;
@@ -26,6 +29,15 @@ class MainMenuState extends FlxUIState {
 
 	var _txtTitle:FlxText;
 
+	var selector:FlxSprite;
+	var cursorIndex = 0;
+	var buttonLocations = [
+		// Play Button
+		FlxPoint.get(10, 95),
+		// Credits Button
+		FlxPoint.get(10, 106)
+	];
+
 	override public function create():Void {
 		_xml_id = "main_menu";
 		if (Configure.config.menus.keyboardNavigation || Configure.config.menus.controllerNavigation) {
@@ -34,30 +46,32 @@ class MainMenuState extends FlxUIState {
 
 		super.create();
 
-		if (_makeCursor) {
-			cursor.loadGraphic(AssetPaths.pointer__png, true, 32, 32);
-			cursor.animation.add("pointing", [0, 1], 3);
-			cursor.animation.play("pointing");
+		// if (_makeCursor) {
+			selector = new FlxSprite();
+			selector.loadGraphic(AssetPaths.indicators__png, true, 8, 8);
+			selector.animation.add("pointing", [0, 1], 3);
+			selector.animation.play("pointing");
+			add(selector);
 
-			var keys:Int = 0;
-			if (Configure.config.menus.keyboardNavigation) {
-				keys |= FlxUICursor.KEYS_ARROWS | FlxUICursor.KEYS_WASD;
-			}
-			if (Configure.config.menus.controllerNavigation) {
-				keys |= FlxUICursor.GAMEPAD_DPAD;
-			}
-			cursor.setDefaultKeys(keys);
-		}
+			// var keys:Int = 0;
+			// if (Configure.config.menus.keyboardNavigation) {
+			// 	keys |= FlxUICursor.KEYS_ARROWS | FlxUICursor.KEYS_WASD;
+			// }
+			// if (Configure.config.menus.controllerNavigation) {
+			// 	keys |= FlxUICursor.GAMEPAD_DPAD;
+			// }
+			// cursor.setDefaultKeys(keys);
+		// }
 
 		FmodManager.PlaySong(FmodSongs.LetsGo);
 		bgColor = FlxColor.TRANSPARENT;
 		FlxG.camera.pixelPerfectRender = true;
 
-		#if !windows
-		// Hide exit button for non-windows targets
-		var test = _ui.getAsset("exit_button");
-		test.visible = false;
-		#end
+		// #if !windows
+		// // Hide exit button for non-windows targets
+		// var test = _ui.getAsset("exit_button");
+		// test.visible = false;
+		// #end
 
 		// Trigger our focus logic as we are just creating the scene
 		this.handleFocus();
@@ -66,26 +80,26 @@ class MainMenuState extends FlxUIState {
 		transOut = null;
 	}
 
-	override public function getEvent(name:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void {
-		if (name == FlxUITypedButton.CLICK_EVENT) {
-			var button_action:String = params[0];
-			trace('Action: "${button_action}"');
+	// override public function getEvent(name:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void {
+	// 	if (name == FlxUITypedButton.CLICK_EVENT) {
+	// 		var button_action:String = params[0];
+	// 		trace('Action: "${button_action}"');
 
-			if (button_action == "play") {
-				clickPlay();
-			}
+	// 		if (button_action == "play") {
+	// 			clickPlay();
+	// 		}
 
-			if (button_action == "credits") {
-				clickCredits();
-			}
+	// 		if (button_action == "credits") {
+	// 			clickCredits();
+	// 		}
 
-			#if windows
-			if (button_action == "exit") {
-				clickExit();
-			}
-			#end
-		}
-	}
+	// 		#if windows
+	// 		if (button_action == "exit") {
+	// 			clickExit();
+	// 		}
+	// 		#end
+	// 	}
+	// }
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
@@ -97,6 +111,17 @@ class MainMenuState extends FlxUIState {
 			FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 			trace("---------- Bitlytics Stopped ----------");
 		}
+
+		if (SimpleController.just_pressed(Button.DOWN)) {
+			cursorIndex = (cursorIndex + 1) % buttonLocations.length;
+		}
+
+		if (SimpleController.just_pressed(Button.UP)) {
+			cursorIndex = (cursorIndex - 1) % buttonLocations.length;
+		}
+
+		selector.x = buttonLocations[cursorIndex].x;
+		selector.y = buttonLocations[cursorIndex].y;
 	}
 
 	function clickPlay():Void {
