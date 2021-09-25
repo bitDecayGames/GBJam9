@@ -32,6 +32,7 @@ class PlayState extends FlxTransitionableState {
 	var level:Level;
 
 	var levelStarted = false;
+	var levelFinished = false;
 	var scrollSpeed = 3;
 
 	var player:Player;
@@ -122,7 +123,7 @@ class PlayState extends FlxTransitionableState {
 			}
 		}
 
-		if (levelStarted) {
+		if (levelStarted && !levelFinished) {
 			#if !noscroll
 			FlxG.camera.scroll.x += scrollSpeed * delta;
 			#end
@@ -187,6 +188,12 @@ class PlayState extends FlxTransitionableState {
 		// 	player.velocity.y = 0;
 		// 	return true;
 		// });
+
+		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
+			levelFinished = true;
+
+			// TODO: Finishing sequence
+		});
 
 		FlxG.overlap(player, winds, function(p:Player, w:Wind) {
 			w.blowOn(player);
