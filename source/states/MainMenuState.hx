@@ -1,5 +1,6 @@
 package states;
 
+import flixel.math.FlxMath;
 import input.SimpleController;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
@@ -49,7 +50,7 @@ class MainMenuState extends FlxUIState {
 		// if (_makeCursor) {
 			selector = new FlxSprite();
 			selector.loadGraphic(AssetPaths.indicators__png, true, 8, 8);
-			selector.animation.add("pointing", [0, 1], 3);
+			selector.animation.add("pointing", [0, 1], 3, true, true);
 			selector.animation.play("pointing");
 			add(selector);
 
@@ -113,15 +114,34 @@ class MainMenuState extends FlxUIState {
 		}
 
 		if (SimpleController.just_pressed(Button.DOWN)) {
-			cursorIndex = (cursorIndex + 1) % buttonLocations.length;
+			cursorIndex++;
 		}
 
 		if (SimpleController.just_pressed(Button.UP)) {
-			cursorIndex = (cursorIndex - 1) % buttonLocations.length;
+			cursorIndex--;
+		}
+
+		if (cursorIndex >= buttonLocations.length) {
+			cursorIndex = 0;
+		}
+
+		if (cursorIndex < 0) {
+			cursorIndex = buttonLocations.length - 1;
 		}
 
 		selector.x = buttonLocations[cursorIndex].x;
 		selector.y = buttonLocations[cursorIndex].y;
+
+		if (SimpleController.just_pressed(Button.A)) {
+			switch(cursorIndex) {
+				case 0:
+					clickPlay();
+				case 1:
+					clickCredits();
+				default:
+					trace('no menu item for index ${cursorIndex}');
+			}
+		}
 	}
 
 	function clickPlay():Void {
