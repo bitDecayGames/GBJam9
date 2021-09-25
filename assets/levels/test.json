@@ -75,8 +75,8 @@
           "name": "wind",
           "id": 9,
           "_eid": "28048261",
-          "x": 64,
-          "y": 96,
+          "x": 144,
+          "y": 88,
           "width": 640,
           "height": 16,
           "originX": 0,
@@ -144,7 +144,8 @@
           "values": {"delay": 8, "open_at": 1}
         },
         {"name": "friendlyHouse", "id": 19, "_eid": "45199929", "x": 560, "y": 104, "originX": 0, "originY": 0},
-        {"name": "takeoff", "id": 20, "_eid": "50638821", "x": 32, "y": 128, "originX": 0, "originY": 0}
+        {"name": "takeoff", "id": 20, "_eid": "50638821", "x": 32, "y": 128, "originX": 0, "originY": 0},
+        {"name": "landing", "id": 21, "_eid": "53695392", "x": 88, "y": 128, "originX": 0, "originY": 0}
       ]
     },
     {

@@ -1,5 +1,6 @@
 package levels.ogmo;
 
+import entities.Landing;
 import entities.Player;
 import entities.Bird;
 import entities.Box;
@@ -77,6 +78,10 @@ class Level {
 				case "takeoff":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addPlayer(new Player(entityData.x, entityData.y));
+					}));
+				case "landing":
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						state.addLanding(new Landing(entityData.x, entityData.y));
 					}));
 				default:
 					var msg = 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';
