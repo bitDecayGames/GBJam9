@@ -36,11 +36,13 @@ using extensions.FlxStateExt;
 class PlayState extends FlxTransitionableState {
 	public static inline var WALL_WIDTH = 16;
 
+	public static inline var SCROLL_SPEED = 4;
+
 	var level:Level;
 
 	var levelStarted = false;
 	var levelFinished = false;
-	var scrollSpeed = 3;
+	var scrollSpeed = SCROLL_SPEED;
 
 	var player:Player;
 	var ground:FlxSprite;
@@ -114,13 +116,13 @@ class PlayState extends FlxTransitionableState {
 		add(houses);
 		add(trees);
 		add(gusts);
+		add(trucks);
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
 		add(fuses);
 		add(rockets);
 		add(rocketsBooms);
-		add(trucks);
 		add(birds);
 		add(waters);
 		add(splashes);
@@ -199,6 +201,7 @@ class PlayState extends FlxTransitionableState {
 		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
 			levelFinished = true;
 
+			player.loseControl();
 			player.velocity.set();
 			player.maxVelocity.set();
 

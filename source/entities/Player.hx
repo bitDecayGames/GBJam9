@@ -49,10 +49,10 @@ class Player extends FlxSpriteGroup {
 	var riseAccel:Float = -WorldConstants.GRAVITY / 3;
 	var forceFallAccel:Float = WorldConstants.GRAVITY / 3;
 
-	var maxHorizontalSpeed:Float = 10;
+	var maxHorizontalSpeed:Float = PlayState.SCROLL_SPEED * 3;
 	var maxVerticalSpeed:Float = 25;
-	var maxFallSpeed:Float = 5;
-	var maxForceFallSpeed:Float = 10;
+	var maxFallSpeed:Float = 10;
+	var maxForceFallSpeed:Float = 20;
 
 	var boxes:Array<Box> = new Array();
 
@@ -107,6 +107,10 @@ class Player extends FlxSpriteGroup {
 
 	public function takeControl() {
 		controllable = true;
+	}
+
+	public function loseControl() {
+		controllable = false;
 	}
 
 	override public function update(delta:Float) {
