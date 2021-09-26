@@ -12,4 +12,4 @@ flixelutils git https://github.com/bitDecayGames/flixel-utils.git
 
 # misc deps
 # dialog-manager git https://github.com/Tanz0rz/haxe-dialog-manager.git
-haxefmod git https://github.com/Tanz0rz/haxe-fmod.git
+haxefmod git https://github.com/Tanz0rz/haxe-fmod.git gbjam9

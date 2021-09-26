@@ -224,14 +224,14 @@ class Player extends FlxSpriteGroup {
 
 			if (SimpleController.just_pressed(Button.LEFT, playerNum)) {
 				// TODO: SFX (done) Play selector sound
-				// FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
+				FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
 				aimDirection = Std.int(Math.max(0, aimDirection - 1));
 				aimIndicator.animation.play('${aimDirection}');
 			}
 
 			if (SimpleController.just_pressed(Button.RIGHT, playerNum)) {
 				// TODO: SFX (done) Play selector sound
-				// FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
+				FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
 				aimDirection = Std.int(Math.min(3, aimDirection + 1));
 				aimIndicator.animation.play('${aimDirection}');
 			}
@@ -264,7 +264,7 @@ class Player extends FlxSpriteGroup {
 				cast(FlxG.state, PlayState).addBomb(toss);
 
 				// TODO: SFX (done) play drop rock/bomb sound
-				FmodManager.PlaySoundOneShot(FmodSFX.ShootNew);
+				FmodManager.PlaySoundOneShot(FmodSFX.Shoot);
 			}
 		}
 	}
