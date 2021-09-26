@@ -208,6 +208,7 @@ class PlayState extends FlxTransitionableState {
 			add(finishText);
 
 			// TODO: Finishing sequence
+			// TODO: scoring mechanism for landing
 		});
 
 		// Keep player in bounds
