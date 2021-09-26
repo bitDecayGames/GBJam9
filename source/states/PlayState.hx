@@ -1,5 +1,7 @@
 package states;
 
+import entities.Splash;
+import flixel.math.FlxPoint;
 import entities.Tree;
 import entities.Fuse;
 import flixel.util.FlxPool;
@@ -53,6 +55,8 @@ class PlayState extends FlxTransitionableState {
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
 	var houses:FlxTypedGroup<House> = new FlxTypedGroup();
 	var trees:FlxTypedGroup<Tree> = new FlxTypedGroup();
+	var waters:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
+	var splashes:FlxTypedGroup<Splash> = new FlxTypedGroup();
 	var landing:FlxTypedGroup<Landing> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
@@ -116,6 +120,8 @@ class PlayState extends FlxTransitionableState {
 		add(rockets);
 		add(rocketsBooms);
 		add(birds);
+		add(waters);
+		add(splashes);
 
 		for (marker in level.staticEntities) {
 			marker.maker();
@@ -278,6 +284,12 @@ class PlayState extends FlxTransitionableState {
 				// b.y = g.y - b.height;
 				return true;
 			});
+
+			FlxG.overlap(box, waters, (b:FlxSprite, w:FlxSprite) -> {
+				box.kill();
+				trace("big splash");
+				addSplash(b.getMidpoint(), true);
+			});
 		}
 
 		FlxG.overlap(bombs, birds, (bo, bi) -> {
@@ -288,6 +300,11 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.collide(level.layer, bombs, (g, b) -> {
 			b.kill();
+		});
+
+		FlxG.overlap(bombs, waters, (b, w) -> {
+			b.kill();
+			addSplash(b.getMidpoint(), false);
 		});
 	}
 
@@ -373,6 +390,15 @@ class PlayState extends FlxTransitionableState {
 		gust.done = () -> {
 			gustPool.put(gust);
 		};
+	}
+
+	public function addWater(water:FlxSprite) {
+		waters.add(water);
+	}
+
+	function addSplash(p:FlxPoint, big:Bool) {
+		var splash = new Splash(p.x, p.y, big);
+		splashes.add(splash);
 	}
 
 	override public function onFocusLost() {

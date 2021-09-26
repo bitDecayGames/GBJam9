@@ -1,5 +1,6 @@
 package levels.ogmo;
 
+import flixel.util.FlxColor;
 import entities.Tree;
 import entities.Fuse;
 import entities.TriggerableSprite;
@@ -108,6 +109,16 @@ class Level {
 				case "tree":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addTree(new Tree(entityData.x, entityData.y));
+					}));
+				case "water":
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						var water = new FlxSprite(entityData.x, entityData.y);
+						water.makeGraphic(entityData.width, entityData.height, FlxColor.BLUE);
+						water.alpha = 0;
+						#if debug
+						water.alpha = 0.2;
+						#end
+						state.addWater(water);
 					}));
 				default:
 					var msg = 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';
