@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.00.00">
-	<object class="AudioFile" id="{39d8e9d2-cc02-4731-8ff0-df76061c258c}">
+	<object class="AudioFile" id="{a2d9a0fb-fc9d-4a46-a8f1-1097f638faba}">
 		<property name="assetPath">
-			<value>deflate.ogg</value>
+			<value>deflateNew.ogg</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>
@@ -11,7 +11,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>8.3269166666666674</value>
+			<value>3.6923124999999999</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{8437bb97-ead8-45e7-929a-eda2e732a050}</destination>

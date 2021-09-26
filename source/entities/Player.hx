@@ -173,7 +173,13 @@ class Player extends FlxSpriteGroup {
 		if (controllable) {
 			// Balloon burner
 			if (SimpleController.pressed(Button.UP, playerNum)) {
+				nextAnim = RISE_ANIM;
+				acceleration.y = riseAccel;
+				
 				// TODO: SFX Play ascending (burner) sound (happens every frame)
+				if (!FmodManager.IsSoundPlaying(sfxBalloonFire)){
+					FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonFire, sfxBalloonFire);
+				}
 				nextAnim = RISE_ANIM;
 				acceleration.y = riseAccel;
 			} else {
@@ -181,9 +187,24 @@ class Player extends FlxSpriteGroup {
 			}
 
 			if (SimpleController.pressed(Button.DOWN, playerNum)) {
-				// TODO: SFX play deflating sound (happens every frame)
 				nextAnim = PLUMMET_ANIM;
 				acceleration.y = forceFallAccel;
+
+				// TODO: SFX play deflating sound (happens every frame)
+				if (!FmodManager.IsSoundPlaying(sfxBalloonDeflate)){
+					FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonDeflate, sfxBalloonDeflate);
+					FmodManager.SetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound", 0);
+				} else {
+					if (FmodManager.GetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound") == 1){
+						FmodManager.StopSoundImmediately(sfxBalloonDeflate);
+						FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonDeflate, sfxBalloonDeflate);
+					}
+				}
+			} else {
+				if (FmodManager.GetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound") == 0){
+					FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
+				}
+				FmodManager.SetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound", 1);
 			}
 
 			// Box dropping

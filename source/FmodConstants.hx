@@ -11,6 +11,10 @@ class FmodSongs {
 
 class FmodSFX {
     public static inline var BalloonDeflate:String = "event:/SFX/Deflate/BalloonDeflate";
+    public static inline var BalloonDeflateEnd:String = "event:/SFX/Deflate/BalloonDeflateEnd";
+    public static inline var BalloonDeflateEndClick:String = "event:/SFX/Deflate/BalloonDeflateEndClick";
+    public static inline var BalloonDeflateNew:String = "event:/SFX/Deflate/BalloonDeflateNew";
+    public static inline var BalloonDeflateTest:String = "event:/SFX/Deflate/BalloonDeflateTest";
     public static inline var BalloonFire:String = "event:/SFX/Fire/BalloonFire";
     public static inline var MenuHover:String = "event:/SFX/Menu/MenuHover";
     public static inline var MenuSelect:String = "event:/SFX/Menu/MenuSelect";
