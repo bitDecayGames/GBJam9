@@ -87,7 +87,7 @@
           "y": 120,
           "originX": 0,
           "originY": -4,
-          "values": {"delay": 6, "alt": 12}
+          "values": {"delay": 6, "alt": 5}
         },
         {
           "name": "rocket",
@@ -182,7 +182,7 @@
           "_eid": "28048261",
           "x": 136,
           "y": 96,
-          "width": 48,
+          "width": 408,
           "height": 16,
           "originX": 0,
           "originY": 0,

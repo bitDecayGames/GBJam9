@@ -97,11 +97,11 @@ class Level {
 				// START Statics
 				case "house":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
-						state.addHouse(new House(entityData.x, entityData.y));
+						state.addHouse(new House(entityData.x, entityData.y, true));
 					}));
 				case "friendlyHouse":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
-						state.addHouse(new House(entityData.x, entityData.y));
+						state.addHouse(new House(entityData.x, entityData.y, false));
 					}));
 				case "wind":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {

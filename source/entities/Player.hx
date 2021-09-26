@@ -113,6 +113,10 @@ class Player extends FlxSpriteGroup {
 		controllable = false;
 	}
 
+	public function playerMiddleX():Float {
+		return balloon.x + balloon.width/2;
+	}
+
 	override public function update(delta:Float) {
 		nextAnim = IDLE_ANIM;
 

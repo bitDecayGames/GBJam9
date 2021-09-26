@@ -161,13 +161,10 @@ class PlayState extends FlxTransitionableState {
 			}
 		}
 
-		if (levelStarted && !levelFinished) {
-			// Small correction of -1 to make it align correctly
-			if (FlxG.camera.scroll.x < level.layer.width - FlxG.camera.width - 1) {
-				// only scroll to the end of the stage
-				FlxG.camera.scroll.x += scrollSpeed * delta;
-			}
-		}
+		FlxG.camera.scroll.x = player.playerMiddleX() - FlxG.camera.width / 2;
+
+		FlxG.camera.scroll.x = Math.max(0, FlxG.camera.scroll.x);
+		FlxG.camera.scroll.x = Math.min(level.layer.width - FlxG.camera.width, FlxG.camera.scroll.x);
 
 		doCollisions();
 
@@ -266,9 +263,11 @@ class PlayState extends FlxTransitionableState {
 
 		// check boxes against houses first
 		FlxG.overlap(boxes, activeHouses, (b, h) -> {
-			if (b.dropped) {
-				h.packageArrived(b);
-				activeHouses.remove(h);
+			if (h.deliverable) {
+				if (b.dropped) {
+					h.packageArrived(b);
+					activeHouses.remove(h);
+				}
 			}
 		});
 
