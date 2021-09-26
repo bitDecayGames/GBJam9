@@ -36,7 +36,10 @@ class House extends FlxSprite {
 	public function packageArrived(b:Box) {
 		var boxCenter = b.boxMiddleX();
 		var accuracy = Math.abs(x + width / 2 - boxCenter);
+
+		#if debug
 		trace('HOUSE DELIVERED. ACCURACY: ${accuracy}');
+		#end
 
 		var rating:String;
 		var num = Math.floor(accuracy);
