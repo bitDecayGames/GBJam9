@@ -126,7 +126,7 @@
           "originY": 0,
           "values": {"direction": "E"}
         },
-        {"name": "big_truck", "id": 43, "_eid": "58352190", "x": 248, "y": 120, "originX": 0, "originY": 0},
+        {"name": "big_truck", "id": 43, "_eid": "58352190", "x": 248, "y": 112, "originX": 0, "originY": 0},
         {
           "name": "rocket",
           "id": 44,
@@ -361,7 +361,8 @@
           "originX": 0,
           "originY": 0,
           "values": {"direction": "W", "strength": 10}
-        }
+        },
+        {"name": "truck", "id": 72, "_eid": "58347565", "x": 224, "y": 120, "originX": 0, "originY": 0}
       ]
     },
     {
