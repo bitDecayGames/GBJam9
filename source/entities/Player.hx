@@ -24,6 +24,10 @@ class Player extends FlxSpriteGroup {
 
 	public var nextAnim:String = IDLE_ANIM;
 
+	// SFX handles
+	public var sfxBalloonFire:String = "BalloonFire";
+	public var sfxBalloonDeflate:String = "BalloonDeflate";
+
 
 	var controllable = false;
 
@@ -161,9 +165,14 @@ class Player extends FlxSpriteGroup {
 		if (controllable) {
 			// Balloon burner
 			if (SimpleController.pressed(Button.UP, playerNum)) {
-				// TODO: SFX Play fire sound
+				// TODO: SFX play fire sound
+				if (!FmodManager.IsSoundPlaying(sfxBalloonFire)){
+					FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonFire, sfxBalloonFire);
+				}
 				nextAnim = RISE_ANIM;
 				acceleration.y = riseAccel;
+			} else {
+				FmodManager.StopSoundImmediately(sfxBalloonFire);
 			}
 
 			if (SimpleController.pressed(Button.DOWN, playerNum)) {

@@ -44,8 +44,8 @@ class Main extends Sprite {
 		FlxG.mouse.useSystemCursor = true;
 
 		#if debug
-		FlxG.autoPause = false;
 		#end
+		FlxG.autoPause = false;
 
 		// Set up basic transitions. To override these see `transOut` and `transIn` on any FlxTransitionable states
 		FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.35);

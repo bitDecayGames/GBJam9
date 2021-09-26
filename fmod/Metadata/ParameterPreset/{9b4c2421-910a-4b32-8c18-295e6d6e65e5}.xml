@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{9b4c2421-910a-4b32-8c18-295e6d6e65e5}">
+		<property name="name">
+			<value>EndDeflateSound</value>
+		</property>
+		<relationship name="folder">
+			<destination>{da9bea1d-65f6-4eb5-8299-adf0fee0fa69}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{345af649-1f93-40b4-9e70-4db02150e81b}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{345af649-1f93-40b4-9e70-4db02150e81b}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
