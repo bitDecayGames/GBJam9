@@ -26,7 +26,8 @@ class Landing extends FlxSprite {
 			trace('missed landing');
 			return 100;
 		} else {
-			var deduction = 100 * Math.round(distanceFromFront / 8);
+			// subtract one as the 'perfect' distance is actually one tile back
+			var deduction = 100 * Math.floor(distanceFromFront / 8 - 1);
 			trace('landing deduction: ${deduction}');
 			return 1000 - deduction;
 		}

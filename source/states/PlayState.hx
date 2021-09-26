@@ -1,5 +1,6 @@
 package states;
 
+import entities.Shadow;
 import metrics.DropScore;
 import haxefmod.flixel.FmodFlxUtilities;
 import metrics.Metrics;
@@ -69,6 +70,7 @@ class PlayState extends FlxTransitionableState {
 	var walls:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 
 	var playerGroup:FlxTypedGroup<Player> = new FlxTypedGroup();
+	var shadows:FlxTypedGroup<Shadow> = new FlxTypedGroup();
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
 	var gusts:FlxTypedGroup<Gust> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
@@ -85,6 +87,7 @@ class PlayState extends FlxTransitionableState {
 	var backTrucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for rendering order
 	var frontTrucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for rendering order
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
+
 
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
 
@@ -135,6 +138,7 @@ class PlayState extends FlxTransitionableState {
 		add(trees);
 		add(gusts);
 		add(backTrucks);
+		add(shadows);
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
@@ -468,6 +472,8 @@ class PlayState extends FlxTransitionableState {
 
 	public function addBox(box:Box) {
 		boxes.add(box);
+
+		shadows.add(new Shadow(box, 0, 8, 0));
 	}
 
 	public function addRocket(rocket:Rocket) {
@@ -481,6 +487,8 @@ class PlayState extends FlxTransitionableState {
 	public function addPlayer(player:Player) {
 		this.player = player;
 		playerGroup.add(player);
+
+		shadows.add(new Shadow(player, 0, player.collisionHeight, -1));
 	}
 
 	public function addLanding(l:Landing) {
