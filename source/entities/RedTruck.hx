@@ -1,8 +1,11 @@
 package entities;
 
-import flixel.FlxSprite;
+import states.PlayState;
+import flixel.FlxG;
 
 class RedTruck extends Truck {
+	public static var LAUNCH_SPEED = -30;
+
 	public function new(x:Float, y:Float) {
 		super(x, y);
 	}
@@ -17,6 +20,8 @@ class RedTruck extends Truck {
 	override public function hit() {
 		super.hit();
 
-		// TODO: Drop package
+		var box = new Box(x + 4, y - 12, 0);
+		box.velocity.set(FlxG.random.bool() ? 5 : -5, LAUNCH_SPEED);
+		cast(FlxG.state, PlayState).addBox(box);
 	}
 }
