@@ -58,6 +58,10 @@ class Box extends FlxSpriteGroup {
 		acceleration.y = WorldConstants.GRAVITY;
 	}
 
+	public function boxMiddleX() {
+		return box.x + box.width / 2;
+	}
+
 	override public function update(delta:Float) {
 		super.update(delta);
 
@@ -102,7 +106,7 @@ class Box extends FlxSpriteGroup {
 			if (chute.animation.name == "open") {
 				chute.animation.play("close");
 			}
-			
+
 			FmodManager.PlaySoundOneShot(FmodSFX.CrateLand);
 			cast(FlxG.state, PlayState).addParticle(new Dust(box.x + box.width / 2, y - box.offset.y));
 		}

@@ -114,12 +114,12 @@ class PlayState extends FlxTransitionableState {
 		add(houses);
 		add(trees);
 		add(gusts);
-		add(trucks);
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
 		add(fuses);
 		add(rockets);
+		add(trucks);
 		add(rocketsBooms);
 		add(birds);
 		add(waters);
@@ -263,18 +263,19 @@ class PlayState extends FlxTransitionableState {
 			}
 		});
 
-		// check boxes against houses first
-		FlxG.overlap(boxes, activeHouses, (b, h) -> {
-			if (h.deliverable) {
-				if (b.dropped) {
-					h.packageArrived(b);
-					activeHouses.remove(h);
-				}
-			}
-		});
-
 		// boxes are FlxSpriteGroups which have a lot of weirdness... so loop through manually
 		for (box in boxes) {
+			// check boxes against houses first
+			FlxG.overlap(box.box, activeHouses, (p:ParentedSprite, h:House) -> {
+				trace('box touch house. HouseDel: ${h.deliverable}     b.dropped: ${cast(p.parent, Box).dropped}');
+				if (h.deliverable) {
+					if (cast(p.parent, Box).dropped) {
+						h.packageArrived(cast(p.parent, Box));
+						activeHouses.remove(h);
+					}
+				}
+			});
+
 			// Boxes vs player
 			FlxG.overlap(player, box.box, (balloon, b) -> {
 				if (box.grabbable) {

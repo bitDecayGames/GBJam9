@@ -1,17 +1,12 @@
 package states;
 
-import flixel.math.FlxMath;
 import input.SimpleController;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
-import states.transitions.Trans;
-import states.transitions.SwirlTransition;
 import com.bitdecay.analytics.Bitlytics;
 import config.Configure;
 import flixel.FlxG;
-import flixel.addons.ui.FlxUICursor;
 import flixel.addons.ui.FlxUIState;
-import flixel.addons.ui.FlxUITypedButton;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
@@ -54,25 +49,9 @@ class MainMenuState extends FlxUIState {
 		selector.animation.play("pointing");
 		add(selector);
 
-		// var keys:Int = 0;
-		// if (Configure.config.menus.keyboardNavigation) {
-		// 	keys |= FlxUICursor.KEYS_ARROWS | FlxUICursor.KEYS_WASD;
-		// }
-		// if (Configure.config.menus.controllerNavigation) {
-		// 	keys |= FlxUICursor.GAMEPAD_DPAD;
-		// }
-		// cursor.setDefaultKeys(keys);
-		// }
-
 		FmodManager.PlaySong(FmodSongs.LetsGo);
 		bgColor = FlxColor.TRANSPARENT;
 		FlxG.camera.pixelPerfectRender = true;
-
-		// #if !windows
-		// // Hide exit button for non-windows targets
-		// var test = _ui.getAsset("exit_button");
-		// test.visible = false;
-		// #end
 
 		// Trigger our focus logic as we are just creating the scene
 		this.handleFocus();
@@ -80,24 +59,6 @@ class MainMenuState extends FlxUIState {
 		// we will handle transitions manually
 		transOut = null;
 	}
-
-	// override public function getEvent(name:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Void {
-	// 	if (name == FlxUITypedButton.CLICK_EVENT) {
-	// 		var button_action:String = params[0];
-	// 		trace('Action: "${button_action}"');
-	// 		if (button_action == "play") {
-	// 			clickPlay();
-	// 		}
-	// 		if (button_action == "credits") {
-	// 			clickCredits();
-	// 		}
-	// 		#if windows
-	// 		if (button_action == "exit") {
-	// 			clickExit();
-	// 		}
-	// 		#end
-	// 	}
-	// }
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
@@ -148,12 +109,6 @@ class MainMenuState extends FlxUIState {
 	function clickCredits():Void {
 		FmodFlxUtilities.TransitionToState(new CreditsState());
 	}
-
-	#if windows
-	function clickExit():Void {
-		System.exit(0);
-	}
-	#end
 
 	override public function onFocusLost() {
 		super.onFocusLost();
