@@ -1,5 +1,6 @@
 package states;
 
+import entities.Truck;
 import entities.particle.Splash;
 import flixel.math.FlxPoint;
 import entities.Tree;
@@ -62,6 +63,7 @@ class PlayState extends FlxTransitionableState {
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
 	var fuses:FlxTypedGroup<Fuse> = new FlxTypedGroup();
 	var bombs:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
+	var trucks:FlxTypedGroup<Truck> = new FlxTypedGroup();
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
 
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
@@ -119,6 +121,7 @@ class PlayState extends FlxTransitionableState {
 		add(fuses);
 		add(rockets);
 		add(rocketsBooms);
+		add(trucks);
 		add(birds);
 		add(waters);
 		add(splashes);
@@ -299,6 +302,11 @@ class PlayState extends FlxTransitionableState {
 			bi.die();
 		});
 
+		FlxG.overlap(bombs, trucks, (b, t:Truck) -> {
+			b.kill();
+			t.hit();
+		});
+
 		FlxG.collide(level.layer, bombs, (g, b) -> {
 			b.kill();
 		});
@@ -401,6 +409,10 @@ class PlayState extends FlxTransitionableState {
 
 	public function addParticle(p:FlxSprite) {
 		splashes.add(p);
+	}
+
+	public function addTruck(truck:Truck) {
+		trucks.add(truck);
 	}
 
 	function addSplash(p:FlxPoint, big:Bool) {
