@@ -7,4 +7,5 @@ class Metrics {
 	public static inline var FINISH_TIME = "finish_time";
 
 	public static inline var LOST_BOXES = "lost_boxes";
+	public static inline var MAX_LEVEL_COMPLETED = "max_level_completed";
 }

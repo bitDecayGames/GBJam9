@@ -199,11 +199,11 @@ class SummaryState extends FlxState {
 		if (SimpleController.just_pressed(Button.A)) {
 			switch (cursorIndex) {
 				case 0:
-					clickRetry();
+					clickNext();
 					FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 					disableCursor = true;
 				case 1:
-					clickNext();
+					clickRetry();
 					FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 					disableCursor = true;
 				default:
@@ -217,8 +217,6 @@ class SummaryState extends FlxState {
 	}
 
 	function clickNext():Void {
-
-		// TODO: Send to credits once we finish the last level
 		PlayState.currentLevel++;
 		if (PlayState.currentLevel >= PlayState.levelOrder.length) {
 			FmodFlxUtilities.TransitionToState(new CreditsState());

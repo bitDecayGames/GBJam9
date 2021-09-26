@@ -24,6 +24,8 @@ class CreditsState extends FlxState {
 
 		var credits = new FlxSprite(AssetPaths.credits__png);
 		add(credits);
+
+		FmodManager.PlaySong(FmodSongs.HopIn);
 	}
 
 	override public function update(elapsed:Float):Void {

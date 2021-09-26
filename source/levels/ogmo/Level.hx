@@ -87,7 +87,7 @@ class Level {
 					}));
 				case "big_truck":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
-						state.addTruck(new RedTruck(entityData.x, entityData.y));
+						state.addTruck(new RedTruck(entityData.x, entityData.y), entityData.y == 120 ? true : false);
 					}));
 
 				// START Statics

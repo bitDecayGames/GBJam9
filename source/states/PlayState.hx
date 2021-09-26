@@ -234,7 +234,6 @@ class PlayState extends FlxTransitionableState {
 	function doCollisions() {
 		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
 			if (player.isControllable() && !levelFinished) {
-				PlayState.currentLevel++;
 				Trackers.landingBonus = l.getScore(player.playerMiddleX());
 				levelFinished = true;
 
