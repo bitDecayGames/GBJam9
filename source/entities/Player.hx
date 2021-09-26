@@ -207,21 +207,21 @@ class Player extends FlxSpriteGroup {
 				switch (aimDirection) {
 					case 0:
 						vel.set(-20, 0);
-						pos.x -= 5;
+						pos.x -= 8;
 					case 1:
 						vel.set(-10, 10);
-						pos.x -= 5;
+						pos.x -= 8;
 					case 2:
 						vel.set(10, 10);
-						pos.x += 5;
+						pos.x += 2;
 					case 3:
 						vel.set(20, 0);
-						pos.x += 5;
+						pos.x += 2;
 				}
 				vel.addPoint(velocity);
 
 				var toss = new FlxSprite(pos.x, pos.y);
-				toss.makeGraphic(4, 4, FlxColor.BLUE);
+				toss.loadGraphic(AssetPaths.bomb__png);
 				toss.velocity.copyFrom(vel);
 				toss.acceleration.y = WorldConstants.GRAVITY;
 

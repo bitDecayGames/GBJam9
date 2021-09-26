@@ -1,6 +1,6 @@
 package states;
 
-import entities.Splash;
+import entities.particle.Splash;
 import flixel.math.FlxPoint;
 import entities.Tree;
 import entities.Fuse;
@@ -287,8 +287,9 @@ class PlayState extends FlxTransitionableState {
 
 			FlxG.overlap(box, waters, (b:FlxSprite, w:FlxSprite) -> {
 				box.kill();
-				trace("big splash");
 				addSplash(b.getMidpoint(), true);
+
+				// TODO: SFX big splash
 			});
 		}
 
@@ -305,6 +306,8 @@ class PlayState extends FlxTransitionableState {
 		FlxG.overlap(bombs, waters, (b, w) -> {
 			b.kill();
 			addSplash(b.getMidpoint(), false);
+
+			// TODO: SFX small splash
 		});
 	}
 

@@ -1,4 +1,4 @@
-package entities;
+package entities.particle;
 
 import flixel.FlxSprite;
 

@@ -51,7 +51,27 @@
           "originY": 0,
           "values": {"delay": 4, "open_at": 4}
         },
-        {"name": "water", "id": 5, "_eid": "61807291", "x": 64, "y": 136, "width": 48, "height": 8, "originX": 0, "originY": 0}
+        {"name": "water", "id": 5, "_eid": "61807291", "x": 64, "y": 136, "width": 48, "height": 8, "originX": 0, "originY": 0},
+        {
+          "name": "bird",
+          "id": 6,
+          "_eid": "06910497",
+          "x": 176,
+          "y": 64,
+          "originX": 0,
+          "originY": 0,
+          "values": {"direction": "W"}
+        },
+        {
+          "name": "bird",
+          "id": 7,
+          "_eid": "06910497",
+          "x": 8,
+          "y": 64,
+          "originX": 0,
+          "originY": 0,
+          "values": {"direction": "E"}
+        }
       ]
     },
     {
