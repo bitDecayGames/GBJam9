@@ -29,8 +29,10 @@ class Player extends FlxSpriteGroup {
 	public var sfxBalloonFire:String = "BalloonFire";
 	public var sfxBalloonDeflate:String = "BalloonDeflate";
 
+	public var trackedSounds:Map<String, Bool> = new Map<String, Bool>();
 
-	var controllable = false;
+
+	public var controllable = false;
 
 	var balloon:ParentedSprite;
 
@@ -147,6 +149,14 @@ class Player extends FlxSpriteGroup {
 			}
 		}
 
+		
+		if (FlxG.keys.pressed.F){
+			velocity.x += 100;
+		}
+		if (FlxG.keys.pressed.D){
+			velocity.x -= 100;
+		}
+
 		// TODO: Try to line up frames so the basket doesn't reset when changing between animations
 		balloon.animation.play(nextAnim);
 
@@ -223,23 +233,32 @@ class Player extends FlxSpriteGroup {
 					// TODO: SFX play error noise
 				} else {
 					// drop the box!
-					// TODO: SFX play release sound
+					// TODO: SFX (done) play release sound
+					var dropSound = FmodManager.PlaySoundAndAssignId(FmodSFX.CrateDrop, "CrateFall" + box.boxId);
+					trackedSounds.set(dropSound, true);
 					box.attached = false;
 					box.dropped = true;
-					box.released();
+					box.released(function(p:Dynamic) {
+						FmodManager.StopSoundImmediately(dropSound);
+					});
 				}
 			}
 
 			if (SimpleController.just_pressed(Button.LEFT, playerNum)) {
 				// TODO: SFX (done) Play selector sound
-				FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
+				if (aimDirection > 0){
+					FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
+				}
+
 				aimDirection = Std.int(Math.max(0, aimDirection - 1));
 				aimIndicator.animation.play('${aimDirection}');
 			}
 
 			if (SimpleController.just_pressed(Button.RIGHT, playerNum)) {
 				// TODO: SFX (done) Play selector sound
-				FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
+				if (aimDirection < 3){
+					FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
+				}
 				aimDirection = Std.int(Math.min(3, aimDirection + 1));
 				aimIndicator.animation.play('${aimDirection}');
 			}
