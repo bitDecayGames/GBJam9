@@ -135,7 +135,7 @@ class Level {
 					#if debug
 					trace(msg);
 					#else
-					throw msg;
+					// throw msg;
 					#end
 			}
 		}, "entities");
