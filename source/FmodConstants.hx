@@ -22,6 +22,7 @@ class FmodSFX {
     public static inline var FireworksFire:String = "event:/SFX/Fireworks/FireworksFire";
     public static inline var MenuHover:String = "event:/SFX/Menu/MenuHover";
     public static inline var MenuSelect:String = "event:/SFX/Menu/MenuSelect";
+    public static inline var Shoot:String = "event:/SFX/Shoot/Shoot";
     public static inline var Splash:String = "event:/SFX/Splash/Splash";
     public static inline var TruckExplosion:String = "event:/SFX/Truck/TruckExplosion";
 }
