@@ -1,5 +1,7 @@
 package levels.ogmo;
 
+import entities.Fuse;
+import entities.TriggerableSprite;
 import flixel.group.FlxGroup;
 import entities.Landing;
 import entities.Player;
@@ -64,12 +66,20 @@ class Level {
 					}
 				case "rocket":
 					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
-					// delay is number of tiles
-					triggerPoint.x += entityData.values.delay * 8;
+
 					var rocket = new Rocket(entityData.x, entityData.y, entityData.values.alt * 8);
 					state.addRocket(rocket);
+
+					var triggeree:TriggerableSprite = rocket;
+					// delay is in number of fuse segments
+					for (i in 0...entityData.values.delay) {
+						var fuse = new Fuse(triggeree.x - 8, triggeree.y, triggeree);
+						state.addFuse(fuse);
+						triggeree = fuse;
+					}
+
 					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
-						rocket.fly();
+						triggeree.trigger();
 					}));
 
 				// START Statics

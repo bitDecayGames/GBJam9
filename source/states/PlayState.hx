@@ -1,5 +1,6 @@
 package states;
 
+import entities.Fuse;
 import flixel.util.FlxPool;
 import entities.Gust;
 import entities.Landing;
@@ -53,6 +54,7 @@ class PlayState extends FlxTransitionableState {
 	var landing:FlxTypedGroup<Landing> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
+	var fuses:FlxTypedGroup<Fuse> = new FlxTypedGroup();
 	var bombs:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
 
@@ -107,6 +109,7 @@ class PlayState extends FlxTransitionableState {
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
+		add(fuses);
 		add(rockets);
 		add(rocketsBooms);
 		add(birds);
@@ -309,10 +312,7 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function setupTestObjects() {
-		// TODO: Load player from ogmo level
-		// player = new Player();
-		// player.x = 30;
-		// playerGroup.add(player);
+
 	}
 
 	public function addBoom(rocketBoom:RocketBoom) {
@@ -342,6 +342,10 @@ class PlayState extends FlxTransitionableState {
 
 	public function addRocket(rocket:Rocket) {
 		rockets.add(rocket);
+	}
+
+	public function addFuse(fuse:Fuse) {
+		fuses.add(fuse);
 	}
 
 	public function addPlayer(player:Player) {
