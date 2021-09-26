@@ -354,8 +354,7 @@ class PlayState extends FlxTransitionableState {
 		cast(walls.members[1], FlxSprite).x = FlxG.camera.scroll.x + FlxG.width;
 	}
 
-	function setupTestObjects() {
-	}
+	function setupTestObjects() {}
 
 	public function addBoom(rocketBoom:RocketBoom) {
 		rocketsBooms.add(rocketBoom);

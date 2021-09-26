@@ -17,6 +17,8 @@ class Splash extends FlxSprite {
 		}
 		animation.add("do", [for (i in 0...8) i], 8, false);
 		animation.play("do");
-		animation.finishCallback = (n) -> { kill(); };
+		animation.finishCallback = (n) -> {
+			kill();
+		};
 	}
 }

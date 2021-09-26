@@ -103,7 +103,7 @@ class Box extends FlxSpriteGroup {
 				chute.animation.play("close");
 			}
 
-			cast(FlxG.state, PlayState).addParticle(new Dust(box.x + box.width/2, y - box.offset.y));
+			cast(FlxG.state, PlayState).addParticle(new Dust(box.x + box.width / 2, y - box.offset.y));
 		}
 	}
 

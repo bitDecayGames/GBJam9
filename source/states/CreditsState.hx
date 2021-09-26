@@ -19,7 +19,6 @@ import misc.FlxTextFactory;
 using extensions.FlxStateExt;
 
 class CreditsState extends FlxState {
-
 	override public function create():Void {
 		super.create();
 

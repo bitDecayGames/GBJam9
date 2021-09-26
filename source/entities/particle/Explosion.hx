@@ -7,8 +7,10 @@ class Explosion extends FlxSprite {
 		super(x, y);
 
 		loadGraphic(AssetPaths.explosion__png, true, 32, 24);
-		animation.add("do", [for(i in 0...3) i], 10, false);
+		animation.add("do", [for (i in 0...3) i], 10, false);
 		animation.play("do");
-		animation.finishCallback = (name) -> { kill(); };
+		animation.finishCallback = (name) -> {
+			kill();
+		};
 	}
 }

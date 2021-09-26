@@ -3,10 +3,8 @@ package entities;
 import flixel.FlxSprite;
 
 class RedTruck extends Truck {
-
 	public function new(x:Float, y:Float) {
 		super(x, y);
-
 	}
 
 	override public function loadGfx() {

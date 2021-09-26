@@ -114,7 +114,7 @@ class Player extends FlxSpriteGroup {
 	}
 
 	public function playerMiddleX():Float {
-		return balloon.x + balloon.width/2;
+		return balloon.x + balloon.width / 2;
 	}
 
 	override public function update(delta:Float) {

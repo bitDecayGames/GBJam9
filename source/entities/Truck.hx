@@ -6,7 +6,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 
 class Truck extends FlxSprite {
-
 	public function new(x:Float, y:Float) {
 		super(x, y);
 		loadGfx();
