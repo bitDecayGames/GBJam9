@@ -19,6 +19,7 @@ class Player extends FlxSpriteGroup {
 
 	private static inline var RISE_ANIM = "rise";
 	private static inline var IDLE_ANIM = "idle";
+	private static inline var PLUMMET_ANIM = "plummet";
 	private static inline var BLOW_LEFT = "_left";
 	private static inline var BLOW_RIGHT = "_right";
 
@@ -82,6 +83,9 @@ class Player extends FlxSpriteGroup {
 		balloon.animation.add(RISE_ANIM, [8, 16], 4);
 		balloon.animation.add(RISE_ANIM + BLOW_RIGHT, [13, 21, 14, 22, 15, 23], 4);
 		balloon.animation.add(RISE_ANIM + BLOW_LEFT, [9, 17, 10, 18, 11, 19], 4);
+		balloon.animation.add(PLUMMET_ANIM, [24]);
+		balloon.animation.add(PLUMMET_ANIM + BLOW_RIGHT, [29, 30, 31], 2);
+		balloon.animation.add(PLUMMET_ANIM + BLOW_LEFT, [25, 26, 27], 2);
 		balloon.animation.play(IDLE_ANIM);
 
 		add(balloon);
@@ -130,6 +134,7 @@ class Player extends FlxSpriteGroup {
 			}
 		}
 
+		// TODO: Try to line up frames so the basket doesn't reset when changing between animations
 		balloon.animation.play(nextAnim);
 
 		// apply update
@@ -163,14 +168,14 @@ class Player extends FlxSpriteGroup {
 		if (controllable) {
 			// Balloon burner
 			if (SimpleController.pressed(Button.UP, playerNum)) {
-				// TODO: SFX Play fire sound
+				// TODO: SFX Play ascending (burner) sound (happens every frame)
 				nextAnim = RISE_ANIM;
 				acceleration.y = riseAccel;
 			}
 
 			if (SimpleController.pressed(Button.DOWN, playerNum)) {
-				// TODO: Fall animation
-				// TODO: SFX play deflating sound
+				// TODO: SFX play deflating sound (happens every frame)
+				nextAnim = PLUMMET_ANIM;
 				acceleration.y = forceFallAccel;
 			}
 
