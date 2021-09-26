@@ -1,5 +1,6 @@
 package states;
 
+import flixel.FlxObject;
 import entities.Shadow;
 import metrics.DropScore;
 import haxefmod.flixel.FmodFlxUtilities;
@@ -343,6 +344,8 @@ class PlayState extends FlxTransitionableState {
 					if (cast(p.parent, Box).dropped) {
 						h.packageArrived(cast(p.parent, Box));
 						activeHouses.remove(h);
+
+						cast(p.parent, Box).grabbable = false;
 
 						Trackers.points += Points.DELIVERY;
 					}
