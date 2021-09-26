@@ -1,5 +1,6 @@
 package states;
 
+import metrics.Points;
 import flixel.util.FlxStringUtil;
 import flixel.text.FlxBitmapText;
 import metrics.Trackers;
@@ -74,10 +75,7 @@ class PlayState extends FlxTransitionableState {
 
 	var gustPool = new FlxPool<Gust>(Gust);
 
-	var score:Int = 0;
 	var timeDisplay:FlxBitmapText;
-
-	var points:Int = 0;
 	var pointsDisplay:FlxBitmapText;
 
 	override public function create() {
@@ -146,7 +144,10 @@ class PlayState extends FlxTransitionableState {
 		FlxFlicker.flicker(launchText, 0, 0.5);
 		add(launchText);
 
+		// Reset scores
 		Trackers.attemptTimer = 0;
+		Trackers.points = 0;
+
 		timeDisplay = new AerostatRed(0, 0, "T");
 		timeDisplay.scrollFactor.set();
 
@@ -175,7 +176,7 @@ class PlayState extends FlxTransitionableState {
 			timeDisplay.text = "T" + StringTools.lpad(FlxStringUtil.formatTime(Trackers.attemptTimer, false), " ", 5);
 		}
 
-		pointsDisplay.text = StringTools.lpad(Std.string(score), "0", 6);
+		pointsDisplay.text = StringTools.lpad(Std.string(Trackers.points), "0", 6);
 
 		if (!levelStarted) {
 			if (SimpleController.just_pressed(Button.UP)) {
@@ -282,6 +283,7 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.overlap(player, birds, function(p:Player, b:Bird) {
 			player.hitBy(b);
+			Trackers.points += Points.HIT_BY_BIRD;
 		});
 
 		FlxG.overlap(trees, winds, function(t:Tree, w:Wind) {
@@ -293,6 +295,7 @@ class PlayState extends FlxTransitionableState {
 			var boom = cast(r.parent, RocketBoom);
 			if (!boom.hasHitPlayer()) {
 				player.hitBy(boom);
+				Trackers.points += Points.HIT_BY_FIREWORK;
 			}
 		});
 
@@ -305,6 +308,8 @@ class PlayState extends FlxTransitionableState {
 					if (cast(p.parent, Box).dropped) {
 						h.packageArrived(cast(p.parent, Box));
 						activeHouses.remove(h);
+
+						Trackers.points += Points.DELIVERY;
 					}
 				}
 			});
@@ -339,6 +344,8 @@ class PlayState extends FlxTransitionableState {
 
 				// TODO: SFX big splash
 				FmodManager.PlaySoundOneShot(FmodSFX.Splash);
+
+				Trackers.points += Points.LOST_PACKAGE;
 			});
 		}
 
@@ -346,12 +353,16 @@ class PlayState extends FlxTransitionableState {
 			// TODO: Hook up fancier deaths
 			bo.kill();
 			bi.die();
+
+			Trackers.points += Points.KILL_BIRD;
 		});
 
 		FlxG.overlap(bombs, trucks, (b, t:Truck) -> {
 			if (!t.exploded) {
 				b.kill();
 				t.hit();
+
+				Trackers.points += Points.KILL_TRUCK;
 			}
 		});
 
