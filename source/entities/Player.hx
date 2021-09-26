@@ -14,6 +14,8 @@ import flixel.FlxSprite;
 using extensions.FlxObjectExt;
 
 class Player extends FlxSpriteGroup {
+	public static inline var PLAYER_LOWEST_ALTITUDE = 128;
+
 	// amount of rope between each box
 	private static inline var BOX_SPACING:Float = 4;
 
@@ -187,7 +189,8 @@ class Player extends FlxSpriteGroup {
 		}
 
 		for (i in 0...boxes.length) {
-			boxes[i].alignTo(balloon.x + balloon.width / 2, balloon.y + balloon.height + BOX_SPACING + i * (8 + BOX_SPACING));
+			var preferredHeight = balloon.y + balloon.height + BOX_SPACING + i * (8 + BOX_SPACING);
+			boxes[i].alignTo(balloon.x + balloon.width / 2, preferredHeight <= Player.PLAYER_LOWEST_ALTITUDE - 8 ? preferredHeight :  Player.PLAYER_LOWEST_ALTITUDE - 8);
 			boxes[i].velocity.set(velocity.x, velocity.y);
 		}
 	}

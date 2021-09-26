@@ -41,6 +41,36 @@
           "originX": 0,
           "originY": 0,
           "values": {"delay": 4, "open_at": 4}
+        },
+        {
+          "name": "para_box",
+          "id": 10,
+          "_eid": "06963184",
+          "x": 32,
+          "y": 48,
+          "originX": 0,
+          "originY": 0,
+          "values": {"delay": 4, "open_at": 4}
+        },
+        {
+          "name": "para_box",
+          "id": 11,
+          "_eid": "06963184",
+          "x": 48,
+          "y": 24,
+          "originX": 0,
+          "originY": 0,
+          "values": {"delay": 4, "open_at": 4}
+        },
+        {
+          "name": "para_box",
+          "id": 12,
+          "_eid": "06963184",
+          "x": 16,
+          "y": 24,
+          "originX": 0,
+          "originY": 0,
+          "values": {"delay": 4, "open_at": 4}
         }
       ]
     },

@@ -160,12 +160,6 @@ class PlayState extends FlxTransitionableState {
 		// add this last so it is on top of everything else
 		add(timeDisplay);
 		add(pointsDisplay);
-
-		// var mockPoints = new PressStart(8, FlxG.height - 17, "Score\n1234");
-		// add(mockPoints);
-
-		// var mockTime = new PressStart(FlxG.width - 8 * 6, FlxG.height - 17, "  Time\n1:35:14");
-		// add(mockTime);
 	}
 
 	override public function update(delta:Float) {
@@ -269,21 +263,21 @@ class PlayState extends FlxTransitionableState {
 		}
 
 		if (player.x < camera.scroll.x) {
-			// player.velocity.x = 0;
+			player.velocity.x = 0;
 			player.x = camera.scroll.x;
 		}
 
 		// TODO: This width calculation may not be good as it takes the indicator into account
 		if (player.x > camera.scroll.x + camera.width - player.collisionWidth) {
-			// player.velocity.x = 0;
+			player.velocity.x = 0;
 			player.x = camera.scroll.x + camera.width - player.collisionWidth;
 		}
 
 		// TODO: the FlxSpriteGroup drifts because of this... need to figure out a different way to handle this
 		// FlxG.collide(level.layer, player);
 
-		if (player.y + player.collisionHeight > 128) {
-			player.y = 128 - player.collisionHeight;
+		if (player.y + player.collisionHeight > Player.PLAYER_LOWEST_ALTITUDE) {
+			player.y = Player.PLAYER_LOWEST_ALTITUDE - player.collisionHeight;
 		}
 
 		// TODO: This seems even more buggy. wtf.
