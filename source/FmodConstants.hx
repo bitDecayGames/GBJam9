@@ -6,6 +6,7 @@
 package;
 
 class FmodSongs {
+    public static inline var HopIn:String = "event:/Music/HopIn";
     public static inline var LetsGo:String = "event:/Music/LetsGo";
 }
 
@@ -20,6 +21,7 @@ class FmodSFX {
     public static inline var BalloonFire:String = "event:/SFX/Fire/BalloonFire";
     public static inline var FireworksExplosion:String = "event:/SFX/Fireworks/FireworksExplosion";
     public static inline var FireworksFire:String = "event:/SFX/Fireworks/FireworksFire";
+    public static inline var BalloonLand:String = "event:/SFX/Land/BalloonLand";
     public static inline var MenuHover:String = "event:/SFX/Menu/MenuHover";
     public static inline var MenuSelect:String = "event:/SFX/Menu/MenuSelect";
     public static inline var ScoreFour:String = "event:/SFX/Score/ScoreFour";

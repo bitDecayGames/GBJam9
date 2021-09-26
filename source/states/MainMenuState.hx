@@ -23,6 +23,8 @@ class MainMenuState extends FlxUIState {
 	var _btnCredits:FlxButton;
 	var _btnExit:FlxButton;
 
+	var disableCursor = false;
+
 	var _txtTitle:FlxText;
 
 	var selector:FlxSprite;
@@ -49,7 +51,6 @@ class MainMenuState extends FlxUIState {
 		selector.animation.play("pointing");
 		add(selector);
 
-		FmodManager.PlaySong(FmodSongs.LetsGo);
 		bgColor = FlxColor.TRANSPARENT;
 		FlxG.camera.pixelPerfectRender = true;
 
@@ -71,11 +72,13 @@ class MainMenuState extends FlxUIState {
 			trace("---------- Bitlytics Stopped ----------");
 		}
 
-		if (SimpleController.just_pressed(Button.DOWN)) {
+		if (SimpleController.just_pressed(Button.DOWN) && !disableCursor) {
+			FmodManager.PlaySoundOneShot(FmodSFX.MenuHover);
 			cursorIndex++;
 		}
 
-		if (SimpleController.just_pressed(Button.UP)) {
+		if (SimpleController.just_pressed(Button.UP) && !disableCursor) {
+			FmodManager.PlaySoundOneShot(FmodSFX.MenuHover);
 			cursorIndex--;
 		}
 
@@ -90,12 +93,15 @@ class MainMenuState extends FlxUIState {
 		selector.x = buttonLocations[cursorIndex].x;
 		selector.y = buttonLocations[cursorIndex].y;
 
-		if (SimpleController.just_pressed(Button.A)) {
+		if (SimpleController.just_pressed(Button.A) && !disableCursor) {
 			switch (cursorIndex) {
 				case 0:
 					clickPlay();
+					FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
+					disableCursor = true;
 				case 1:
 					clickCredits();
+					FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 				default:
 					trace('no menu item for index ${cursorIndex}');
 			}
