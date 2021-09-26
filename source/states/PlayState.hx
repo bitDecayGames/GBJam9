@@ -1,5 +1,6 @@
 package states;
 
+import haxefmod.FmodEvents.FmodCallback;
 import entities.Truck;
 import entities.particle.Splash;
 import flixel.math.FlxPoint;
@@ -336,6 +337,7 @@ class PlayState extends FlxTransitionableState {
 			addSplash(b.getMidpoint(), false);
 
 			// TODO: SFX small splash
+			FmodManager.PlaySoundOneShot(FmodSFX.SplashSmall);
 		});
 	}
 
