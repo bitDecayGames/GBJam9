@@ -1,6 +1,5 @@
 package entities.particle;
 
-import spacial.Cardinal;
 import flixel.FlxSprite;
 
 class Dust extends FlxSprite {

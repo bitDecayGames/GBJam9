@@ -29,7 +29,9 @@
           "originY": 0,
           "values": {"direction": "E", "strength": 10}
         },
-        {"name": "water", "id": 5, "_eid": "61807291", "x": 64, "y": 136, "width": 48, "height": 8, "originX": 0, "originY": 0}
+        {"name": "water", "id": 5, "_eid": "61807291", "x": 64, "y": 136, "width": 48, "height": 8, "originX": 0, "originY": 0},
+        {"name": "truck", "id": 6, "_eid": "58347565", "x": 40, "y": 120, "originX": 0, "originY": 0},
+        {"name": "big_truck", "id": 7, "_eid": "58352190", "x": 112, "y": 120, "originX": 0, "originY": 0}
       ]
     },
     {

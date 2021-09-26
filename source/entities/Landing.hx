@@ -10,6 +10,10 @@ class Landing extends FlxSprite {
 
 		// TODO: Load real graphics
 		makeGraphic(width, 8, FlxColor.MAGENTA);
-		alpha = 0.7;
+
+		alpha = 0;
+		#if debug
+		alpha = 0.5;
+		#end
 	}
 }

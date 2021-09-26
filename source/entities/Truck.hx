@@ -1,5 +1,8 @@
 package entities;
 
+import entities.particle.Explosion;
+import states.PlayState;
+import flixel.FlxG;
 import flixel.FlxSprite;
 
 class Truck extends FlxSprite {
@@ -25,8 +28,10 @@ class Truck extends FlxSprite {
 	}
 
 	public function hit() {
-		// TODO: SFX truck hit by player attack
+		// TODO: SFX truck hit by player attack (explosion)
 
 		animation.play("dead");
+		var xplode = new Explosion(x + width / 2 - 16, y + height - 24);
+		cast(FlxG.state, PlayState).addParticle(xplode);
 	}
 }
