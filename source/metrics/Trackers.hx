@@ -5,6 +5,6 @@ class Trackers {
 	public static var points(default, set) = 0;
 
 	static function set_points(newP) {
-		return newP < 0 ? 0 : newP;
+		return points = newP < 0 ? 0 : newP;
 	}
 }
