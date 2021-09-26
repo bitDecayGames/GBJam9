@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import states.PlayState;
 import flixel.FlxG;
@@ -41,27 +42,46 @@ class House extends FlxSprite {
 		trace('HOUSE DELIVERED. ACCURACY: ${accuracy}');
 		#end
 
+			
+		var timerDelay:Float = .1;
+
 		var rating:String;
 		var num = Math.floor(accuracy);
 		if (num <= 1) {
 			// S
 			rating = "S";
 
+			new FlxTimer().start(timerDelay).onComplete = function(t:FlxTimer) {
+				FmodManager.PlaySoundOneShot(FmodSFX.ScoreFour);
+			}
+
 			// TODO: SFX perfect delivery
 		} else if (num <= 4) {
 			rating = "A";
+			new FlxTimer().start(timerDelay).onComplete = function(t:FlxTimer) {
+				FmodManager.PlaySoundOneShot(FmodSFX.ScoreThree);
+			}
 
 			// TODO: SFX great delivery
 		} else if (num <= 8) {
 			rating = "B";
+			new FlxTimer().start(timerDelay).onComplete = function(t:FlxTimer) {
+				FmodManager.PlaySoundOneShot(FmodSFX.ScoreTwo);
+			}
 
 			// TODO: SFX ok delivery
 		} else if (num <= 10) {
 			rating = "C";
+			new FlxTimer().start(timerDelay).onComplete = function(t:FlxTimer) {
+				FmodManager.PlaySoundOneShot(FmodSFX.ScoreOne);
+			}
 
 			// TODO: SFX poor delivery
 		} else {
 			rating = "F";
+			new FlxTimer().start(timerDelay).onComplete = function(t:FlxTimer) {
+				FmodManager.PlaySoundOneShot(FmodSFX.ScoreZero);
+			}
 
 			// TODO: SFX terrible delivery
 		}

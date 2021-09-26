@@ -28,6 +28,7 @@ class FmodSFX {
     public static inline var ScoreZero:String = "event:/SFX/Score/ScoreZero";
     public static inline var Shoot:String = "event:/SFX/Shoot/Shoot";
     public static inline var ShootDirection:String = "event:/SFX/Shoot/ShootDirection";
+    public static inline var ShootGround:String = "event:/SFX/Shoot/ShootGround";
     public static inline var Splash:String = "event:/SFX/Splash/Splash";
     public static inline var SplashSmall:String = "event:/SFX/Splash/SplashSmall";
     public static inline var TruckExplosion:String = "event:/SFX/Truck/TruckExplosion";

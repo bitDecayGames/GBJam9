@@ -12,8 +12,8 @@ class Bomb extends FlxSprite {
 	}
 
 	public function hitLevel() {
-		// TODO: SFX player attack strikes ground
-		FmodManager.PlaySoundOneShot(FmodSFX.CrateLand);
+		// TODO: SFX (done) player attack strikes ground
+		FmodManager.PlaySoundOneShot(FmodSFX.ShootGround);
 		cast(FlxG.state, PlayState).addParticle(new Dust(x + width / 2, y + 5, false));
 	}
 }
