@@ -91,7 +91,7 @@ class PlayState extends FlxTransitionableState {
 		// TODO: Keep an eye on this and see if we get more split glitch/flicker
 		gustPool.preAllocate(100);
 
-		var levelFile = AssetPaths.test__json;
+		var levelFile = AssetPaths.level1__json;
 
 		#if testland
 		levelFile = AssetPaths.takeoff_landing_test__json;
@@ -187,6 +187,13 @@ class PlayState extends FlxTransitionableState {
 
 				// TODO: Need to make the player feel like they took control
 				player.velocity.y = -10;
+
+				// Trigger anything that's on-screen at start
+				for (marker in level.triggeredEntities) {
+					if (marker.location.x <= FlxG.width) {
+						marker.maker();
+					}
+				}
 			}
 		}
 
@@ -231,7 +238,7 @@ class PlayState extends FlxTransitionableState {
 						FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
 						FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
 					}
-					
+
 					if (FmodManager.IsSoundPlaying("BalloonFire")) {
 						FmodManager.StopSoundImmediately("BalloonFire");
 					}

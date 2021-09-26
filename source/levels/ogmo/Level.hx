@@ -63,13 +63,7 @@ class Level {
 					var marker = new EntityMarker(entityData.name, triggerPoint, () -> {
 						state.addBox(new Box(boxId++, entityData.x, entityData.y, entityData.values.open_at * 8));
 					});
-
-					// to let us have stuff spawn immediately
-					if (entityData.x < FlxG.width) {
-						staticEntities.push(marker);
-					} else {
-						triggeredEntities.push(marker);
-					}
+					triggeredEntities.push(marker);
 				case "rocket":
 					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
 
