@@ -1,5 +1,6 @@
 package states;
 
+import flixel.util.FlxTimer;
 import metrics.Points;
 import flixel.util.FlxStringUtil;
 import flixel.text.FlxBitmapText;
@@ -231,9 +232,11 @@ class PlayState extends FlxTransitionableState {
 				levelFinished = true;
 
 				if (player.controllable){
+
+					FmodManager.PlaySoundOneShot(FmodSFX.BalloonLand);
+					
 					if (FmodManager.IsSoundPlaying("BalloonDeflate")) {
-						FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
-						FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
+						FmodManager.StopSoundImmediately("BalloonDeflate");
 					}
 
 					if (FmodManager.IsSoundPlaying("BalloonFire")) {
