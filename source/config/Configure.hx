@@ -1,6 +1,5 @@
 package config;
 
-import states.CreditsState.CreditEntry;
 import com.bitdecay.analytics.Bitlytics;
 import com.bitdecay.net.influx.InfluxDB;
 import misc.Macros;
@@ -35,15 +34,5 @@ class Configure {
 
 		Bitlytics.Init(config.analytics.name, InfluxDB.load(config.analytics.influx, analyticsToken), devMode);
 		Bitlytics.Instance().NewSession();
-	}
-
-	/**
-	 * Helper to load credits entries from config.json
-	 *
-	 * @returns Array of CreditEntry objects
-	 */
-	public static function getCredits():Array<CreditEntry> {
-		var creditSections:Array<CreditEntry> = cast config.credits.sections;
-		return creditSections;
 	}
 }

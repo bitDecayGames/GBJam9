@@ -47,9 +47,10 @@ class Main extends Sprite {
 		#end
 		FlxG.autoPause = false;
 
+		// I don't think "fade" transitions are really in the spirit of GB games
 		// Set up basic transitions. To override these see `transOut` and `transIn` on any FlxTransitionable states
-		FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.35);
-		FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.35);
+		// FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.35);
+		// FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.35);
 
 		// TODO: if we want another font, we gotta figure out how to get it to work at low resolution
 		// FlxTextFactory.defaultFont = AssetPaths.Brain_Slab_8__ttf;

@@ -1,5 +1,6 @@
 package states;
 
+import entities.Truck;
 import entities.particle.Splash;
 import flixel.math.FlxPoint;
 import entities.Tree;
@@ -13,7 +14,6 @@ import levels.ogmo.Level;
 import ui.font.BitmapText;
 import ui.font.BitmapText.PressStart;
 import entities.ParentedSprite;
-import entities.PlayerDamager;
 import entities.RocketBoom;
 import entities.Bird;
 import entities.Box;
@@ -22,7 +22,6 @@ import entities.Player;
 import entities.Rocket;
 import entities.Wind;
 import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup;
@@ -35,11 +34,13 @@ using extensions.FlxStateExt;
 class PlayState extends FlxTransitionableState {
 	public static inline var WALL_WIDTH = 16;
 
+	public static inline var SCROLL_SPEED = 4;
+
 	var level:Level;
 
 	var levelStarted = false;
 	var levelFinished = false;
-	var scrollSpeed = 3;
+	var scrollSpeed = SCROLL_SPEED;
 
 	var player:Player;
 	var ground:FlxSprite;
@@ -62,6 +63,7 @@ class PlayState extends FlxTransitionableState {
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
 	var fuses:FlxTypedGroup<Fuse> = new FlxTypedGroup();
 	var bombs:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
+	var trucks:FlxTypedGroup<Truck> = new FlxTypedGroup();
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
 
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
@@ -111,8 +113,8 @@ class PlayState extends FlxTransitionableState {
 		add(level.layer);
 		add(houses);
 		add(trees);
-		add(landing);
 		add(gusts);
+		add(trucks);
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
@@ -122,6 +124,7 @@ class PlayState extends FlxTransitionableState {
 		add(birds);
 		add(waters);
 		add(splashes);
+		add(landing);
 
 		for (marker in level.staticEntities) {
 			marker.maker();
@@ -158,13 +161,10 @@ class PlayState extends FlxTransitionableState {
 			}
 		}
 
-		if (levelStarted && !levelFinished) {
-			// Small correction of -1 to make it align correctly
-			if (FlxG.camera.scroll.x < level.layer.width - FlxG.camera.width - 1) {
-				// only scroll to the end of the stage
-				FlxG.camera.scroll.x += scrollSpeed * delta;
-			}
-		}
+		FlxG.camera.scroll.x = player.playerMiddleX() - FlxG.camera.width / 2;
+
+		FlxG.camera.scroll.x = Math.max(0, FlxG.camera.scroll.x);
+		FlxG.camera.scroll.x = Math.min(level.layer.width - FlxG.camera.width, FlxG.camera.scroll.x);
 
 		doCollisions();
 
@@ -193,6 +193,22 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function doCollisions() {
+		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
+			levelFinished = true;
+
+			player.loseControl();
+			player.velocity.set();
+			player.maxVelocity.set();
+
+			var finishText = new PressStart(30, 30, "Grounded\nBasket! ");
+			finishText.scrollFactor.set(0, 0);
+			FlxFlicker.flicker(finishText, 0, 0.5);
+			add(finishText);
+
+			// TODO: Finishing sequence
+			// TODO: scoring mechanism for landing
+		});
+
 		// Keep player in bounds
 		// XXX: WE are doing brute checks against x and y positions because collisions are really jacked up with FlxSpriteGroups
 		if (player.y < 0) {
@@ -225,12 +241,6 @@ class PlayState extends FlxTransitionableState {
 		// 	return true;
 		// });
 
-		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
-			levelFinished = true;
-
-			// TODO: Finishing sequence
-		});
-
 		FlxG.overlap(player, winds, function(p:Player, w:Wind) {
 			w.blowOn(player);
 		});
@@ -253,9 +263,11 @@ class PlayState extends FlxTransitionableState {
 
 		// check boxes against houses first
 		FlxG.overlap(boxes, activeHouses, (b, h) -> {
-			if (b.dropped) {
-				h.packageArrived(b);
-				activeHouses.remove(h);
+			if (h.deliverable) {
+				if (b.dropped) {
+					h.packageArrived(b);
+					activeHouses.remove(h);
+				}
 			}
 		});
 
@@ -299,6 +311,11 @@ class PlayState extends FlxTransitionableState {
 			bi.die();
 		});
 
+		FlxG.overlap(bombs, trucks, (b, t:Truck) -> {
+			b.kill();
+			t.hit();
+		});
+
 		FlxG.collide(level.layer, bombs, (g, b) -> {
 			b.kill();
 		});
@@ -337,8 +354,7 @@ class PlayState extends FlxTransitionableState {
 		cast(walls.members[1], FlxSprite).x = FlxG.camera.scroll.x + FlxG.width;
 	}
 
-	function setupTestObjects() {
-	}
+	function setupTestObjects() {}
 
 	public function addBoom(rocketBoom:RocketBoom) {
 		rocketsBooms.add(rocketBoom);
@@ -401,6 +417,10 @@ class PlayState extends FlxTransitionableState {
 
 	public function addParticle(p:FlxSprite) {
 		splashes.add(p);
+	}
+
+	public function addTruck(truck:Truck) {
+		trucks.add(truck);
 	}
 
 	function addSplash(p:FlxPoint, big:Bool) {

@@ -1,5 +1,7 @@
 package levels.ogmo;
 
+import entities.RedTruck;
+import entities.Truck;
 import flixel.util.FlxColor;
 import entities.Tree;
 import entities.Fuse;
@@ -83,15 +85,23 @@ class Level {
 					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
 						triggeree.trigger();
 					}));
+				case "truck":
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						state.addTruck(new Truck(entityData.x, entityData.y));
+					}));
+				case "big_truck":
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						state.addTruck(new RedTruck(entityData.x, entityData.y));
+					}));
 
 				// START Statics
 				case "house":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
-						state.addHouse(new House(entityData.x, entityData.y));
+						state.addHouse(new House(entityData.x, entityData.y, true));
 					}));
 				case "friendlyHouse":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
-						state.addHouse(new House(entityData.x, entityData.y));
+						state.addHouse(new House(entityData.x, entityData.y, false));
 					}));
 				case "wind":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
