@@ -64,16 +64,6 @@
         {"name": "friendlyHouse", "id": 81, "_eid": "45199929", "x": 224, "y": 104, "originX": 0, "originY": 0},
         {
           "name": "bird",
-          "id": 82,
-          "_eid": "06910497",
-          "x": 184,
-          "y": 56,
-          "originX": 0,
-          "originY": 0,
-          "values": {"direction": "W"}
-        },
-        {
-          "name": "bird",
           "id": 83,
           "_eid": "06910497",
           "x": 296,
