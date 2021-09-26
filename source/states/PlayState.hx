@@ -1,5 +1,8 @@
 package states;
 
+import flixel.util.FlxStringUtil;
+import flixel.text.FlxBitmapText;
+import metrics.Trackers;
 import entities.Bomb;
 import entities.Truck;
 import entities.particle.Splash;
@@ -71,6 +74,12 @@ class PlayState extends FlxTransitionableState {
 
 	var gustPool = new FlxPool<Gust>(Gust);
 
+	var score:Int = 0;
+	var timeDisplay:FlxBitmapText;
+
+	var points:Int = 0;
+	var pointsDisplay:FlxBitmapText;
+
 	override public function create() {
 		super.create();
 		Lifecycle.startup.dispatch();
@@ -137,6 +146,17 @@ class PlayState extends FlxTransitionableState {
 		FlxFlicker.flicker(launchText, 0, 0.5);
 		add(launchText);
 
+		Trackers.attemptTimer = 0;
+		timeDisplay = new AerostatRed(0, 0, "T");
+		timeDisplay.scrollFactor.set();
+
+		pointsDisplay = new AerostatRed(FlxG.width - 8 * 6, 0, "000000");
+		pointsDisplay.scrollFactor.set();
+
+		// add this last so it is on top of everything else
+		add(timeDisplay);
+		add(pointsDisplay);
+
 		// var mockPoints = new PressStart(8, FlxG.height - 17, "Score\n1234");
 		// add(mockPoints);
 
@@ -149,6 +169,13 @@ class PlayState extends FlxTransitionableState {
 		FlxG.watch.addQuick("Gust Pool size: ", gustPool.length);
 		FlxG.watch.addQuick("init count: ", Gust.initCount);
 		#end
+
+		if (player.controllable) {
+			Trackers.attemptTimer += delta;
+			timeDisplay.text = "T" + StringTools.lpad(FlxStringUtil.formatTime(Trackers.attemptTimer, false), " ", 5);
+		}
+
+		pointsDisplay.text = StringTools.lpad(Std.string(score), "0", 6);
 
 		if (!levelStarted) {
 			if (SimpleController.just_pressed(Button.UP)) {
