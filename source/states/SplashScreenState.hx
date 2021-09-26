@@ -29,8 +29,8 @@ class SplashScreenState extends FlxState {
 
 		// List splash screen image paths here
 		loadSplashImages([
+			new SplashImage(AssetPaths.ld_logo__png),
 			new SplashImage(AssetPaths.bitdecaygamesinverted__png),
-			new SplashImage(AssetPaths.ld_logo__png)
 		]);
 
 		timer = splashDuration;
@@ -76,6 +76,12 @@ class SplashScreenState extends FlxState {
 		fadeInTween.onStart = (t) -> {
 			fadingOut = false;
 		};
+		fadeInTween.onComplete = (t) -> {
+			if (index == 0) {
+				// TODO: SFX Play gameboy sound instead
+				FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
+			}
+		}
 		if (splash.animation.getByName(PLAY_ANIMATION) != null) {
 			fadeInTween.onComplete = (t) -> splash.animation.play(PLAY_ANIMATION);
 			splash.animation.callback = (name, frameNumber, frameIndex) -> {

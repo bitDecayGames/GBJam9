@@ -5,7 +5,7 @@ import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
-class Rocket extends FlxSprite {
+class Rocket extends TriggerableSprite {
 	// These are in distance from center
 	var altitude:Float = 64;
 	var speed:Float = 50;
@@ -42,5 +42,9 @@ class Rocket extends FlxSprite {
 				}
 			});
 		}
+	}
+
+	override public function trigger() {
+		fly();
 	}
 }

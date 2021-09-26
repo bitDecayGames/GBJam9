@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="GBJam9" main="Main" version="0.0.1" company="BitDecay Games" />
+	<app title="Aerostat" main="Main" version="0.0.1" company="BitDecay Games, LLC" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -45,9 +45,9 @@
 
 	<haxelib name="bitdecaybtree" />
 	<haxelib name="bitlytics" />
-	<haxelib name="dialog-manager" />
+	<!-- <haxelib name="dialog-manager" /> -->
 	<haxelib name="haxefmod" />
-	<haxelib name="textpop" />
+	<!-- <haxelib name="textpop" /> -->
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->

@@ -1,5 +1,11 @@
 package levels.ogmo;
 
+import flixel.util.FlxColor;
+import entities.Tree;
+import entities.Fuse;
+import entities.TriggerableSprite;
+import flixel.group.FlxGroup;
+import entities.Landing;
 import entities.Player;
 import entities.Bird;
 import entities.Box;
@@ -19,6 +25,7 @@ import states.PlayState;
 class Level {
 	public var layer:FlxTilemap;
 	public var decor:FlxTilemap;
+	public var bgDecals:FlxGroup;
 
 	public var takeoff:FlxSprite;
 	public var landing:FlxSprite;
@@ -30,6 +37,8 @@ class Level {
 
 		layer = loader.loadTilemap(AssetPaths.ground_new__png, "layout");
 		decor = loader.loadTilemap(AssetPaths.ground_new__png, "decor");
+
+		bgDecals = loader.loadDecals("background", "assets/");
 
 		loader.loadEntities((entityData) -> {
 			switch (entityData.name) {
@@ -47,17 +56,32 @@ class Level {
 					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
 					// delay is number of tiles
 					triggerPoint.x += entityData.values.delay * 8;
-					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
+					var marker = new EntityMarker(entityData.name, triggerPoint, () -> {
 						state.addBox(new Box(entityData.x, entityData.y, entityData.values.open_at * 8));
-					}));
+					});
+
+					// to let us have stuff spawn immediately
+					if (entityData.x < FlxG.width) {
+						staticEntities.push(marker);
+					} else {
+						triggeredEntities.push(marker);
+					}
 				case "rocket":
 					var triggerPoint = FlxPoint.get(entityData.x, entityData.y);
-					// delay is number of tiles
-					triggerPoint.x += entityData.values.delay * 8;
+
 					var rocket = new Rocket(entityData.x, entityData.y, entityData.values.alt * 8);
 					state.addRocket(rocket);
+
+					var triggeree:TriggerableSprite = rocket;
+					// delay is in number of fuse segments
+					for (i in 0...entityData.values.delay) {
+						var fuse = new Fuse(triggeree.x - 8, triggeree.y, triggeree);
+						state.addFuse(fuse);
+						triggeree = fuse;
+					}
+
 					triggeredEntities.push(new EntityMarker(entityData.name, triggerPoint, () -> {
-						rocket.fly();
+						triggeree.trigger();
 					}));
 
 				// START Statics
@@ -77,6 +101,24 @@ class Level {
 				case "takeoff":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addPlayer(new Player(entityData.x, entityData.y));
+					}));
+				case "landing":
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						state.addLanding(new Landing(entityData.x, entityData.y, entityData.width));
+					}));
+				case "tree":
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						state.addTree(new Tree(entityData.x, entityData.y));
+					}));
+				case "water":
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						var water = new FlxSprite(entityData.x, entityData.y);
+						water.makeGraphic(entityData.width, entityData.height, FlxColor.BLUE);
+						water.alpha = 0;
+						#if debug
+						water.alpha = 0.2;
+						#end
+						state.addWater(water);
 					}));
 				default:
 					var msg = 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';

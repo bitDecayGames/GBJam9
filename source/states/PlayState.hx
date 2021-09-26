@@ -1,5 +1,12 @@
 package states;
 
+import entities.particle.Splash;
+import flixel.math.FlxPoint;
+import entities.Tree;
+import entities.Fuse;
+import flixel.util.FlxPool;
+import entities.Gust;
+import entities.Landing;
 import flixel.effects.FlxFlicker;
 import input.SimpleController;
 import levels.ogmo.Level;
@@ -31,6 +38,7 @@ class PlayState extends FlxTransitionableState {
 	var level:Level;
 
 	var levelStarted = false;
+	var levelFinished = false;
 	var scrollSpeed = 3;
 
 	var player:Player;
@@ -43,14 +51,22 @@ class PlayState extends FlxTransitionableState {
 
 	var playerGroup:FlxTypedGroup<Player> = new FlxTypedGroup();
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
+	var gusts:FlxTypedGroup<Gust> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
 	var houses:FlxTypedGroup<House> = new FlxTypedGroup();
+	var trees:FlxTypedGroup<Tree> = new FlxTypedGroup();
+	var waters:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
+	var splashes:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
+	var landing:FlxTypedGroup<Landing> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
+	var fuses:FlxTypedGroup<Fuse> = new FlxTypedGroup();
 	var bombs:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
 
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
+
+	var gustPool = new FlxPool<Gust>(Gust);
 
 	override public function create() {
 		super.create();
@@ -62,7 +78,16 @@ class PlayState extends FlxTransitionableState {
 		FlxG.debugger.drawDebug = true;
 		#end
 
-		level = new Level(AssetPaths.test__json, this);
+		// TODO: Keep an eye on this and see if we get more split glitch/flicker
+		gustPool.preAllocate(100);
+
+		var levelFile = AssetPaths.test__json;
+
+		#if testland
+		levelFile = AssetPaths.takeoff_landing_test__json;
+		#end
+
+		level = new Level(levelFile, this);
 		#if debug
 		trace('statics: ${level.staticEntities}');
 		trace('triggers: ${level.triggeredEntities}');
@@ -77,16 +102,26 @@ class PlayState extends FlxTransitionableState {
 		setupScreenBounds();
 
 		// Adding these in proper rending order
+		level.bgDecals.forEach((decal) -> {
+			cast(decal, FlxSprite).scrollFactor.set(.5, 0);
+		});
+		add(level.bgDecals);
 		add(winds);
 		add(level.decor);
 		add(level.layer);
 		add(houses);
+		add(trees);
+		add(landing);
+		add(gusts);
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
+		add(fuses);
 		add(rockets);
 		add(rocketsBooms);
 		add(birds);
+		add(waters);
+		add(splashes);
 
 		for (marker in level.staticEntities) {
 			marker.maker();
@@ -106,6 +141,10 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	override public function update(delta:Float) {
+		#if debug
+		FlxG.watch.addQuick("Gust Pool size: ", gustPool.length);
+		FlxG.watch.addQuick("init count: ", Gust.initCount);
+		#end
 
 		if (!levelStarted) {
 			if (SimpleController.just_pressed(Button.UP)) {
@@ -119,10 +158,12 @@ class PlayState extends FlxTransitionableState {
 			}
 		}
 
-		if (levelStarted) {
-			#if !noscroll
-			FlxG.camera.scroll.x += scrollSpeed * delta;
-			#end
+		if (levelStarted && !levelFinished) {
+			// Small correction of -1 to make it align correctly
+			if (FlxG.camera.scroll.x < level.layer.width - FlxG.camera.width - 1) {
+				// only scroll to the end of the stage
+				FlxG.camera.scroll.x += scrollSpeed * delta;
+			}
 		}
 
 		doCollisions();
@@ -165,13 +206,17 @@ class PlayState extends FlxTransitionableState {
 		}
 
 		// TODO: This width calculation may not be good as it takes the indicator into account
-		if (player.x > camera.scroll.x + camera.width - player.width) {
+		if (player.x > camera.scroll.x + camera.width - player.collisionWidth) {
 			// player.velocity.x = 0;
-			player.x = camera.scroll.x + camera.width - player.width;
+			player.x = camera.scroll.x + camera.width - player.collisionWidth;
 		}
 
 		// TODO: the FlxSpriteGroup drifts because of this... need to figure out a different way to handle this
-		FlxG.collide(level.layer, player);
+		// FlxG.collide(level.layer, player);
+
+		if (player.y + player.collisionHeight > 128) {
+			player.y = 128 - player.collisionHeight;
+		}
 
 		// TODO: This seems even more buggy. wtf.
 		// level.layer.overlapsWithCallback(player, (l, b) -> {
@@ -180,12 +225,22 @@ class PlayState extends FlxTransitionableState {
 		// 	return true;
 		// });
 
+		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
+			levelFinished = true;
+
+			// TODO: Finishing sequence
+		});
+
 		FlxG.overlap(player, winds, function(p:Player, w:Wind) {
 			w.blowOn(player);
 		});
 
 		FlxG.overlap(player, birds, function(p:Player, b:Bird) {
 			player.hitBy(b);
+		});
+
+		FlxG.overlap(trees, winds, function(t:Tree, w:Wind) {
+			t.beBlown();
 		});
 
 		FlxG.overlap(player, rocketsBooms, function(p:Player, r:ParentedSprite) {
@@ -229,6 +284,13 @@ class PlayState extends FlxTransitionableState {
 				// b.y = g.y - b.height;
 				return true;
 			});
+
+			FlxG.overlap(box, waters, (b:FlxSprite, w:FlxSprite) -> {
+				box.kill();
+				addSplash(b.getMidpoint(), true);
+
+				// TODO: SFX big splash
+			});
 		}
 
 		FlxG.overlap(bombs, birds, (bo, bi) -> {
@@ -239,6 +301,13 @@ class PlayState extends FlxTransitionableState {
 
 		FlxG.collide(level.layer, bombs, (g, b) -> {
 			b.kill();
+		});
+
+		FlxG.overlap(bombs, waters, (b, w) -> {
+			b.kill();
+			addSplash(b.getMidpoint(), false);
+
+			// TODO: SFX small splash
 		});
 	}
 
@@ -269,10 +338,6 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function setupTestObjects() {
-		// TODO: Load player from ogmo level
-		// player = new Player();
-		// player.x = 30;
-		// playerGroup.add(player);
 	}
 
 	public function addBoom(rocketBoom:RocketBoom) {
@@ -296,6 +361,10 @@ class PlayState extends FlxTransitionableState {
 		winds.add(wind);
 	}
 
+	public function addTree(tree:Tree) {
+		trees.add(tree);
+	}
+
 	public function addBox(box:Box) {
 		boxes.add(box);
 	}
@@ -304,9 +373,39 @@ class PlayState extends FlxTransitionableState {
 		rockets.add(rocket);
 	}
 
+	public function addFuse(fuse:Fuse) {
+		fuses.add(fuse);
+	}
+
 	public function addPlayer(player:Player) {
 		this.player = player;
 		playerGroup.add(player);
+	}
+
+	public function addLanding(l:Landing) {
+		landing.add(l);
+	}
+
+	public function addGust(x:Float, y:Float, dir:Cardinal) {
+		var gust = gustPool.get();
+		gusts.add(gust);
+		gust.setup(x, y, dir);
+		gust.done = () -> {
+			gustPool.put(gust);
+		};
+	}
+
+	public function addWater(water:FlxSprite) {
+		waters.add(water);
+	}
+
+	public function addParticle(p:FlxSprite) {
+		splashes.add(p);
+	}
+
+	function addSplash(p:FlxPoint, big:Bool) {
+		var splash = new Splash(p.x, p.y, big);
+		splashes.add(splash);
 	}
 
 	override public function onFocusLost() {
