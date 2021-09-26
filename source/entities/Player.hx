@@ -315,6 +315,8 @@ class Player extends FlxSpriteGroup {
 
 	public function addBox(b:Box) {
 		if (!boxes.contains(b)) {
+			// TODO: SFX (done) play get crate sound
+			FmodManager.PlaySoundOneShot(FmodSFX.CrateGet);
 			b.closeChute(true);
 			b.attached = true;
 			b.grabbable = false;

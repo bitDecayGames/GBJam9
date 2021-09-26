@@ -201,7 +201,7 @@ class PlayState extends FlxTransitionableState {
 					FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
 					FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
 				}
-				
+
 				player.loseControl();
 				player.velocity.set();
 				player.maxVelocity.set();
@@ -320,8 +320,10 @@ class PlayState extends FlxTransitionableState {
 		});
 
 		FlxG.overlap(bombs, trucks, (b, t:Truck) -> {
-			b.kill();
-			t.hit();
+			if (!t.exploded) {
+				b.kill();
+				t.hit();
+			}
 		});
 
 		FlxG.collide(level.layer, bombs, (g, b) -> {
