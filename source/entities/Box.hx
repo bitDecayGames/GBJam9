@@ -63,6 +63,10 @@ class Box extends FlxSpriteGroup {
 		acceleration.y = WorldConstants.GRAVITY;
 	}
 
+	public function boxMiddleX() {
+		return box.x + box.width / 2;
+	}
+
 	override public function update(delta:Float) {
 		super.update(delta);
 
@@ -130,7 +134,7 @@ class Box extends FlxSpriteGroup {
 		if (callback != null) {
 			callback(null);
 		}
-		
+
 		super.kill();
 	}
 }
