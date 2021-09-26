@@ -24,7 +24,6 @@ class Player extends FlxSpriteGroup {
 
 	public var nextAnim:String = IDLE_ANIM;
 
-
 	var controllable = false;
 
 	var balloon:ParentedSprite;

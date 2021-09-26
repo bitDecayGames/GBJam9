@@ -8,7 +8,6 @@ import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
 class Box extends FlxSpriteGroup {
-
 	// TODO: this state is quite messy. We should find a way to simplify it
 	public var attached = false;
 	public var dropped = false;
@@ -20,6 +19,7 @@ class Box extends FlxSpriteGroup {
 
 	// public so we can properly do collisions/separation
 	public var box:ParentedSprite;
+
 	var chute:ParentedSprite;
 
 	public function new(x:Float, y:Float, openAltitude:Float) {
@@ -35,12 +35,12 @@ class Box extends FlxSpriteGroup {
 		chute.animation.add("hidden", [0], 10);
 		chute.animation.play("hidden");
 		chute.animation.finishCallback = (name) -> {
-			switch(name) {
-			case "open":
-				// parachute opened, slow decent
-				maxVelocity.y = 10;
-			default:
-				// nothing to do
+			switch (name) {
+				case "open":
+					// parachute opened, slow decent
+					maxVelocity.y = 10;
+				default:
+					// nothing to do
 			}
 		}
 		// not sure we need this one as open willstop on the open frame
@@ -81,7 +81,9 @@ class Box extends FlxSpriteGroup {
 		acceleration.y = WorldConstants.GRAVITY;
 		maxVelocity.set();
 		// give us a delay so we don't instantly re-grab the box
-		new FlxTimer().start(1, (t) -> { grabbable = true;});
+		new FlxTimer().start(1, (t) -> {
+			grabbable = true;
+		});
 		colliding = true;
 	}
 

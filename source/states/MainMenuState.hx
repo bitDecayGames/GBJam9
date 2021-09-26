@@ -48,20 +48,20 @@ class MainMenuState extends FlxUIState {
 		super.create();
 
 		// if (_makeCursor) {
-			selector = new FlxSprite();
-			selector.loadGraphic(AssetPaths.indicators__png, true, 8, 8);
-			selector.animation.add("pointing", [0, 1], 3, true, true);
-			selector.animation.play("pointing");
-			add(selector);
+		selector = new FlxSprite();
+		selector.loadGraphic(AssetPaths.indicators__png, true, 8, 8);
+		selector.animation.add("pointing", [0, 1], 3, true, true);
+		selector.animation.play("pointing");
+		add(selector);
 
-			// var keys:Int = 0;
-			// if (Configure.config.menus.keyboardNavigation) {
-			// 	keys |= FlxUICursor.KEYS_ARROWS | FlxUICursor.KEYS_WASD;
-			// }
-			// if (Configure.config.menus.controllerNavigation) {
-			// 	keys |= FlxUICursor.GAMEPAD_DPAD;
-			// }
-			// cursor.setDefaultKeys(keys);
+		// var keys:Int = 0;
+		// if (Configure.config.menus.keyboardNavigation) {
+		// 	keys |= FlxUICursor.KEYS_ARROWS | FlxUICursor.KEYS_WASD;
+		// }
+		// if (Configure.config.menus.controllerNavigation) {
+		// 	keys |= FlxUICursor.GAMEPAD_DPAD;
+		// }
+		// cursor.setDefaultKeys(keys);
 		// }
 
 		FmodManager.PlaySong(FmodSongs.LetsGo);
@@ -85,15 +85,12 @@ class MainMenuState extends FlxUIState {
 	// 	if (name == FlxUITypedButton.CLICK_EVENT) {
 	// 		var button_action:String = params[0];
 	// 		trace('Action: "${button_action}"');
-
 	// 		if (button_action == "play") {
 	// 			clickPlay();
 	// 		}
-
 	// 		if (button_action == "credits") {
 	// 			clickCredits();
 	// 		}
-
 	// 		#if windows
 	// 		if (button_action == "exit") {
 	// 			clickExit();
@@ -133,7 +130,7 @@ class MainMenuState extends FlxUIState {
 		selector.y = buttonLocations[cursorIndex].y;
 
 		if (SimpleController.just_pressed(Button.A)) {
-			switch(cursorIndex) {
+			switch (cursorIndex) {
 				case 0:
 					clickPlay();
 				case 1:

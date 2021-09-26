@@ -155,7 +155,6 @@ class PlayState extends FlxTransitionableState {
 				// only scroll to the end of the stage
 				FlxG.camera.scroll.x += scrollSpeed * delta;
 			}
-
 		}
 
 		doCollisions();
@@ -311,9 +310,7 @@ class PlayState extends FlxTransitionableState {
 		cast(walls.members[1], FlxSprite).x = FlxG.camera.scroll.x + FlxG.width;
 	}
 
-	function setupTestObjects() {
-
-	}
+	function setupTestObjects() {}
 
 	public function addBoom(rocketBoom:RocketBoom) {
 		rocketsBooms.add(rocketBoom);
@@ -361,7 +358,9 @@ class PlayState extends FlxTransitionableState {
 		var gust = gustPool.get();
 		gusts.add(gust);
 		gust.setup(x, y, dir);
-		gust.done = () -> { gustPool.put(gust); };
+		gust.done = () -> {
+			gustPool.put(gust);
+		};
 	}
 
 	override public function onFocusLost() {

@@ -17,8 +17,8 @@ class Gust extends FlxSprite {
 		initCount++;
 
 		loadGraphic(AssetPaths.leftRight__png, true, 16, 8);
-		animation.add("blowLeft", [ for(i in 0...8) i], 10, false);
-		animation.add("blowRight", [ for(i in 0...8) i], 10, false, true);
+		animation.add("blowLeft", [for (i in 0...8) i], 10, false);
+		animation.add("blowRight", [for (i in 0...8) i], 10, false, true);
 		animation.finishCallback = (name) -> {
 			kill();
 			done();
