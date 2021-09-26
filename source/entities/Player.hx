@@ -153,7 +153,7 @@ class Player extends FlxSpriteGroup {
 			}
 		}
 
-		
+
 		if (FlxG.keys.pressed.F){
 			velocity.x += 100;
 		}
@@ -286,8 +286,8 @@ class Player extends FlxSpriteGroup {
 				}
 				vel.addPoint(velocity);
 
-				var toss = new FlxSprite(pos.x, pos.y);
-				toss.loadGraphic(AssetPaths.bomb__png);
+				// TODO: Pool these, or at least poor-man's pool these
+				var toss = new Bomb(pos.x, pos.y);
 				toss.velocity.copyFrom(vel);
 				toss.acceleration.y = WorldConstants.GRAVITY;
 

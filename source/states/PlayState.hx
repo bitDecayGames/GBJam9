@@ -1,6 +1,6 @@
 package states;
 
-import haxefmod.FmodEvents.FmodCallback;
+import entities.Bomb;
 import entities.Truck;
 import entities.particle.Splash;
 import flixel.math.FlxPoint;
@@ -328,8 +328,9 @@ class PlayState extends FlxTransitionableState {
 			}
 		});
 
-		FlxG.collide(level.layer, bombs, (g, b) -> {
+		FlxG.collide(level.layer, bombs, (g, b:Bomb) -> {
 			b.kill();
+			b.hitLevel();
 		});
 
 		FlxG.overlap(bombs, waters, (b, w) -> {
