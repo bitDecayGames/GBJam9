@@ -194,24 +194,26 @@ class PlayState extends FlxTransitionableState {
 
 	function doCollisions() {
 		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
-			levelFinished = true;
+			if (player.isControllable()) {
+				levelFinished = true;
 
-			if (player.controllable){
-				FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
-				FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
+				if (player.controllable){
+					FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
+					FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
+				}
+				
+				player.loseControl();
+				player.velocity.set();
+				player.maxVelocity.set();
+
+				var finishText = new PressStart(30, 30, "Grounded\nBasket! ");
+				finishText.scrollFactor.set(0, 0);
+				FlxFlicker.flicker(finishText, 0, 0.5);
+				add(finishText);
+
+				// TODO: Finishing sequence
+				// TODO: scoring mechanism for landing
 			}
-			
-			player.loseControl();
-			player.velocity.set();
-			player.maxVelocity.set();
-
-			var finishText = new PressStart(30, 30, "Grounded\nBasket! ");
-			finishText.scrollFactor.set(0, 0);
-			FlxFlicker.flicker(finishText, 0, 0.5);
-			add(finishText);
-
-			// TODO: Finishing sequence
-			// TODO: scoring mechanism for landing
 		});
 
 		// Keep player in bounds
