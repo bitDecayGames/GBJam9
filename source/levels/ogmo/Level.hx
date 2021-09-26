@@ -1,5 +1,6 @@
 package levels.ogmo;
 
+import entities.Tree;
 import entities.Fuse;
 import entities.TriggerableSprite;
 import flixel.group.FlxGroup;
@@ -103,6 +104,10 @@ class Level {
 				case "landing":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addLanding(new Landing(entityData.x, entityData.y, entityData.width));
+					}));
+				case "tree":
+					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
+						state.addTree(new Tree(entityData.x, entityData.y));
 					}));
 				default:
 					var msg = 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';
