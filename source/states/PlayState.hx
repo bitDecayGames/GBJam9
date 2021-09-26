@@ -1,5 +1,6 @@
 package states;
 
+import entities.Bomb;
 import entities.Truck;
 import entities.particle.Splash;
 import flixel.math.FlxPoint;
@@ -201,7 +202,7 @@ class PlayState extends FlxTransitionableState {
 					FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
 					FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
 				}
-				
+
 				player.loseControl();
 				player.velocity.set();
 				player.maxVelocity.set();
@@ -325,8 +326,9 @@ class PlayState extends FlxTransitionableState {
 			t.hit();
 		});
 
-		FlxG.collide(level.layer, bombs, (g, b) -> {
+		FlxG.collide(level.layer, bombs, (g, b:Bomb) -> {
 			b.kill();
+			b.hitLevel();
 		});
 
 		FlxG.overlap(bombs, waters, (b, w) -> {
