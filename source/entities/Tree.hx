@@ -9,12 +9,11 @@ class Tree extends FlxSprite {
 		loadGraphic(AssetPaths.tree__png, true, 32, 24);
 		animation.add("still", [0], 0);
 		animation.add("blow", [1, 2, 3, 4, 5], 3);
-		animation.play("blow");
+		animation.play("still");
 	}
 
 	public function beBlown() {
 		if (animation.name != "blow") {
-			alpha = 0.5;
 			animation.play("blow");
 		}
 	}

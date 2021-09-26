@@ -318,9 +318,6 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function setupTestObjects() {
-		var tree = new Tree(90, 50);
-		tree.velocity.y = 5;
-		trees.add(tree);
 	}
 
 	public function addBoom(rocketBoom:RocketBoom) {
