@@ -1,5 +1,6 @@
 package states;
 
+import entities.Tree;
 import entities.Fuse;
 import flixel.util.FlxPool;
 import entities.Gust;
@@ -51,6 +52,7 @@ class PlayState extends FlxTransitionableState {
 	var gusts:FlxTypedGroup<Gust> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
 	var houses:FlxTypedGroup<House> = new FlxTypedGroup();
+	var trees:FlxTypedGroup<Tree> = new FlxTypedGroup();
 	var landing:FlxTypedGroup<Landing> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
@@ -104,6 +106,7 @@ class PlayState extends FlxTransitionableState {
 		add(level.decor);
 		add(level.layer);
 		add(houses);
+		add(trees);
 		add(landing);
 		add(gusts);
 		add(playerGroup);
@@ -230,6 +233,10 @@ class PlayState extends FlxTransitionableState {
 			player.hitBy(b);
 		});
 
+		FlxG.overlap(trees, winds, function(t:Tree, w:Wind) {
+			t.beBlown();
+		});
+
 		FlxG.overlap(player, rocketsBooms, function(p:Player, r:ParentedSprite) {
 			// we collide with the sub-particles of the RocketBoom
 			var boom = cast(r.parent, RocketBoom);
@@ -310,7 +317,11 @@ class PlayState extends FlxTransitionableState {
 		cast(walls.members[1], FlxSprite).x = FlxG.camera.scroll.x + FlxG.width;
 	}
 
-	function setupTestObjects() {}
+	function setupTestObjects() {
+		var tree = new Tree(90, 50);
+		tree.velocity.y = 5;
+		trees.add(tree);
+	}
 
 	public function addBoom(rocketBoom:RocketBoom) {
 		rocketsBooms.add(rocketBoom);
@@ -331,6 +342,10 @@ class PlayState extends FlxTransitionableState {
 
 	public function addWind(wind:Wind) {
 		winds.add(wind);
+	}
+
+	public function addTree(tree:Tree) {
+		trees.add(tree);
 	}
 
 	public function addBox(box:Box) {
