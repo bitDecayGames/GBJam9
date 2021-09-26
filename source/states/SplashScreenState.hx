@@ -27,6 +27,8 @@ class SplashScreenState extends FlxState {
 	override public function create():Void {
 		super.create();
 
+		FmodManager.PlaySong(FmodSongs.HopIn);
+
 		// List splash screen image paths here
 		loadSplashImages([
 			new SplashImage(AssetPaths.ld_logo__png),
@@ -79,7 +81,7 @@ class SplashScreenState extends FlxState {
 		fadeInTween.onComplete = (t) -> {
 			if (index == 0) {
 				// TODO: SFX Play gameboy sound instead
-				FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
+				// FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 			}
 		}
 		if (splash.animation.getByName(PLAY_ANIMATION) != null) {

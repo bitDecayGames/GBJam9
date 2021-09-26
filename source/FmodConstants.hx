@@ -6,6 +6,7 @@
 package;
 
 class FmodSongs {
+    public static inline var HopIn:String = "event:/Music/HopIn";
     public static inline var LetsGo:String = "event:/Music/LetsGo";
 }
 
