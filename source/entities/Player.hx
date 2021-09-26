@@ -110,6 +110,10 @@ class Player extends FlxSpriteGroup {
 		add(aimIndicator);
 	}
 
+	public function isControllable():Bool {
+		return controllable;
+	}
+
 	public function takeControl() {
 		controllable = true;
 	}
@@ -183,7 +187,7 @@ class Player extends FlxSpriteGroup {
 			if (SimpleController.pressed(Button.UP, playerNum)) {
 				nextAnim = RISE_ANIM;
 				acceleration.y = riseAccel;
-				
+
 				// TODO: SFX (done) Play ascending (burner) sound (happens every frame)
 				if (!FmodManager.IsSoundPlaying(sfxBalloonFire)){
 					FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonFire, sfxBalloonFire);
