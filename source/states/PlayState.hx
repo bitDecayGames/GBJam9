@@ -197,6 +197,11 @@ class PlayState extends FlxTransitionableState {
 			if (player.isControllable()) {
 				levelFinished = true;
 
+				if (player.controllable){
+					FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
+					FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
+				}
+				
 				player.loseControl();
 				player.velocity.set();
 				player.maxVelocity.set();
@@ -305,6 +310,7 @@ class PlayState extends FlxTransitionableState {
 				addSplash(b.getMidpoint(), true);
 
 				// TODO: SFX big splash
+				FmodManager.PlaySoundOneShot(FmodSFX.Splash);
 			});
 		}
 

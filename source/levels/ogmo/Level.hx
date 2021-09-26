@@ -42,6 +42,8 @@ class Level {
 
 		bgDecals = loader.loadDecals("background", "assets/");
 
+		var boxId:Int = 0;
+
 		loader.loadEntities((entityData) -> {
 			switch (entityData.name) {
 				// START Dynamics
@@ -59,7 +61,7 @@ class Level {
 					// delay is number of tiles
 					triggerPoint.x += entityData.values.delay * 8;
 					var marker = new EntityMarker(entityData.name, triggerPoint, () -> {
-						state.addBox(new Box(entityData.x, entityData.y, entityData.values.open_at * 8));
+						state.addBox(new Box(boxId++, entityData.x, entityData.y, entityData.values.open_at * 8));
 					});
 
 					// to let us have stuff spawn immediately

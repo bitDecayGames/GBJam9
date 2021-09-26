@@ -16,6 +16,7 @@ class Box extends FlxSpriteGroup {
 	public var dropped = false;
 	public var grabbable = true;
 	public var colliding = true;
+	public var boxId = 0;
 
 	var openY:Float;
 	var openStarted = false;
@@ -23,10 +24,14 @@ class Box extends FlxSpriteGroup {
 	// public so we can properly do collisions/separation
 	public var box:ParentedSprite;
 
+	var callback:Dynamic->Void;
+
 	var chute:ParentedSprite;
 
-	public function new(x:Float, y:Float, openAltitude:Float) {
+	public function new(id:Int, x:Float, y:Float, openAltitude:Float) {
 		super(x, y);
+
+		boxId = id;
 
 		openY = openAltitude;
 
@@ -84,7 +89,10 @@ class Box extends FlxSpriteGroup {
 		}
 	}
 
-	public function released() {
+	public function released(?_callback:Dynamic->Void) {
+
+		callback = _callback;
+
 		acceleration.y = WorldConstants.GRAVITY;
 		maxVelocity.set();
 		// give us a delay so we don't instantly re-grab the box
@@ -107,6 +115,10 @@ class Box extends FlxSpriteGroup {
 				chute.animation.play("close");
 			}
 
+			if (callback != null) {
+				callback(null);
+			}
+
 			FmodManager.PlaySoundOneShot(FmodSFX.CrateLand);
 			cast(FlxG.state, PlayState).addParticle(new Dust(box.x + box.width / 2, y - box.offset.y));
 		}
@@ -115,5 +127,14 @@ class Box extends FlxSpriteGroup {
 	public function alignTo(alignX:Float, alignY:Float) {
 		x = alignX - box.width / 2 - 1;
 		y = alignY;
+	}
+
+	override public function kill():Void {
+
+		if (callback != null) {
+			callback(null);
+		}
+
+		super.kill();
 	}
 }
