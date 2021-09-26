@@ -153,13 +153,14 @@ class Player extends FlxSpriteGroup {
 			}
 		}
 
-
+		#if tanner
 		if (FlxG.keys.pressed.F){
 			velocity.x += 100;
 		}
 		if (FlxG.keys.pressed.D){
 			velocity.x -= 100;
 		}
+		#end
 
 		// TODO: Try to line up frames so the basket doesn't reset when changing between animations
 		balloon.animation.play(nextAnim);
