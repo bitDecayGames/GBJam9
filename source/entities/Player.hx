@@ -131,6 +131,12 @@ class Player extends FlxSpriteGroup {
 	}
 
 	override public function update(delta:Float) {
+		if (!controllable) {
+			// XXX: Is this ok?
+			velocity.set();
+			acceleration.set();
+		}
+
 		nextAnim = IDLE_ANIM;
 
 		// by default we fall unless something in controls tells us otherwise

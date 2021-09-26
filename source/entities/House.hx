@@ -1,5 +1,7 @@
 package entities;
 
+import metrics.DropScore;
+import metrics.Trackers;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import states.PlayState;
@@ -16,6 +18,14 @@ class House extends FlxSprite {
 	var perfectMaxDist:Float = 6;
 
 	public var deliverable:Bool = false;
+
+	public static var values = [
+		"S" => 2000,
+		"A" => 1000,
+		"B" => 500,
+		"C" => 250,
+		"F" => 0
+	];
 
 	public function new(x:Float, y:Float, deliverable:Bool) {
 		// offset by 16 due to how collisions are built for houses
@@ -96,13 +106,9 @@ class House extends FlxSprite {
 		});
 		cast(FlxG.state, PlayState).addParticle(display);
 
+		Trackers.drops.push(new DropScore(values.get(rating), rating));
+
 		// TODO: This is pseudo-temporary. I just want to see how close it lands right now
 		b.color = FlxColor.BLACK;
-
-		// TODO: figure out how to make this render well
-		// TODO: need to use Bitmap Fonts... meaning TextPop won't work as-is
-		// TextPop.pop(Std.int(x), Std.int(y), '${Math.abs(Std.int(accuracy))}');
-
-		// TODO: SFX play sound based on accurace (good, ok, bad sound)
 	}
 }

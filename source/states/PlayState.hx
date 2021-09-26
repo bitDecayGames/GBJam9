@@ -1,5 +1,9 @@
 package states;
 
+import metrics.DropScore;
+import haxefmod.flixel.FmodFlxUtilities;
+import metrics.Metrics;
+import com.bitdecay.analytics.Bitlytics;
 import metrics.Points;
 import flixel.util.FlxStringUtil;
 import flixel.text.FlxBitmapText;
@@ -150,6 +154,7 @@ class PlayState extends FlxTransitionableState {
 		// Reset scores
 		Trackers.attemptTimer = 0;
 		Trackers.points = 0;
+		Trackers.drops = new Array<DropScore>();
 
 		timeDisplay = new AerostatRed(0, 0, "T");
 		timeDisplay.scrollFactor.set();
@@ -191,6 +196,8 @@ class PlayState extends FlxTransitionableState {
 						marker.maker();
 					}
 				}
+
+				// TODO: Metrics level start
 			}
 		}
 
@@ -206,13 +213,6 @@ class PlayState extends FlxTransitionableState {
 		alignBounds();
 
 		super.update(delta);
-
-		// DEBUG STUFF
-		if (FlxG.keys.justPressed.B) {
-			var bird = new Bird(FlxG.width, FlxG.height / 5, Cardinal.W);
-			birds.add(bird);
-			add(bird);
-		}
 	}
 
 	function checkTriggers() {
@@ -227,7 +227,8 @@ class PlayState extends FlxTransitionableState {
 
 	function doCollisions() {
 		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
-			if (player.isControllable()) {
+			if (player.isControllable() && !levelFinished) {
+				Trackers.landingBonus = l.getScore(player.playerMiddleX());
 				levelFinished = true;
 
 				if (player.controllable){
@@ -252,6 +253,16 @@ class PlayState extends FlxTransitionableState {
 
 				// TODO: Finishing sequence
 				// TODO: scoring mechanism for landing
+
+				// TODO: Metrics record complete time and level number
+				Bitlytics.Instance().Queue(Metrics.FINISH_POINTS, Trackers.points);
+				Bitlytics.Instance().Queue(Metrics.FINISH_TIME, Trackers.attemptTimer);
+
+				// A good time to flush the metrics in case player closes game right as they finish
+				Bitlytics.Instance().ForceFlush();
+
+				// TODO: Smoother transition?
+				FmodFlxUtilities.TransitionToStateAndStopMusic(new SummaryState());
 			}
 		});
 
@@ -277,6 +288,7 @@ class PlayState extends FlxTransitionableState {
 		// FlxG.collide(level.layer, player);
 
 		if (player.y + player.collisionHeight > Player.PLAYER_LOWEST_ALTITUDE) {
+			player.velocity.y = 0;
 			player.y = Player.PLAYER_LOWEST_ALTITUDE - player.collisionHeight;
 		}
 
@@ -356,6 +368,8 @@ class PlayState extends FlxTransitionableState {
 				FmodManager.PlaySoundOneShot(FmodSFX.Splash);
 
 				Trackers.points += Points.LOST_PACKAGE;
+
+				Bitlytics.Instance().Queue(Metrics.LOST_BOXES, 1);
 			});
 		}
 
