@@ -10,8 +10,10 @@ class FmodSongs {
 }
 
 class FmodSFX {
+    public static inline var BirdBomb:String = "event:/SFX/Bird/BirdBomb";
     public static inline var BirdHit:String = "event:/SFX/Bird/BirdHit";
     public static inline var CrateDrop:String = "event:/SFX/Crate/CrateDrop";
+    public static inline var CrateGet:String = "event:/SFX/Crate/CrateGet";
     public static inline var CrateLand:String = "event:/SFX/Crate/CrateLand";
     public static inline var BalloonDeflate:String = "event:/SFX/Deflate/BalloonDeflate";
     public static inline var BalloonDeflateEndClick:String = "event:/SFX/Deflate/BalloonDeflateEndClick";
@@ -27,6 +29,8 @@ class FmodSFX {
     public static inline var ScoreZero:String = "event:/SFX/Score/ScoreZero";
     public static inline var Shoot:String = "event:/SFX/Shoot/Shoot";
     public static inline var ShootDirection:String = "event:/SFX/Shoot/ShootDirection";
+    public static inline var ShootGround:String = "event:/SFX/Shoot/ShootGround";
     public static inline var Splash:String = "event:/SFX/Splash/Splash";
+    public static inline var SplashSmall:String = "event:/SFX/Splash/SplashSmall";
     public static inline var TruckExplosion:String = "event:/SFX/Truck/TruckExplosion";
 }

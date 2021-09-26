@@ -40,14 +40,12 @@ class Bird extends FlxSprite implements PlayerDamager {
 	}
 
 	public function hitPlayer() {
-		// TODO: SFX (done) bird hits balloon
-		FmodManager.PlaySoundOneShot(FmodSFX.BirdHit);
-
 		die();
 	}
 
 	public function die() {
 		// TODO: SFX bird dies
+		FmodManager.PlaySoundOneShot(FmodSFX.BirdBomb);
 
 		allowCollisions = FlxObject.NONE;
 		animation.play("die_" + direction.asString());

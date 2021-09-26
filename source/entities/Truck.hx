@@ -6,6 +6,9 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 
 class Truck extends FlxSprite {
+
+	public var exploded = false;
+
 	public function new(x:Float, y:Float) {
 		super(x, y);
 		loadGfx();
@@ -28,9 +31,12 @@ class Truck extends FlxSprite {
 
 	public function hit() {
 		// TODO: SFX truck hit by player attack (explosion)
-
-		animation.play("dead");
-		var xplode = new Explosion(x + width / 2 - 16, y + height - 24);
-		cast(FlxG.state, PlayState).addParticle(xplode);
+		if (!exploded){
+			FmodManager.PlaySoundOneShot(FmodSFX.TruckExplosion);
+			exploded = true;
+			animation.play("dead");
+			var xplode = new Explosion(x + width / 2 - 16, y + height - 24);
+			cast(FlxG.state, PlayState).addParticle(xplode);
+		}
 	}
 }

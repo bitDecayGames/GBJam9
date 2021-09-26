@@ -349,8 +349,10 @@ class PlayState extends FlxTransitionableState {
 		});
 
 		FlxG.overlap(bombs, trucks, (b, t:Truck) -> {
-			b.kill();
-			t.hit();
+			if (!t.exploded) {
+				b.kill();
+				t.hit();
+			}
 		});
 
 		FlxG.collide(level.layer, bombs, (g, b:Bomb) -> {
@@ -363,6 +365,7 @@ class PlayState extends FlxTransitionableState {
 			addSplash(b.getMidpoint(), false);
 
 			// TODO: SFX small splash
+			FmodManager.PlaySoundOneShot(FmodSFX.SplashSmall);
 		});
 	}
 
