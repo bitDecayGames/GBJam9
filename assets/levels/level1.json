@@ -258,7 +258,7 @@
           "_eid": "28048261",
           "x": 320,
           "y": 104,
-          "width": 160,
+          "width": 80,
           "height": 24,
           "originX": 0,
           "originY": 0,
@@ -268,9 +268,9 @@
           "name": "wind",
           "id": 59,
           "_eid": "28048261",
-          "x": 144,
+          "x": 216,
           "y": 104,
-          "width": 152,
+          "width": 80,
           "height": 24,
           "originX": 0,
           "originY": 0,
@@ -286,7 +286,67 @@
           "originY": -4,
           "values": {"delay": 3, "alt": 10}
         },
-        {"name": "truck", "id": 61, "_eid": "58347565", "x": 320, "y": 120, "originX": 0, "originY": 0}
+        {"name": "truck", "id": 61, "_eid": "58347565", "x": 320, "y": 120, "originX": 0, "originY": 0},
+        {
+          "name": "wind",
+          "id": 62,
+          "_eid": "28048261",
+          "x": 152,
+          "y": 88,
+          "width": 88,
+          "height": 16,
+          "originX": 0,
+          "originY": 0,
+          "values": {"direction": "W", "strength": 10}
+        },
+        {
+          "name": "wind",
+          "id": 63,
+          "_eid": "28048261",
+          "x": 376,
+          "y": 88,
+          "width": 48,
+          "height": 16,
+          "originX": 0,
+          "originY": 0,
+          "values": {"direction": "W", "strength": 10}
+        },
+        {
+          "name": "wind",
+          "id": 64,
+          "_eid": "28048261",
+          "x": 400,
+          "y": 72,
+          "width": 48,
+          "height": 16,
+          "originX": 0,
+          "originY": 0,
+          "values": {"direction": "E", "strength": 10}
+        },
+        {
+          "name": "wind",
+          "id": 65,
+          "_eid": "28048261",
+          "x": 424,
+          "y": 56,
+          "width": 56,
+          "height": 16,
+          "originX": 0,
+          "originY": 0,
+          "values": {"direction": "W", "strength": 10}
+        },
+        {
+          "name": "wind",
+          "id": 66,
+          "_eid": "28048261",
+          "x": 472,
+          "y": 72,
+          "width": 16,
+          "height": 16,
+          "originX": 0,
+          "originY": 0,
+          "values": {"direction": "W", "strength": 10}
+        }
       ]
     },
     {

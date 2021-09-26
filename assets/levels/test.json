@@ -1,5 +1,5 @@
 {
-  "ogmoVersion": "3.3.0",
+  "ogmoVersion": "3.4.0",
   "width": 640,
   "height": 144,
   "offsetX": 0,
@@ -240,11 +240,11 @@
       "gridCellsX": 80,
       "gridCellsY": 18,
       "decals": [
-        {"x": 8, "y": 80, "texture": "images/background/cloud1.png"},
-        {"x": 296, "y": 104, "texture": "images/background/cloud1.png"},
-        {"x": 336, "y": 112, "texture": "images/background/cloud1.png"},
-        {"x": 512, "y": 96, "texture": "images/background/cloud1.png"},
-        {"x": 432, "y": 40, "texture": "images/background/cloud2.png"}
+        {"x": 8, "y": 80, "texture": "images/background/cloud1.png", "originX": 0.5, "originY": 0.5},
+        {"x": 296, "y": 104, "texture": "images/background/cloud1.png", "originX": 0.5, "originY": 0.5},
+        {"x": 336, "y": 112, "texture": "images/background/cloud1.png", "originX": 0.5, "originY": 0.5},
+        {"x": 512, "y": 96, "texture": "images/background/cloud1.png", "originX": 0.5, "originY": 0.5},
+        {"x": 432, "y": 40, "texture": "images/background/cloud2.png", "originX": 0.5, "originY": 0.5}
       ],
       "folder": ""
     }
