@@ -199,8 +199,14 @@ class PlayState extends FlxTransitionableState {
 				levelFinished = true;
 
 				if (player.controllable){
-					FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
-					FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
+					if (FmodManager.IsSoundPlaying("BalloonDeflate")) {
+						FmodManager.SetEventParameterOnSound("BalloonDeflate", "EndDeflateSound", 1);
+						FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
+					}
+					
+					if (FmodManager.IsSoundPlaying("BalloonFire")) {
+						FmodManager.StopSoundImmediately("BalloonFire");
+					}
 				}
 
 				player.loseControl();
