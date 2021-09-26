@@ -11,6 +11,8 @@ import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
 class Box extends FlxSpriteGroup {
+	public static var BOX_ID = 0;
+
 	// TODO: this state is quite messy. We should find a way to simplify it
 	public var attached = false;
 	public var dropped = false;
@@ -28,10 +30,10 @@ class Box extends FlxSpriteGroup {
 
 	var chute:ParentedSprite;
 
-	public function new(id:Int, x:Float, y:Float, openAltitude:Float) {
+	public function new(x:Float, y:Float, openAltitude:Float) {
 		super(x, y);
 
-		boxId = id;
+		boxId = BOX_ID++;
 
 		openY = openAltitude;
 
@@ -75,7 +77,7 @@ class Box extends FlxSpriteGroup {
 			openStarted = true;
 		}
 
-		if (!openStarted && y >= openY) {
+		if (!openStarted && y >= openY && velocity.y > 0) {
 			openStarted = true;
 			chute.animation.play("open");
 		}

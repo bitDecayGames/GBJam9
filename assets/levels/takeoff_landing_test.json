@@ -22,13 +22,15 @@
           "id": 2,
           "_eid": "28048261",
           "x": 0,
-          "y": 64,
+          "y": 0,
           "width": 192,
-          "height": 24,
+          "height": 104,
           "originX": 0,
           "originY": 0,
           "values": {"direction": "E", "strength": 10}
         },
+        {"name": "water", "id": 5, "_eid": "61807291", "x": 64, "y": 136, "width": 48, "height": 8, "originX": 0, "originY": 0},
+        {"name": "big_truck", "id": 7, "_eid": "58352190", "x": 112, "y": 120, "originX": 0, "originY": 0},
         {"name": "house", "id": 8, "_eid": "06909092", "x": 32, "y": 104, "originX": 0, "originY": 0},
         {
           "name": "para_box",
