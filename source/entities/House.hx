@@ -35,6 +35,7 @@ class House extends FlxSprite {
 	}
 
 	public function packageArrived(b:Box) {
+		deliverable = false;
 		var boxCenter = b.boxMiddleX();
 		var accuracy = Math.abs(x + width / 2 - boxCenter);
 
@@ -42,7 +43,7 @@ class House extends FlxSprite {
 		trace('HOUSE DELIVERED. ACCURACY: ${accuracy}');
 		#end
 
-			
+
 		var timerDelay:Float = .1;
 
 		var rating:String;
