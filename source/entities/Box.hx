@@ -1,5 +1,8 @@
 package entities;
 
+import entities.particle.Dust;
+import states.PlayState;
+import flixel.FlxG;
 import flixel.util.FlxTimer;
 import flixel.FlxObject;
 import flixel.group.FlxSpriteGroup;
@@ -99,6 +102,8 @@ class Box extends FlxSpriteGroup {
 			if (chute.animation.name == "open") {
 				chute.animation.play("close");
 			}
+
+			cast(FlxG.state, PlayState).addParticle(new Dust(box.x + box.width/2, y - box.offset.y));
 		}
 	}
 

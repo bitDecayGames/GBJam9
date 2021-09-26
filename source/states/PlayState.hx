@@ -56,7 +56,7 @@ class PlayState extends FlxTransitionableState {
 	var houses:FlxTypedGroup<House> = new FlxTypedGroup();
 	var trees:FlxTypedGroup<Tree> = new FlxTypedGroup();
 	var waters:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
-	var splashes:FlxTypedGroup<Splash> = new FlxTypedGroup();
+	var splashes:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 	var landing:FlxTypedGroup<Landing> = new FlxTypedGroup();
 	var boxes:FlxTypedGroup<Box> = new FlxTypedGroup();
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
@@ -397,6 +397,10 @@ class PlayState extends FlxTransitionableState {
 
 	public function addWater(water:FlxSprite) {
 		waters.add(water);
+	}
+
+	public function addParticle(p:FlxSprite) {
+		splashes.add(p);
 	}
 
 	function addSplash(p:FlxPoint, big:Bool) {
