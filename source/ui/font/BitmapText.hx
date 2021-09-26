@@ -115,11 +115,11 @@ class BitmapText extends flixel.text.FlxBitmapText {
 	@:allow(AerostatRed)
 	static function createAerostatRedFont():FlxBitmapFont {
 		// TODO: Use correct font image for this once it is uploaded
-		return createMonospace8("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?", AssetPaths.Aerostat__png);
+		return createMonospace8("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?", AssetPaths.Aerostat__png, 8);
 	}
 
 
-	private static function createMonospace8(chars:String, path:String):FlxBitmapFont {
+	private static function createMonospace8(chars:String, path:String, yOffset:Int = 0):FlxBitmapFont {
 		var spaceWidth = 5;
 		var height = 8;
 
@@ -131,7 +131,7 @@ class BitmapText extends flixel.text.FlxBitmapText {
 		var x = 0;
 		for (i in 0...chars.length) {
 			var code = chars.charCodeAt(i);
-			font.addCharFrame(code, FlxRect.get(x, 0, 8, height), FlxPoint.get(), 8);
+			font.addCharFrame(code, FlxRect.get(x, yOffset, 8, height), FlxPoint.get(), 8);
 			x += 8;
 		}
 
