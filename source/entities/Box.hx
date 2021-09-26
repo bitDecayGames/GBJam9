@@ -103,6 +103,8 @@ class Box extends FlxSpriteGroup {
 				chute.animation.play("close");
 			}
 
+			// TODO: SFX (done) crate lands on ground
+			FmodManager.PlaySoundOneShot(FmodSFX.CrateLand);
 			cast(FlxG.state, PlayState).addParticle(new Dust(box.x + box.width/2, y - box.offset.y));
 		}
 	}

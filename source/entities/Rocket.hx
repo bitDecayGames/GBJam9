@@ -23,6 +23,8 @@ class Rocket extends TriggerableSprite {
 	}
 
 	public function fly() {
+		// TODO: SFX (done) play launch noise
+		FmodManager.PlaySoundOneShot(FmodSFX.FireworksFire);
 		launch = true;
 	}
 
@@ -35,7 +37,8 @@ class Rocket extends TriggerableSprite {
 				onComplete: (t) -> {
 					kill();
 
-					// TODO: SFX play explosion noise
+					// TODO: SFX (done) play explosion noise
+					FmodManager.PlaySoundOneShot(FmodSFX.FireworksExplosion);
 
 					// XXX: hacky. Probably better to pass in some function callback
 					cast(FlxG.state, PlayState).addBoom(new RocketBoom(x, y));

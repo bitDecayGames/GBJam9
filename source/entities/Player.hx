@@ -176,7 +176,7 @@ class Player extends FlxSpriteGroup {
 				nextAnim = RISE_ANIM;
 				acceleration.y = riseAccel;
 				
-				// TODO: SFX Play ascending (burner) sound (happens every frame)
+				// TODO: SFX (done) Play ascending (burner) sound (happens every frame)
 				if (!FmodManager.IsSoundPlaying(sfxBalloonFire)){
 					FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonFire, sfxBalloonFire);
 				}
@@ -190,7 +190,7 @@ class Player extends FlxSpriteGroup {
 				nextAnim = PLUMMET_ANIM;
 				acceleration.y = forceFallAccel;
 
-				// TODO: SFX play deflating sound (happens every frame)
+				// TODO: SFX (done) play deflating sound (happens every frame)
 				if (!FmodManager.IsSoundPlaying(sfxBalloonDeflate)){
 					FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonDeflate, sfxBalloonDeflate);
 					FmodManager.SetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound", 0);
