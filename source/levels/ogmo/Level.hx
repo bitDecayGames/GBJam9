@@ -83,7 +83,7 @@ class Level {
 					}));
 				case "truck":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
-						state.addTruck(new Truck(entityData.x, entityData.y));
+						state.addTruck(new Truck(entityData.x, entityData.y), entityData.y == 120 ? true : false);
 					}));
 				case "big_truck":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {

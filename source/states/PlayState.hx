@@ -68,7 +68,9 @@ class PlayState extends FlxTransitionableState {
 	var rockets:FlxTypedGroup<Rocket> = new FlxTypedGroup();
 	var fuses:FlxTypedGroup<Fuse> = new FlxTypedGroup();
 	var bombs:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
-	var trucks:FlxTypedGroup<Truck> = new FlxTypedGroup();
+	var trucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for collisions
+	var backTrucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for rendering order
+	var frontTrucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for rendering order
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
 
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
@@ -122,12 +124,13 @@ class PlayState extends FlxTransitionableState {
 		add(houses);
 		add(trees);
 		add(gusts);
+		add(backTrucks);
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
 		add(fuses);
 		add(rockets);
-		add(trucks);
+		add(frontTrucks);
 		add(rocketsBooms);
 		add(birds);
 		add(waters);
@@ -484,7 +487,12 @@ class PlayState extends FlxTransitionableState {
 		splashes.add(p);
 	}
 
-	public function addTruck(truck:Truck) {
+	public function addTruck(truck:Truck, front:Bool = true) {
+		if (front) {
+			frontTrucks.add(truck);
+		} else {
+			backTrucks.add(truck);
+		}
 		trucks.add(truck);
 	}
 
