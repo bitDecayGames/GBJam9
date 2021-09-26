@@ -113,7 +113,6 @@ class PlayState extends FlxTransitionableState {
 		add(level.layer);
 		add(houses);
 		add(trees);
-		add(landing);
 		add(gusts);
 		add(playerGroup);
 		add(bombs);
@@ -125,6 +124,7 @@ class PlayState extends FlxTransitionableState {
 		add(birds);
 		add(waters);
 		add(splashes);
+		add(landing);
 
 		for (marker in level.staticEntities) {
 			marker.maker();
@@ -196,6 +196,20 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function doCollisions() {
+		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
+			levelFinished = true;
+
+			player.velocity.set();
+			player.maxVelocity.set();
+
+			var finishText = new PressStart(30, 30, "Grounded\nBasket! ");
+			finishText.scrollFactor.set(0, 0);
+			FlxFlicker.flicker(finishText, 0, 0.5);
+			add(finishText);
+
+			// TODO: Finishing sequence
+		});
+
 		// Keep player in bounds
 		// XXX: WE are doing brute checks against x and y positions because collisions are really jacked up with FlxSpriteGroups
 		if (player.y < 0) {
@@ -227,12 +241,6 @@ class PlayState extends FlxTransitionableState {
 		// 	player.velocity.y = 0;
 		// 	return true;
 		// });
-
-		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
-			levelFinished = true;
-
-			// TODO: Finishing sequence
-		});
 
 		FlxG.overlap(player, winds, function(p:Player, w:Wind) {
 			w.blowOn(player);

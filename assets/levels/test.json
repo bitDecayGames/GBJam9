@@ -131,7 +131,7 @@
         },
         {"name": "friendlyHouse", "id": 19, "_eid": "45199929", "x": 560, "y": 104, "originX": 0, "originY": 0},
         {"name": "takeoff", "id": 20, "_eid": "50638821", "x": 48, "y": 128, "originX": 0, "originY": 0},
-        {"name": "landing", "id": 21, "_eid": "53695392", "x": 568, "y": 128, "originX": 0, "originY": 0},
+        {"name": "landing", "id": 21, "_eid": "53695392", "x": 568, "y": 128, "width": 72, "originX": 0, "originY": 0},
         {"name": "friendlyHouse", "id": 22, "_eid": "45199929", "x": 0, "y": 104, "originX": 0, "originY": 0},
         {
           "name": "tree",
