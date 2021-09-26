@@ -1,5 +1,6 @@
 package states;
 
+import flixel.math.FlxPoint;
 import flixel.text.FlxBitmapText;
 import metrics.DropScore;
 import flixel.tweens.FlxTween;
@@ -30,6 +31,18 @@ class SummaryState extends FlxState {
 	var totalScore:Int;
 	var totalScoreDisplay:FlxBitmapText;
 
+	var selector:FlxSprite;
+	var cursorIndex = 0;
+	var disableCursor = true;
+
+	var buttonLocations = [
+		// Retry Button
+		FlxPoint.get(54, 55),
+		// Next Button
+		FlxPoint.get(49, 72)
+	];
+
+
 	override public function create():Void {
 		super.create();
 
@@ -38,12 +51,20 @@ class SummaryState extends FlxState {
 		var resultBackdrop = new FlxSprite(AssetPaths.results__png);
 		add(resultBackdrop);
 
+		var menuOverlay = new FlxSprite(AssetPaths.next__png);
+
+		selector = new FlxSprite();
+		selector.loadGraphic(AssetPaths.indicators__png, true, 8, 8);
+		selector.animation.add("pointing", [0, 1], 3, true, true);
+		selector.animation.play("pointing");
+
 		var spacing = 0.5;
 		var xPos = 160 - 6 * 8;
 
 		var time = new AerostatRed(xPos, 23, StringTools.lpad(FlxStringUtil.formatTime(Trackers.attemptTimer, false), " ", 6));
-		// TODO: Figure out how to calculate this
-		var timeBonus = 1000;
+
+		// TODO: Figure out how to calculate this if we want to do this
+		var timeBonus = 0;
 
 		var score = new AerostatRed(xPos, 41, StringTools.lpad(Std.string(Trackers.points), " ", 6));
 
@@ -76,6 +97,13 @@ class SummaryState extends FlxState {
 							new FlxTimer().start(spacing * 3, (t) -> {
 								add(rating);
 								FmodManager.PlaySoundOneShot(FmodSFX.Splash);
+
+								new FlxTimer().start(3, (t) -> {
+									// Add these last so they are on top of everything
+									add(menuOverlay);
+									add(selector);
+									disableCursor = false;
+								});
 							});
 						});
 					}
@@ -140,14 +168,63 @@ class SummaryState extends FlxState {
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 
+		if (!disableCursor) {
+			checkControls();
+		}
+
+		if (cursorIndex >= buttonLocations.length) {
+			cursorIndex = 0;
+		}
+
+		if (cursorIndex < 0) {
+			cursorIndex = buttonLocations.length - 1;
+		}
+
+		selector.x = buttonLocations[cursorIndex].x;
+		selector.y = buttonLocations[cursorIndex].y;
+
+	}
+
+	function checkControls() {
+		if (SimpleController.just_pressed(Button.DOWN)) {
+			FmodManager.PlaySoundOneShot(FmodSFX.MenuHover);
+			cursorIndex++;
+		}
+
+		if (SimpleController.just_pressed(Button.UP)) {
+			FmodManager.PlaySoundOneShot(FmodSFX.MenuHover);
+			cursorIndex--;
+		}
+
 		if (SimpleController.just_pressed(Button.A)) {
-			// TODO: How to get off of this screen?
-			// clickMainMenu();
+			switch (cursorIndex) {
+				case 0:
+					clickRetry();
+					FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
+					disableCursor = true;
+				case 1:
+					clickNext();
+					FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
+					disableCursor = true;
+				default:
+					trace('no menu item for index ${cursorIndex}');
+			}
 		}
 	}
 
-	function clickMainMenu():Void {
-		FmodFlxUtilities.TransitionToState(new MainMenuState());
+	function clickRetry() {
+		FmodFlxUtilities.TransitionToState(new PlayState());
+	}
+
+	function clickNext():Void {
+
+		// TODO: Send to credits once we finish the last level
+		PlayState.currentLevel++;
+		if (PlayState.currentLevel >= PlayState.levelOrder.length) {
+			FmodFlxUtilities.TransitionToState(new CreditsState());
+		} else {
+			clickRetry();
+		}
 	}
 
 	override public function onFocusLost() {

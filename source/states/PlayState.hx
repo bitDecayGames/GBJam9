@@ -46,6 +46,14 @@ class PlayState extends FlxTransitionableState {
 
 	public static inline var SCROLL_SPEED = 4;
 
+	public static var currentLevel = 0;
+	public static var levelOrder = [
+		AssetPaths.level1__json,
+		AssetPaths.level2__json,
+		AssetPaths.level3__json,
+		AssetPaths.level4__json,
+	];
+
 	var level:Level;
 
 	var levelStarted = false;
@@ -98,7 +106,7 @@ class PlayState extends FlxTransitionableState {
 		// TODO: Keep an eye on this and see if we get more split glitch/flicker
 		gustPool.preAllocate(100);
 
-		var levelFile = AssetPaths.level1__json;
+		var levelFile = levelOrder[PlayState.currentLevel];
 
 		#if testland
 		levelFile = AssetPaths.takeoff_landing_test__json;
@@ -112,9 +120,6 @@ class PlayState extends FlxTransitionableState {
 
 		// stretch it a bit outside the level bounds to make sure off-screen stuff works properly
 		FlxG.worldBounds.set(-100, -100, level.layer.widthInTiles * 8 + 100, level.layer.heightInTiles * 8 + 100);
-
-		// var font = new PressStart(30, 30, "Instance of a BitmapFont");
-		// add(font);
 
 		setupScreenBounds();
 
@@ -229,6 +234,7 @@ class PlayState extends FlxTransitionableState {
 	function doCollisions() {
 		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
 			if (player.isControllable() && !levelFinished) {
+				PlayState.currentLevel++;
 				Trackers.landingBonus = l.getScore(player.playerMiddleX());
 				levelFinished = true;
 
@@ -264,8 +270,9 @@ class PlayState extends FlxTransitionableState {
 				// A good time to flush the metrics in case player closes game right as they finish
 				Bitlytics.Instance().ForceFlush();
 
-				// TODO: Smoother transition?
-				FmodFlxUtilities.TransitionToStateAndStopMusic(new SummaryState());
+				new FlxTimer().start(2, (t) -> {
+					FmodFlxUtilities.TransitionToStateAndStopMusic(new SummaryState());
+				});
 			}
 		});
 
