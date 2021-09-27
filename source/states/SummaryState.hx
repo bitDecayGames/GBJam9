@@ -213,7 +213,7 @@ class SummaryState extends FlxState {
 			cursorIndex--;
 		}
 
-		if (SimpleController.just_pressed(Button.A)) {
+		if (SimpleController.just_pressed(Button.A) || FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER) {
 			switch (cursorIndex) {
 				case 0:
 					clickNext();
