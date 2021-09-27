@@ -34,6 +34,8 @@ class Level {
 	public var triggeredEntities:Array<EntityMarker> = new Array();
 	public var staticEntities:Array<EntityMarker> = new Array();
 
+	public var houseCount:Int = 0;
+
 	public function new(level:String, state:PlayState) {
 		var loader = new FlxOgmo3Loader(AssetPaths.project__ogmo, level);
 
@@ -87,7 +89,7 @@ class Level {
 					}));
 				case "big_truck":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
-						state.addTruck(new RedTruck(entityData.x, entityData.y));
+						state.addTruck(new RedTruck(entityData.x, entityData.y), entityData.y == 120 ? true : false);
 					}));
 
 				// START Statics
@@ -95,6 +97,7 @@ class Level {
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addHouse(new House(entityData.x, entityData.y, true));
 					}));
+					houseCount++;
 				case "friendlyHouse":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addHouse(new House(entityData.x, entityData.y, false));
@@ -120,6 +123,7 @@ class Level {
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						var water = new FlxSprite(entityData.x, entityData.y);
 						water.makeGraphic(entityData.width, entityData.height, FlxColor.BLUE);
+						water.immovable = true;
 						water.alpha = 0;
 						#if debug
 						water.alpha = 0.2;

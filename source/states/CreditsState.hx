@@ -19,11 +19,22 @@ import misc.FlxTextFactory;
 using extensions.FlxStateExt;
 
 class CreditsState extends FlxState {
+
+	var selector:FlxSprite;
+
 	override public function create():Void {
 		super.create();
 
 		var credits = new FlxSprite(AssetPaths.credits__png);
 		add(credits);
+
+		selector = new FlxSprite(18, 116);
+		selector.loadGraphic(AssetPaths.indicators__png, true, 8, 8);
+		selector.animation.add("pointing", [0, 1], 3, true, true);
+		selector.animation.play("pointing");
+		add(selector);
+
+		FmodManager.PlaySong(FmodSongs.HopIn);
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -31,6 +42,7 @@ class CreditsState extends FlxState {
 
 		if (SimpleController.just_pressed(Button.A)) {
 			clickMainMenu();
+			FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 		}
 	}
 

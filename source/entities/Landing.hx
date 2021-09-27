@@ -16,4 +16,20 @@ class Landing extends FlxSprite {
 		alpha = 0.5;
 		#end
 	}
+
+	public function getScore(landX:Float):Int {
+		var distanceFromFront = landX - x;
+		trace('landing distance: ${distanceFromFront}');
+		if (distanceFromFront < 8) {
+			// first tile is a "bad" zone
+			// landed before the scoring zone
+			trace('missed landing');
+			return 100;
+		} else {
+			// subtract one as the 'perfect' distance is actually one tile back
+			var deduction = 100 * Math.floor(distanceFromFront / 8 - 1);
+			trace('landing deduction: ${deduction}');
+			return 1000 - deduction;
+		}
+	}
 }

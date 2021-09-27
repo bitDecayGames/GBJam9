@@ -120,7 +120,7 @@ class BitmapText extends flixel.text.FlxBitmapText {
 
 
 	private static function createMonospace8(chars:String, path:String, yOffset:Int = 0):FlxBitmapFont {
-		var spaceWidth = 5;
+		var spaceWidth = 8;
 		var height = 8;
 
 		var graphic = FlxG.bitmap.add(path);

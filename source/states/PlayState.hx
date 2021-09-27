@@ -1,5 +1,11 @@
 package states;
 
+import flixel.FlxObject;
+import entities.Shadow;
+import metrics.DropScore;
+import haxefmod.flixel.FmodFlxUtilities;
+import metrics.Metrics;
+import com.bitdecay.analytics.Bitlytics;
 import flixel.util.FlxTimer;
 import metrics.Points;
 import flixel.util.FlxStringUtil;
@@ -18,7 +24,6 @@ import flixel.effects.FlxFlicker;
 import input.SimpleController;
 import levels.ogmo.Level;
 import ui.font.BitmapText;
-import ui.font.BitmapText.PressStart;
 import entities.ParentedSprite;
 import entities.RocketBoom;
 import entities.Bird;
@@ -42,6 +47,14 @@ class PlayState extends FlxTransitionableState {
 
 	public static inline var SCROLL_SPEED = 4;
 
+	public static var currentLevel = 0;
+	public static var levelOrder = [
+		AssetPaths.level1__json,
+		AssetPaths.level2__json,
+		AssetPaths.level3__json,
+		AssetPaths.level4__json,
+	];
+
 	var level:Level;
 
 	var levelStarted = false;
@@ -57,6 +70,7 @@ class PlayState extends FlxTransitionableState {
 	var walls:FlxTypedGroup<FlxSprite> = new FlxTypedGroup();
 
 	var playerGroup:FlxTypedGroup<Player> = new FlxTypedGroup();
+	var shadows:FlxTypedGroup<Shadow> = new FlxTypedGroup();
 	var winds:FlxTypedGroup<Wind> = new FlxTypedGroup();
 	var gusts:FlxTypedGroup<Gust> = new FlxTypedGroup();
 	var birds:FlxTypedGroup<Bird> = new FlxTypedGroup();
@@ -73,6 +87,7 @@ class PlayState extends FlxTransitionableState {
 	var backTrucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for rendering order
 	var frontTrucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for rendering order
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
+
 
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
 
@@ -96,7 +111,7 @@ class PlayState extends FlxTransitionableState {
 		// TODO: Keep an eye on this and see if we get more split glitch/flicker
 		gustPool.preAllocate(100);
 
-		var levelFile = AssetPaths.level1__json;
+		var levelFile = levelOrder[PlayState.currentLevel];
 
 		#if testland
 		levelFile = AssetPaths.takeoff_landing_test__json;
@@ -111,9 +126,6 @@ class PlayState extends FlxTransitionableState {
 		// stretch it a bit outside the level bounds to make sure off-screen stuff works properly
 		FlxG.worldBounds.set(-100, -100, level.layer.widthInTiles * 8 + 100, level.layer.heightInTiles * 8 + 100);
 
-		// var font = new PressStart(30, 30, "Instance of a BitmapFont");
-		// add(font);
-
 		setupScreenBounds();
 
 		// Adding these in proper rending order
@@ -124,10 +136,12 @@ class PlayState extends FlxTransitionableState {
 		add(winds);
 		add(level.decor);
 		add(level.layer);
+		add(birds);
 		add(houses);
 		add(trees);
 		add(gusts);
 		add(backTrucks);
+		add(shadows);
 		add(playerGroup);
 		add(bombs);
 		add(boxes);
@@ -135,7 +149,6 @@ class PlayState extends FlxTransitionableState {
 		add(rockets);
 		add(frontTrucks);
 		add(rocketsBooms);
-		add(birds);
 		add(waters);
 		add(splashes);
 		add(landing);
@@ -146,13 +159,24 @@ class PlayState extends FlxTransitionableState {
 
 		setupTestObjects();
 
-		launchText = new PressStart(30, 30, "Press UP to\n take off! ");
+		launchText = new AerostatRed(30, 30, "PRESS UP TO\n TAKE OFF! ");
+		launchText.x = (FlxG.width - launchText.width) / 2;
 		FlxFlicker.flicker(launchText, 0, 0.5);
 		add(launchText);
+
+		if (currentLevel == 0) {
+			var finishText = new AerostatRed(0, 80, "LAND HERE!");
+			finishText.x = (FlxG.width - finishText.width) * .75 - FlxG.width + level.layer.width;
+			// finishText.scrollFactor.set(0, 0);
+			FlxFlicker.flicker(finishText, 0, 0.5);
+			add(finishText);
+		}
 
 		// Reset scores
 		Trackers.attemptTimer = 0;
 		Trackers.points = 0;
+		Trackers.drops = new Array<DropScore>();
+		Trackers.houseMax = level.houseCount;
 
 		timeDisplay = new AerostatRed(0, 0, "T");
 		timeDisplay.scrollFactor.set();
@@ -194,6 +218,8 @@ class PlayState extends FlxTransitionableState {
 						marker.maker();
 					}
 				}
+
+				// TODO: Metrics level start
 			}
 		}
 
@@ -209,13 +235,6 @@ class PlayState extends FlxTransitionableState {
 		alignBounds();
 
 		super.update(delta);
-
-		// DEBUG STUFF
-		if (FlxG.keys.justPressed.B) {
-			var bird = new Bird(FlxG.width, FlxG.height / 5, Cardinal.W);
-			birds.add(bird);
-			add(bird);
-		}
 	}
 
 	function checkTriggers() {
@@ -230,13 +249,14 @@ class PlayState extends FlxTransitionableState {
 
 	function doCollisions() {
 		FlxG.overlap(player, landing, function(p:Player, l:Landing) {
-			if (player.isControllable()) {
+			if (player.isControllable() && !levelFinished) {
+				Trackers.landingBonus = l.getScore(player.playerMiddleX());
 				levelFinished = true;
 
 				if (player.controllable){
 
 					FmodManager.PlaySoundOneShot(FmodSFX.BalloonLand);
-					
+
 					if (FmodManager.IsSoundPlaying("BalloonDeflate")) {
 						FmodManager.StopSoundImmediately("BalloonDeflate");
 					}
@@ -250,13 +270,16 @@ class PlayState extends FlxTransitionableState {
 				player.velocity.set();
 				player.maxVelocity.set();
 
-				var finishText = new PressStart(30, 30, "Grounded\nBasket! ");
-				finishText.scrollFactor.set(0, 0);
-				FlxFlicker.flicker(finishText, 0, 0.5);
-				add(finishText);
+				// TODO: Metrics record complete time and level number
+				Bitlytics.Instance().Queue(Metrics.FINISH_POINTS, Trackers.points);
+				Bitlytics.Instance().Queue(Metrics.FINISH_TIME, Trackers.attemptTimer);
 
-				// TODO: Finishing sequence
-				// TODO: scoring mechanism for landing
+				// A good time to flush the metrics in case player closes game right as they finish
+				Bitlytics.Instance().ForceFlush();
+
+				new FlxTimer().start(2, (t) -> {
+					FmodFlxUtilities.TransitionToStateAndStopMusic(new SummaryState());
+				});
 			}
 		});
 
@@ -282,6 +305,7 @@ class PlayState extends FlxTransitionableState {
 		// FlxG.collide(level.layer, player);
 
 		if (player.y + player.collisionHeight > Player.PLAYER_LOWEST_ALTITUDE) {
+			player.velocity.y = 0;
 			player.y = Player.PLAYER_LOWEST_ALTITUDE - player.collisionHeight;
 		}
 
@@ -297,6 +321,10 @@ class PlayState extends FlxTransitionableState {
 		});
 
 		FlxG.overlap(player, birds, function(p:Player, b:Bird) {
+			if (b.isDead()) {
+				return;
+			}
+
 			player.hitBy(b);
 			Trackers.points += Points.HIT_BY_BIRD;
 		});
@@ -316,6 +344,13 @@ class PlayState extends FlxTransitionableState {
 
 		// boxes are FlxSpriteGroups which have a lot of weirdness... so loop through manually
 		for (box in boxes) {
+
+			FlxG.overlap(box.box, winds, function(p:ParentedSprite, w:Wind) {
+				if (box.isChuteOpen()) {
+					w.blowOn(box);
+				}
+			});
+
 			// check boxes against houses first
 			FlxG.overlap(box.box, activeHouses, (p:ParentedSprite, h:House) -> {
 				trace('box touch house. HouseDel: ${h.deliverable}     b.dropped: ${cast(p.parent, Box).dropped}');
@@ -323,6 +358,8 @@ class PlayState extends FlxTransitionableState {
 					if (cast(p.parent, Box).dropped) {
 						h.packageArrived(cast(p.parent, Box));
 						activeHouses.remove(h);
+
+						cast(p.parent, Box).grabbable = false;
 
 						Trackers.points += Points.DELIVERY;
 					}
@@ -361,6 +398,8 @@ class PlayState extends FlxTransitionableState {
 				FmodManager.PlaySoundOneShot(FmodSFX.Splash);
 
 				Trackers.points += Points.LOST_PACKAGE;
+
+				Bitlytics.Instance().Queue(Metrics.LOST_BOXES, 1);
 			});
 		}
 
@@ -391,6 +430,17 @@ class PlayState extends FlxTransitionableState {
 			addSplash(b.getMidpoint(), false);
 
 			// TODO: SFX small splash
+			FmodManager.PlaySoundOneShot(FmodSFX.SplashSmall);
+		});
+
+		FlxG.collide(level.layer, birds, (g, b:Bird) -> {
+			b.thud();
+		});
+
+		FlxG.collide(birds, waters, (b, w) -> {
+			b.kill();
+			addSplash(b.getMidpoint(), false);
+
 			FmodManager.PlaySoundOneShot(FmodSFX.SplashSmall);
 		});
 	}
@@ -450,6 +500,8 @@ class PlayState extends FlxTransitionableState {
 
 	public function addBox(box:Box) {
 		boxes.add(box);
+
+		shadows.add(new Shadow(box, 0, 8, 0));
 	}
 
 	public function addRocket(rocket:Rocket) {
@@ -463,6 +515,8 @@ class PlayState extends FlxTransitionableState {
 	public function addPlayer(player:Player) {
 		this.player = player;
 		playerGroup.add(player);
+
+		shadows.add(new Shadow(player, 0, player.collisionHeight, -1));
 	}
 
 	public function addLanding(l:Landing) {
@@ -496,7 +550,7 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function addSplash(p:FlxPoint, big:Bool) {
-		var splash = new Splash(p.x, p.y, big);
+		var splash = new Splash(Math.round(p.x), p.y, big);
 		splashes.add(splash);
 	}
 
