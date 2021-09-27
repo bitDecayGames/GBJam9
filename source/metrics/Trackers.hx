@@ -33,6 +33,7 @@ class Trackers {
 		return longestDrop;
 	}
 
-	public static var landingBonus:Int;
+	public static var landingBonus:Int = 0;
 	public static var drops:Array<DropScore>;
+	public static var houseMax:Int = 0;
 }

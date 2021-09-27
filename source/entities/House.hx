@@ -24,7 +24,7 @@ class House extends FlxSprite {
 		"A" => 1000,
 		"B" => 500,
 		"C" => 250,
-		"F" => 0
+		"F" => 1
 	];
 
 	public function new(x:Float, y:Float, deliverable:Bool) {

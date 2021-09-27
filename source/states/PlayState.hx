@@ -24,7 +24,6 @@ import flixel.effects.FlxFlicker;
 import input.SimpleController;
 import levels.ogmo.Level;
 import ui.font.BitmapText;
-import ui.font.BitmapText.PressStart;
 import entities.ParentedSprite;
 import entities.RocketBoom;
 import entities.Bird;
@@ -158,14 +157,24 @@ class PlayState extends FlxTransitionableState {
 
 		setupTestObjects();
 
-		launchText = new PressStart(30, 30, "Press UP to\n take off! ");
+		launchText = new AerostatRed(30, 30, "PRESS UP TO\n TAKE OFF! ");
+		launchText.x = (FlxG.width - launchText.width) / 2;
 		FlxFlicker.flicker(launchText, 0, 0.5);
 		add(launchText);
+
+		if (currentLevel == 0) {
+			var finishText = new AerostatRed(0, 80, "LAND HERE!");
+			finishText.x = (FlxG.width - finishText.width) * .75 - FlxG.width + level.layer.width;
+			// finishText.scrollFactor.set(0, 0);
+			FlxFlicker.flicker(finishText, 0, 0.5);
+			add(finishText);
+		}
 
 		// Reset scores
 		Trackers.attemptTimer = 0;
 		Trackers.points = 0;
 		Trackers.drops = new Array<DropScore>();
+		Trackers.houseMax = level.houseCount;
 
 		timeDisplay = new AerostatRed(0, 0, "T");
 		timeDisplay.scrollFactor.set();
@@ -258,14 +267,6 @@ class PlayState extends FlxTransitionableState {
 				player.loseControl();
 				player.velocity.set();
 				player.maxVelocity.set();
-
-				var finishText = new PressStart(30, 30, "Grounded\nBasket! ");
-				finishText.scrollFactor.set(0, 0);
-				FlxFlicker.flicker(finishText, 0, 0.5);
-				add(finishText);
-
-				// TODO: Finishing sequence
-				// TODO: scoring mechanism for landing
 
 				// TODO: Metrics record complete time and level number
 				Bitlytics.Instance().Queue(Metrics.FINISH_POINTS, Trackers.points);

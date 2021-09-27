@@ -17,18 +17,12 @@ import config.Configure;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.addons.ui.FlxUIState;
-import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.util.FlxColor;
 import haxefmod.flixel.FmodFlxUtilities;
-import helpers.UiHelpers;
-import misc.FlxTextFactory;
 
 using extensions.FlxStateExt;
 
 class SummaryState extends FlxState {
-	var totalScore:Int;
+	var totalScore:Int = 0;
 	var totalScoreDisplay:FlxBitmapText;
 
 	var selector:FlxSprite;
@@ -74,7 +68,8 @@ class SummaryState extends FlxState {
 		// We want this to show always
 		add(totalScoreDisplay);
 
-		// TODO: Calculate final rating
+		// Avoid potential divide by zero errors
+		var maxPossible = Math.max(1, Trackers.houseMax * 3000);
 		var rating = new AerostatRed(xPos, 129, StringTools.lpad("S", " ", 6));
 
 		new FlxTimer().start(spacing, (t) -> {
@@ -95,6 +90,8 @@ class SummaryState extends FlxState {
 							FmodManager.PlaySoundOneShot(FmodSFX.CrateLand);
 
 							new FlxTimer().start(spacing * 3, (t) -> {
+								var percent = totalScore / maxPossible;
+								rating.text = StringTools.lpad(percentToRating(percent), " ", 6);
 								add(rating);
 								FmodManager.PlaySoundOneShot(FmodSFX.Splash);
 
@@ -121,6 +118,20 @@ class SummaryState extends FlxState {
 				});
 			});
 		});
+	}
+
+	function percentToRating(percent:Float):String {
+		if (percent >= 1) {
+			return "S";
+		} else if (percent >= 0.8) {
+			return "A";
+		} else if (percent >= 0.6) {
+			return "B";
+		} else if (percent >= 0.4) {
+			return "C";
+		} else {
+			return "F";
+		}
 	}
 
 	function updateTotalScore(mod:Int) {
