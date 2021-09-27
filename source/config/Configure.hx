@@ -26,12 +26,14 @@ class Configure {
 			// Take the first half explicitly, as splitting on '=' might have unexpected
 			// behavior if the token has '=' characters in it
 			analyticsToken = define.substr(0, Std.int(define.length / 2));
-			devMode = devMode || analyticsToken.length > 0;
+			if (analyticsToken.length <= 0) {
+				trace("no valid analytics token found in API_KEY define, setting dev mode to true");
+				devMode = true;
+			}
 		} else {
 			trace('No API_KEY compile flag found. Production metrics will not work.');
 			devMode = true;
 		}
-
 		Bitlytics.Init(config.analytics.name, InfluxDB.load(config.analytics.influx, analyticsToken), devMode);
 		Bitlytics.Instance().NewSession();
 	}
