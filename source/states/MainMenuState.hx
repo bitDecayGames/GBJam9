@@ -120,6 +120,7 @@ class MainMenuState extends FlxUIState {
 		// reset level scores
 		Trackers.levelScores = [];
 		PlayState.currentLevel = 0;
+
 		FmodFlxUtilities.TransitionToStateAndStopMusic(new PlayState());
 	}
 

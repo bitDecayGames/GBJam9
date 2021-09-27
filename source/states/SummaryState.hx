@@ -150,17 +150,31 @@ class SummaryState extends FlxState {
 		x = 160 - 8;
 		var tween:FlxTween = null;
 		var lastTween:FlxTween = null;
+		#if debug
 		trace('building tweens for ${Trackers.drops.length} drops');
-		for (index => value in Trackers.drops) {
-			var txt = new AerostatRed(x, y-8, value.grade);
+		trace('total houses ${Trackers.houseMax} drops');
+		#end
+		for (i in 0...Trackers.houseMax) {
+			var drop:DropScore;
+			if (i < Trackers.drops.length) {
+				drop = Trackers.drops[i];
+			} else {
+				drop = new DropScore(0, "-");
+			}
+
+			var txt = new AerostatRed(x, y-8, drop.grade);
 			txt.alpha = 0;
 			add(txt);
 			var alphaTween = FlxTween.tween(txt, { alpha: 1}, 0.01);
 			// appear, then slam down
 			lastTween =FlxTween.linearMotion(txt, txt.x, txt.y, txt.x, y, 0.2, {
 				onComplete: (t) -> {
-					updateTotalScore(value.points);
+					updateTotalScore(drop.points);
 					FmodManager.PlaySoundOneShot(FmodSFX.CrateLand);
+
+					if (drop.grade == "-") {
+						FmodManager.PlaySoundOneShot(FmodSFX.ScoreZero);
+					}
 				}
 			});
 

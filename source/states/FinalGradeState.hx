@@ -31,6 +31,8 @@ class FinalGradeState extends FlxState {
 	var cursorIndex = 0;
 	var disableCursor = true;
 
+	var creditTimer = 8.0;
+
 	var buttonLocations = [
 		// Retry Button
 		FlxPoint.get(54, 55),
@@ -138,11 +140,18 @@ class FinalGradeState extends FlxState {
 			if (SimpleController.just_pressed(Button.A) || FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER) {
 				clickDone();
 			}
+
+			creditTimer -= elapsed;
+			if (creditTimer <= 0) {
+				clickDone();
+			}
 		}
 	}
 
 	function clickDone():Void {
 		FmodFlxUtilities.TransitionToStateAndStopMusic(new CreditsState());
+		FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
+		disableCursor = true;
 	}
 
 	override public function onFocusLost() {
