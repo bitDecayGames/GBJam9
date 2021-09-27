@@ -31,6 +31,6 @@ jobs:
         with:
           dir: export/html5.zip
           itchUserName: bitdecaygames
-          itchGameName: gbjam9
+          itchGameName: aerostat
           itchChannel: web-dev
           butlerApiKey: ${{ secrets.BUTLER_API_KEY }}
