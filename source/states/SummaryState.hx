@@ -1,5 +1,8 @@
 package states;
 
+import com.bitdecay.metrics.Tag;
+import com.bitdecay.analytics.Bitlytics;
+import metrics.Metrics;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -101,6 +104,10 @@ class SummaryState extends FlxState {
 									add(menuOverlay);
 									add(selector);
 									disableCursor = false;
+
+									// Report completion points and time for this level now that we have a total tallied
+									Bitlytics.Instance().Queue(Metrics.FINISH_POINTS, totalScore, [new Tag("level", Std.string(PlayState.currentLevel))]);
+									Bitlytics.Instance().Queue(Metrics.FINISH_TIME, Trackers.attemptTimer, [new Tag("level", Std.string(PlayState.currentLevel))]);
 								});
 							});
 						});

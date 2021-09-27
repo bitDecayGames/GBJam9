@@ -1,5 +1,6 @@
 package states;
 
+import com.bitdecay.metrics.Tag;
 import com.bitdecay.analytics.Bitlytics;
 import entities.Bird;
 import entities.Bomb;
@@ -266,6 +267,8 @@ class PlayState extends FlxTransitionableState {
 			if (player.isControllable() && !levelFinished) {
 				Trackers.landingBonus = l.getScore(player.playerMiddleX());
 				levelFinished = true;
+				// report this as 1-based for ease of reading
+				Trackers.maxLevelCompleted = currentLevel + 1;
 
 				if (player.controllable) {
 					FmodManager.PlaySoundOneShot(FmodSFX.BalloonLand);
@@ -282,10 +285,6 @@ class PlayState extends FlxTransitionableState {
 				player.loseControl();
 				player.velocity.set();
 				player.maxVelocity.set();
-
-				// TODO: Metrics record complete time and level number
-				Bitlytics.Instance().Queue(Metrics.FINISH_POINTS, Trackers.points);
-				Bitlytics.Instance().Queue(Metrics.FINISH_TIME, Trackers.attemptTimer);
 
 				// A good time to flush the metrics in case player closes game right as they finish
 				Bitlytics.Instance().ForceFlush();
@@ -333,6 +332,7 @@ class PlayState extends FlxTransitionableState {
 
 			player.hitBy(b);
 			Trackers.points += Points.HIT_BY_BIRD;
+			Bitlytics.Instance().Queue(Metrics.HIT_BY_BIRD, 1);
 		});
 
 		FlxG.overlap(trees, winds, function(t:Tree, w:Wind) {
@@ -345,6 +345,7 @@ class PlayState extends FlxTransitionableState {
 			if (!boom.hasHitPlayer()) {
 				player.hitBy(boom);
 				Trackers.points += Points.HIT_BY_FIREWORK;
+				Bitlytics.Instance().Queue(Metrics.HIT_BY_FIREWORK, 1);
 			}
 		});
 
@@ -367,6 +368,7 @@ class PlayState extends FlxTransitionableState {
 						activeHouses.remove(h);
 
 						Trackers.points += Points.DELIVERY;
+						Bitlytics.Instance().Queue(Metrics.PACKAGE_DELIVERED, 1);
 					}
 				}
 			});
@@ -404,6 +406,7 @@ class PlayState extends FlxTransitionableState {
 
 				Trackers.points += Points.LOST_PACKAGE;
 
+				// A fun stat to see how many boxes were dropped into the water
 				Bitlytics.Instance().Queue(Metrics.LOST_BOXES, 1);
 			});
 		}
@@ -414,6 +417,7 @@ class PlayState extends FlxTransitionableState {
 				bo.kill();
 				bi.die();
 				Trackers.points += Points.KILL_BIRD;
+				Bitlytics.Instance().Queue(Metrics.BIRD_KILLED, 1);
 			}
 		});
 
@@ -423,6 +427,7 @@ class PlayState extends FlxTransitionableState {
 				t.hit();
 
 				Trackers.points += Points.KILL_TRUCK;
+				Bitlytics.Instance().Queue(Metrics.TRUCK_KILLED, 1);
 			}
 		});
 

@@ -1,5 +1,8 @@
 package states;
 
+import com.bitdecay.metrics.Common;
+import metrics.Metrics;
+import com.bitdecay.analytics.Bitlytics;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -33,6 +36,11 @@ class FinalGradeState extends FlxState {
 	];
 
 	override public function create():Void {
+		// Quick metric to easily count how many full-completions we had
+		Bitlytics.Instance().Queue(Common.GameCompleted, 1);
+		// Flush again as no more meaningful metrics will happen if they close the game now
+		Bitlytics.Instance().ForceFlush();
+
 		#if last
 		Trackers.levelScores = ["B", "A", "S", "F"];
 		#end
@@ -42,19 +50,8 @@ class FinalGradeState extends FlxState {
 
 		FlxG.camera.pixelPerfectRender = true;
 
-		// TODO: Load real backdrop
 		var resultBackdrop = new FlxSprite(AssetPaths.final__png);
 		add(resultBackdrop);
-
-		// var finalScoreTxt = new AerostatRed(0, 8, "FINAL SCORE");
-		// finalScoreTxt.x = (FlxG.width - finalScoreTxt.width) / 2;
-		// add(finalScoreTxt);
-
-		// var thanksTxt = new AerostatRed(0, FlxG.height - 16, "THANK YOU!");
-		// thanksTxt.x = (FlxG.width - thanksTxt.width) / 2;
-		// add(thanksTxt);
-
-		var menuOverlay = new FlxSprite(AssetPaths.next__png);
 
 		selector = new FlxSprite();
 		selector.loadGraphic(AssetPaths.indicators__png, true, 8, 8);
@@ -62,11 +59,6 @@ class FinalGradeState extends FlxState {
 		selector.animation.play("pointing");
 
 		var next = () -> {
-			// Add these last so they are on top of everything
-			// add(thanksTxt);
-
-			// add(menuOverlay);
-			// add(selector);
 			disableCursor = false;
 		}
 
