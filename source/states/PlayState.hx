@@ -134,6 +134,7 @@ class PlayState extends FlxTransitionableState {
 		add(winds);
 		add(level.decor);
 		add(level.layer);
+		add(birds);
 		add(houses);
 		add(trees);
 		add(gusts);
@@ -146,7 +147,6 @@ class PlayState extends FlxTransitionableState {
 		add(rockets);
 		add(frontTrucks);
 		add(rocketsBooms);
-		add(birds);
 		add(waters);
 		add(splashes);
 		add(landing);
@@ -319,6 +319,10 @@ class PlayState extends FlxTransitionableState {
 		});
 
 		FlxG.overlap(player, birds, function(p:Player, b:Bird) {
+			if (b.isDead()) {
+				return;
+			}
+
 			player.hitBy(b);
 			Trackers.points += Points.HIT_BY_BIRD;
 		});
@@ -417,6 +421,10 @@ class PlayState extends FlxTransitionableState {
 		FlxG.collide(level.layer, bombs, (g, b:Bomb) -> {
 			b.kill();
 			b.hitLevel();
+		});
+
+		FlxG.collide(level.layer, birds, (g, b:Bird) -> {
+			b.thud();
 		});
 
 		FlxG.overlap(bombs, waters, (b, w) -> {
