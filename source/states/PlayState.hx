@@ -174,6 +174,7 @@ class PlayState extends FlxTransitionableState {
 		Trackers.attemptTimer = 0;
 		Trackers.points = 0;
 		Trackers.drops = new Array<DropScore>();
+		Trackers.houseMax = level.houseCount;
 
 		timeDisplay = new AerostatRed(0, 0, "T");
 		timeDisplay.scrollFactor.set();

@@ -34,6 +34,8 @@ class Level {
 	public var triggeredEntities:Array<EntityMarker> = new Array();
 	public var staticEntities:Array<EntityMarker> = new Array();
 
+	public var houseCount:Int = 0;
+
 	public function new(level:String, state:PlayState) {
 		var loader = new FlxOgmo3Loader(AssetPaths.project__ogmo, level);
 
@@ -95,6 +97,7 @@ class Level {
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addHouse(new House(entityData.x, entityData.y, true));
 					}));
+					houseCount++;
 				case "friendlyHouse":
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						state.addHouse(new House(entityData.x, entityData.y, false));
