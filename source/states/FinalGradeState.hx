@@ -50,8 +50,8 @@ class FinalGradeState extends FlxState {
 		FlxG.camera.pixelPerfectRender = true;
 
 		// TODO: Load real backdrop
-		// var resultBackdrop = new FlxSprite(AssetPaths.results__png);
-		// add(resultBackdrop);
+		var resultBackdrop = new FlxSprite(AssetPaths.final__png);
+		add(resultBackdrop);
 
 		var finalScoreTxt = new AerostatRed(0, 8, "FINAL SCORE");
 		finalScoreTxt.x = (FlxG.width - finalScoreTxt.width) / 2;
@@ -91,8 +91,11 @@ class FinalGradeState extends FlxState {
 
 	function buildDrops():FlxTween {
 		// 4 centered characters (a little wiggle because we are using 10x10 characters)
-		var x = FlxG.width / 2 - 22;
-		var y = FlxG.height / 2 - 5;
+		var letterSize = 10;
+		var spacing = 5;
+		var tweak = 2;
+		var x = FlxG.width / 2 - 2 * (spacing + letterSize) + tweak;
+		var y = FlxG.height / 2 - 10;
 		var tween:FlxTween = null;
 		var lastTween:FlxTween = null;
 		for (index => value in Trackers.levelScores) {
@@ -113,7 +116,7 @@ class FinalGradeState extends FlxState {
 			} else {
 				tween.then(alphaTween).then(lastTween);
 			}
-			x += 11;
+			x += letterSize + spacing;
 		}
 
 		if (lastTween != null) {
