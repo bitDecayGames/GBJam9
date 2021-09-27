@@ -352,6 +352,7 @@ class Player extends FlxSpriteGroup {
 			b.closeChute(true);
 			b.attached = true;
 			b.grabbable = false;
+			b.dropped = false;
 			boxes.push(b);
 		}
 	}

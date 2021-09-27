@@ -8,6 +8,9 @@ import openfl.display.Sprite;
 import states.SplashScreenState;
 #if play
 import states.PlayState;
+#else
+import misc.Macros;
+import states.MainMenuState;
 #end
 
 class Main extends Sprite {

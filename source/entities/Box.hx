@@ -117,7 +117,10 @@ class Box extends FlxSpriteGroup {
 		maxVelocity.set();
 		// give us a delay so we don't instantly re-grab the box
 		new FlxTimer().start(1, (t) -> {
-			grabbable = true;
+			// Only reset grabbable if we are still alive
+			if (alive) {
+				grabbable = true;
+			}
 		});
 		colliding = true;
 	}

@@ -364,8 +364,6 @@ class PlayState extends FlxTransitionableState {
 						h.packageArrived(cast(p.parent, Box));
 						activeHouses.remove(h);
 
-						cast(p.parent, Box).grabbable = false;
-
 						Trackers.points += Points.DELIVERY;
 					}
 				}
