@@ -232,7 +232,9 @@ class SummaryState extends FlxState {
 					FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 					disableCursor = true;
 				default:
+					#if debug
 					trace('no menu item for index ${cursorIndex}');
+					#end
 			}
 		}
 	}

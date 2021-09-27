@@ -111,7 +111,9 @@ class MainMenuState extends FlxUIState {
 					clickCredits();
 					FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 				default:
+					#if debug
 					trace('no menu item for index ${cursorIndex}');
+					#end
 			}
 		}
 	}

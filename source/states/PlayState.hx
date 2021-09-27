@@ -358,7 +358,9 @@ class PlayState extends FlxTransitionableState {
 
 			// check boxes against houses first
 			FlxG.overlap(box.box, activeHouses, (p:ParentedSprite, h:House) -> {
+				#if debug
 				trace('box touch house. HouseDel: ${h.deliverable}     b.dropped: ${cast (p.parent, Box).dropped}');
+				#end
 				if (h.deliverable) {
 					if (cast(p.parent, Box).dropped) {
 						h.packageArrived(cast(p.parent, Box));

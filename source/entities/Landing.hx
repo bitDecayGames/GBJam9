@@ -23,12 +23,16 @@ class Landing extends FlxSprite {
 		if (distanceFromFront < 8) {
 			// first tile is a "bad" zone
 			// landed before the scoring zone
+			#if debug
 			trace('missed landing');
+			#end
 			return 100;
 		} else {
 			// subtract one as the 'perfect' distance is actually one tile back
 			var deduction = 100 * Math.floor(distanceFromFront / 8 - 1);
+			#if debug
 			trace('landing deduction: ${deduction}');
+			#end
 			return 1000 - deduction;
 		}
 	}

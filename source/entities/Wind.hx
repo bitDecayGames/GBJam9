@@ -40,7 +40,6 @@ class Wind extends FlxSprite {
 		// calculate number of gusts to spawn per pixel density
 		var density = (width * height) / WIND_SPREAD;
 		spawnRate = (1 / (strength * density));
-		trace(spawnRate);
 
 		this.width = width;
 		this.height = height;

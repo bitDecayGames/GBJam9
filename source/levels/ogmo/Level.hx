@@ -132,11 +132,7 @@ class Level {
 					}));
 				default:
 					var msg = 'Entity \'${entityData.name}\' is not supported, add parsing to ${Type.getClassName(Type.getClass(this))}';
-					#if debug
 					trace(msg);
-					#else
-					// throw msg;
-					#end
 			}
 		}, "entities");
 	}
