@@ -1,5 +1,6 @@
 package states;
 
+import flixel.util.FlxTimer;
 import flixel.addons.effects.chainable.FlxGlitchEffect;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import input.SimpleController;
@@ -21,6 +22,7 @@ using extensions.FlxStateExt;
 class CreditsState extends FlxState {
 
 	var selector:FlxSprite;
+	var disableControls = true;
 
 	override public function create():Void {
 		super.create();
@@ -35,14 +37,20 @@ class CreditsState extends FlxState {
 		add(selector);
 
 		FmodManager.PlaySong(FmodSongs.HopIn);
+
+		new FlxTimer().start((t) -> {
+			disableControls = false;
+		});
 	}
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		if (SimpleController.just_pressed(Button.A)) {
-			clickMainMenu();
-			FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
+		if (!disableControls) {
+			if (SimpleController.just_pressed(Button.A)) {
+				clickMainMenu();
+				FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
+			}
 		}
 	}
 

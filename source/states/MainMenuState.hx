@@ -1,5 +1,6 @@
 package states;
 
+import flixel.util.FlxTimer;
 import metrics.Trackers;
 import input.SimpleController;
 import flixel.FlxSprite;
@@ -24,7 +25,7 @@ class MainMenuState extends FlxUIState {
 	var _btnCredits:FlxButton;
 	var _btnExit:FlxButton;
 
-	var disableCursor = false;
+	var disableCursor = true;
 
 	var _txtTitle:FlxText;
 
@@ -60,6 +61,12 @@ class MainMenuState extends FlxUIState {
 
 		// we will handle transitions manually
 		transOut = null;
+
+		new FlxTimer().start(0.5, (t) -> {
+			// fix a small bug where the controls double-click and immediately start the game after getting
+			// back to the title screen
+			disableCursor = false;
+		});
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -112,6 +119,7 @@ class MainMenuState extends FlxUIState {
 	function clickPlay():Void {
 		// reset level scores
 		Trackers.levelScores = [];
+		PlayState.currentLevel = 0;
 		FmodFlxUtilities.TransitionToStateAndStopMusic(new PlayState());
 	}
 
