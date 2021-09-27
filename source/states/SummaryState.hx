@@ -1,5 +1,6 @@
 package states;
 
+import ui.font.BitmapText.AerostatBig;
 import flixel.math.FlxPoint;
 import flixel.text.FlxBitmapText;
 import metrics.DropScore;
@@ -24,6 +25,8 @@ using extensions.FlxStateExt;
 class SummaryState extends FlxState {
 	var totalScore:Int = 0;
 	var totalScoreDisplay:FlxBitmapText;
+
+	var rawRating = "";
 
 	var selector:FlxSprite;
 	var cursorIndex = 0;
@@ -54,6 +57,7 @@ class SummaryState extends FlxState {
 
 		var spacing = 0.5;
 		var xPos = 160 - 6 * 8;
+		var xPos10Size = 160 - 6 * 10;
 
 		var time = new AerostatRed(xPos, 23, StringTools.lpad(FlxStringUtil.formatTime(Trackers.attemptTimer, false), " ", 6));
 
@@ -70,7 +74,8 @@ class SummaryState extends FlxState {
 
 		// Avoid potential divide by zero errors
 		var maxPossible = Math.max(1, Trackers.houseMax * 3000);
-		var rating = new AerostatRed(xPos, 129, StringTools.lpad("S", " ", 6));
+		// var rating = new AerostatBig(xPos - 2, 127, StringTools.lpad("S", " ", 6));
+		var rating = new AerostatBig(xPos10Size, 128, StringTools.lpad("S", " ", 6));
 
 		new FlxTimer().start(spacing, (t) -> {
 			add(time);
@@ -91,6 +96,7 @@ class SummaryState extends FlxState {
 
 							new FlxTimer().start(spacing * 3, (t) -> {
 								var percent = totalScore / maxPossible;
+								rawRating = percentToRating(percent);
 								rating.text = StringTools.lpad(percentToRating(percent), " ", 6);
 								add(rating);
 								FmodManager.PlaySoundOneShot(FmodSFX.Splash);
@@ -228,9 +234,12 @@ class SummaryState extends FlxState {
 	}
 
 	function clickNext():Void {
+		// save level score for current level
+		Trackers.levelScores.push(rawRating);
+
 		PlayState.currentLevel++;
 		if (PlayState.currentLevel >= PlayState.levelOrder.length) {
-			FmodFlxUtilities.TransitionToState(new CreditsState());
+			FmodFlxUtilities.TransitionToState(new FinalGradeState());
 		} else {
 			clickRetry();
 		}

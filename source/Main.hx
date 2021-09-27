@@ -1,5 +1,6 @@
 package;
 
+import states.FinalGradeState;
 import states.SplashScreenState;
 import misc.Macros;
 import states.MainMenuState;
@@ -28,6 +29,10 @@ class Main extends Sprite {
 		if (Macros.isDefined("SKIP_SPLASH")) {
 			startingState = MainMenuState;
 		}
+		#end
+
+		#if last
+		startingState = FinalGradeState;
 		#end
 
 		// 160x144 is gameboy resolution
