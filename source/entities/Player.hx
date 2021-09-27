@@ -147,6 +147,10 @@ class Player extends FlxSpriteGroup {
 			// XXX: Is this ok?
 			velocity.set();
 			acceleration.set();
+
+			aimIndicator.visible = false;
+		} else {
+			aimIndicator.visible = true;
 		}
 
 		nextAnim = IDLE_ANIM;
@@ -262,6 +266,7 @@ class Player extends FlxSpriteGroup {
 					// TODO: SFX (done) play release sound
 					var dropSound = FmodManager.PlaySoundAndAssignId(FmodSFX.CrateDrop, "CrateFall" + box.boxId);
 					trackedSounds.set(dropSound, true);
+					box.velocity.copyFrom(velocity);
 					box.attached = false;
 					box.dropped = true;
 					box.released(function(p:Dynamic) {

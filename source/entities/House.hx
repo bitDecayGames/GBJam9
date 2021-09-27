@@ -110,5 +110,7 @@ class House extends FlxSprite {
 
 		// TODO: This is pseudo-temporary. I just want to see how close it lands right now
 		b.color = FlxColor.BLACK;
+
+		b.grabbable = false;
 	}
 }
