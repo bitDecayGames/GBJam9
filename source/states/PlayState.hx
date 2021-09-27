@@ -1,5 +1,6 @@
 package states;
 
+import entities.particle.Arrow;
 import flixel.FlxObject;
 import entities.Shadow;
 import metrics.DropScore;
@@ -63,6 +64,9 @@ class PlayState extends FlxTransitionableState {
 
 	var player:Player;
 	var ground:FlxSprite;
+
+	var boxArrow:Arrow;
+	var houseArrow:Arrow;
 
 	var launchText:BitmapText;
 
@@ -484,6 +488,13 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	public function addHouse(house:House) {
+		// Tutorial stuff
+		if (currentLevel == 0 && houseArrow == null) {
+			boxArrow = new Arrow(house, 2, -10, () -> {
+				return house.deliverable;
+			});
+		}
+
 		houses.add(house);
 		activeHouses.add(house);
 	}
@@ -497,8 +508,14 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	public function addBox(box:Box) {
-		boxes.add(box);
+		// Tutorial stuff
+		if (currentLevel == 0 && boxArrow == null) {
+			boxArrow = new Arrow(box, -4, -10, () -> {
+				return box.attached;
+			});
+		}
 
+		boxes.add(box);
 		shadows.add(new Shadow(box, 0, 8, 0));
 	}
 
