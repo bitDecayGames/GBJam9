@@ -123,6 +123,7 @@ class Level {
 					staticEntities.push(new EntityMarker(entityData.name, FlxPoint.get(entityData.x, entityData.y), () -> {
 						var water = new FlxSprite(entityData.x, entityData.y);
 						water.makeGraphic(entityData.width, entityData.height, FlxColor.BLUE);
+						water.immovable = true;
 						water.alpha = 0;
 						#if debug
 						water.alpha = 0.2;

@@ -423,15 +423,22 @@ class PlayState extends FlxTransitionableState {
 			b.hitLevel();
 		});
 
-		FlxG.collide(level.layer, birds, (g, b:Bird) -> {
-			b.thud();
-		});
-
 		FlxG.overlap(bombs, waters, (b, w) -> {
 			b.kill();
 			addSplash(b.getMidpoint(), false);
 
 			// TODO: SFX small splash
+			FmodManager.PlaySoundOneShot(FmodSFX.SplashSmall);
+		});
+
+		FlxG.collide(level.layer, birds, (g, b:Bird) -> {
+			b.thud();
+		});
+
+		FlxG.collide(birds, waters, (b, w) -> {
+			b.kill();
+			addSplash(b.getMidpoint(), false);
+
 			FmodManager.PlaySoundOneShot(FmodSFX.SplashSmall);
 		});
 	}
@@ -541,7 +548,7 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	function addSplash(p:FlxPoint, big:Bool) {
-		var splash = new Splash(p.x, p.y, big);
+		var splash = new Splash(Math.round(p.x), p.y, big);
 		splashes.add(splash);
 	}
 
