@@ -19,6 +19,9 @@ class Player extends FlxSpriteGroup {
 	// amount of rope between each box
 	private static inline var BOX_SPACING:Float = 4;
 
+	// max bullets out at once
+	private static inline var MAX_BULLETS:Int = 3;
+
 	private static inline var RISE_ANIM = "rise";
 	private static inline var IDLE_ANIM = "idle";
 	private static inline var PLUMMET_ANIM = "plummet";
@@ -68,6 +71,8 @@ class Player extends FlxSpriteGroup {
 	public var collisionWidth = 10;
 	public var collisionHeight = 24;
 
+	var bulletPool:Array<Bomb> = [];
+
 	public function new(x:Float, y:Float) {
 		super();
 
@@ -75,6 +80,13 @@ class Player extends FlxSpriteGroup {
 		buildIndicator();
 
 		setPosition(x, y - height);
+
+		// init our 'bullets'
+		for (i in 0...Player.MAX_BULLETS) {
+			var toss = new Bomb(0, 0);
+			toss.kill();
+			bulletPool.push(toss);
+		}
 	}
 
 	private function buildBalloon() {
@@ -278,34 +290,40 @@ class Player extends FlxSpriteGroup {
 			}
 
 			if (SimpleController.just_pressed(Button.A, playerNum)) {
-				var pos = FlxPoint.get(balloon.x + balloon.width / 2 - 2, balloon.y + balloon.height - 8);
-				var vel = FlxPoint.get();
-				switch (aimDirection) {
-					case 0:
-						vel.set(-20, 0);
-						pos.x -= 8;
-					case 1:
-						vel.set(-10, 10);
-						pos.x -= 8;
-					case 2:
-						vel.set(10, 10);
-						pos.x += 2;
-					case 3:
-						vel.set(20, 0);
-						pos.x += 2;
+				for (bomb in bulletPool) {
+					if (bomb.alive) {
+						continue;
+					}
+
+					var pos = FlxPoint.get(balloon.x + balloon.width / 2 - 2, balloon.y + balloon.height - 8);
+					var vel = FlxPoint.get();
+					switch (aimDirection) {
+						case 0:
+							vel.set(-20, 0);
+							pos.x -= 8;
+						case 1:
+							vel.set(-10, 10);
+							pos.x -= 8;
+						case 2:
+							vel.set(10, 10);
+							pos.x += 2;
+						case 3:
+							vel.set(20, 0);
+							pos.x += 2;
+					}
+					vel.addPoint(velocity);
+
+					bomb.reset(pos.x, pos.y);
+					bomb.velocity.copyFrom(vel);
+					bomb.acceleration.y = WorldConstants.GRAVITY;
+
+					// XXX: hacky. Probably better to pass in some function callback
+					cast(FlxG.state, PlayState).addBomb(bomb);
+
+					// TODO: SFX (done) play drop rock/bomb sound
+					FmodManager.PlaySoundOneShot(FmodSFX.Shoot);
+					break;
 				}
-				vel.addPoint(velocity);
-
-				// TODO: Pool these, or at least poor-man's pool these
-				var toss = new Bomb(pos.x, pos.y);
-				toss.velocity.copyFrom(vel);
-				toss.acceleration.y = WorldConstants.GRAVITY;
-
-				// XXX: hacky. Probably better to pass in some function callback
-				cast(FlxG.state, PlayState).addBomb(toss);
-
-				// TODO: SFX (done) play drop rock/bomb sound
-				FmodManager.PlaySoundOneShot(FmodSFX.Shoot);
 			}
 		}
 	}
