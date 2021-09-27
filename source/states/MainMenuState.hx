@@ -101,7 +101,7 @@ class MainMenuState extends FlxUIState {
 		selector.x = buttonLocations[cursorIndex].x;
 		selector.y = buttonLocations[cursorIndex].y;
 
-		if (SimpleController.just_pressed(Button.A) && !disableCursor) {
+		if ((SimpleController.just_pressed(Button.A) || FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER) && !disableCursor) {
 			switch (cursorIndex) {
 				case 0:
 					clickPlay();
