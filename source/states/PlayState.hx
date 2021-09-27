@@ -67,6 +67,7 @@ class PlayState extends FlxTransitionableState {
 
 	var boxArrow:Arrow;
 	var houseArrow:Arrow;
+	var landingArrow:Arrow;
 
 	var launchText:BitmapText;
 
@@ -91,6 +92,7 @@ class PlayState extends FlxTransitionableState {
 	var backTrucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for rendering order
 	var frontTrucks:FlxTypedGroup<Truck> = new FlxTypedGroup(); // for rendering order
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
+	var tutorial:FlxTypedGroup<Arrow> = new FlxTypedGroup();
 
 
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
@@ -132,6 +134,11 @@ class PlayState extends FlxTransitionableState {
 
 		setupScreenBounds();
 
+		launchText = new AerostatRed(30, 30, "PRESS UP TO\n TAKE OFF! ");
+		launchText.x = (FlxG.width - launchText.width) / 2;
+		FlxFlicker.flicker(launchText, 0, 0.5);
+
+
 		// Adding these in proper rending order
 		level.bgDecals.forEach((decal) -> {
 			cast(decal, FlxSprite).scrollFactor.set(.5, 0);
@@ -140,6 +147,7 @@ class PlayState extends FlxTransitionableState {
 		add(winds);
 		add(level.decor);
 		add(level.layer);
+		add(launchText);
 		add(birds);
 		add(houses);
 		add(trees);
@@ -156,17 +164,13 @@ class PlayState extends FlxTransitionableState {
 		add(waters);
 		add(splashes);
 		add(landing);
+		add(tutorial);
 
 		for (marker in level.staticEntities) {
 			marker.maker();
 		}
 
 		setupTestObjects();
-
-		launchText = new AerostatRed(30, 30, "PRESS UP TO\n TAKE OFF! ");
-		launchText.x = (FlxG.width - launchText.width) / 2;
-		FlxFlicker.flicker(launchText, 0, 0.5);
-		add(launchText);
 
 		if (currentLevel == 0) {
 			var finishText = new AerostatRed(0, 80, "LAND HERE!");
@@ -209,8 +213,18 @@ class PlayState extends FlxTransitionableState {
 		if (!levelStarted) {
 			if (SimpleController.just_pressed(Button.UP)) {
 				levelStarted = true;
-				FlxFlicker.stopFlickering(launchText);
-				launchText.kill();
+
+				if (currentLevel == 0) {
+					FlxFlicker.stopFlickering(launchText);
+					launchText.text = " PRESS V TO SHOOT\nPRESS C TO DROP BOX\n UP/DOWN TO FLOAT\nLEFT/RIGHT TO AIM\n USE WIND TO MOVE";
+					launchText.x = (FlxG.width - launchText.width) / 4;
+					// FlxFlicker.flicker(launchText, 0, 0.5);
+					// add(launchText);
+				} else {
+					FlxFlicker.stopFlickering(launchText);
+					launchText.kill();
+				}
+
 				player.takeControl();
 
 				// TODO: Need to make the player feel like they took control
@@ -494,9 +508,15 @@ class PlayState extends FlxTransitionableState {
 	public function addHouse(house:House) {
 		// Tutorial stuff
 		if (currentLevel == 0 && houseArrow == null) {
-			boxArrow = new Arrow(house, 2, -10, () -> {
-				return house.deliverable;
+			houseArrow = new Arrow(house, 10, -37, () -> {
+				if (!house.deliverable) {
+					landingArrow.visible = true;
+					return true;
+				}
+				return false;
 			});
+			houseArrow.visible = false;
+			tutorial.add(houseArrow);
 		}
 
 		houses.add(house);
@@ -514,9 +534,14 @@ class PlayState extends FlxTransitionableState {
 	public function addBox(box:Box) {
 		// Tutorial stuff
 		if (currentLevel == 0 && boxArrow == null) {
-			boxArrow = new Arrow(box, -4, -10, () -> {
-				return box.attached;
+			boxArrow = new Arrow(box, -2, -22, () -> {
+				if (box.attached) {
+					houseArrow.visible = true;
+					return true;
+				}
+				return false;
 			});
+			tutorial.add(boxArrow);
 		}
 
 		boxes.add(box);
@@ -539,6 +564,13 @@ class PlayState extends FlxTransitionableState {
 	}
 
 	public function addLanding(l:Landing) {
+		if (currentLevel == 0) {
+			landingArrow = new Arrow(l, 20, - 15, () -> {
+				return levelFinished;
+			});
+			landingArrow.visible = false;
+			tutorial.add(landingArrow);
+		}
 		landing.add(l);
 	}
 

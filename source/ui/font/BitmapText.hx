@@ -126,13 +126,13 @@ class BitmapText extends flixel.text.FlxBitmapText {
 
 	@:allow(Aerostat)
 	static function createAerostatFont():FlxBitmapFont {
-		return createMonospace("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?", AssetPaths.Aerostat__png);
+		return createMonospace("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?/", AssetPaths.Aerostat__png);
 	}
 
 	@:allow(AerostatRed)
 	static function createAerostatRedFont():FlxBitmapFont {
 		// TODO: Use correct font image for this once it is uploaded
-		return createMonospace("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?", AssetPaths.Aerostat__png, 8);
+		return createMonospace("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?/", AssetPaths.Aerostat__png, 8);
 	}
 
 	@:allow(AerostatBig)
