@@ -57,6 +57,23 @@ abstract AerostatRed(BitmapText) to BitmapText {
 	}
 }
 
+@:forward
+abstract AerostatBig(BitmapText) to BitmapText {
+	static public var font(get, null):FlxBitmapFont = null;
+
+	inline public function new(x = 0.0, y = 0.0, text = "") {
+		this = new BitmapText(x, y, text, font);
+	}
+
+	inline static function get_font() {
+		if (font == null) {
+			@:privateAccess
+			font = BitmapText.createAerostatBigFont();
+		}
+		return font;
+	}
+}
+
 class BitmapText extends flixel.text.FlxBitmapText {
 	static var mainFont:FlxBitmapFont = null;
 
@@ -109,19 +126,25 @@ class BitmapText extends flixel.text.FlxBitmapText {
 
 	@:allow(Aerostat)
 	static function createAerostatFont():FlxBitmapFont {
-		return createMonospace8("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?", AssetPaths.Aerostat__png);
+		return createMonospace("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?", AssetPaths.Aerostat__png);
 	}
 
 	@:allow(AerostatRed)
 	static function createAerostatRedFont():FlxBitmapFont {
 		// TODO: Use correct font image for this once it is uploaded
-		return createMonospace8("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?", AssetPaths.Aerostat__png, 8);
+		return createMonospace("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!?", AssetPaths.Aerostat__png, 8);
+	}
+
+	@:allow(AerostatBig)
+	static function createAerostatBigFont():FlxBitmapFont {
+		// TODO: Use correct font image for this once it is uploaded
+		return createMonospace("SABCDF", AssetPaths.ratings__png, 0, 10);
 	}
 
 
-	private static function createMonospace8(chars:String, path:String, yOffset:Int = 0):FlxBitmapFont {
-		var spaceWidth = 8;
-		var height = 8;
+	private static function createMonospace(chars:String, path:String, yOffset:Int = 0, size:Int = 8):FlxBitmapFont {
+		var spaceWidth = size;
+		var height = size;
 
 		var graphic = FlxG.bitmap.add(path);
 		var frame = graphic.imageFrame.frame;
@@ -131,8 +154,8 @@ class BitmapText extends flixel.text.FlxBitmapText {
 		var x = 0;
 		for (i in 0...chars.length) {
 			var code = chars.charCodeAt(i);
-			font.addCharFrame(code, FlxRect.get(x, yOffset, 8, height), FlxPoint.get(), 8);
-			x += 8;
+			font.addCharFrame(code, FlxRect.get(x, yOffset, size, height), FlxPoint.get(), size);
+			x += size;
 		}
 
 		font.lineHeight = height;

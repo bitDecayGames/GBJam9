@@ -1,5 +1,6 @@
 package states;
 
+import metrics.Trackers;
 import input.SimpleController;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
@@ -109,6 +110,8 @@ class MainMenuState extends FlxUIState {
 	}
 
 	function clickPlay():Void {
+		// reset level scores
+		Trackers.levelScores = [];
 		FmodFlxUtilities.TransitionToStateAndStopMusic(new PlayState());
 	}
 
