@@ -13,11 +13,14 @@ import flixel.FlxSprite;
 class Box extends FlxSpriteGroup {
 	public static var BOX_ID = 0;
 
+	public static var MAX_HORIZONTAL_SPEED = PlayState.SCROLL_SPEED * 2;
+
 	// TODO: this state is quite messy. We should find a way to simplify it
 	public var attached = false;
 	public var dropped = false;
 	public var grabbable = true;
 	public var colliding = true;
+
 	public var boxId = 0;
 
 	var openY:Float;
@@ -62,7 +65,12 @@ class Box extends FlxSpriteGroup {
 		box.setParent(this);
 		add(box);
 
+		maxVelocity.x = Box.MAX_HORIZONTAL_SPEED;
 		acceleration.y = WorldConstants.GRAVITY;
+	}
+
+	public function isChuteOpen():Bool {
+		return chute.animation.name == "open";
 	}
 
 	public function boxMiddleX() {
@@ -70,7 +78,20 @@ class Box extends FlxSpriteGroup {
 	}
 
 	override public function update(delta:Float) {
+		if (acceleration.x == 0) {
+			// decay velocity x
+			if (velocity.x != 0.0) {
+				velocity.x -= (velocity.x * Player.horizontalDecay) * delta;
+				if (Math.abs(velocity.x) < 0.01) {
+					velocity.x = 0;
+				}
+			}
+		}
+
 		super.update(delta);
+
+		// reset x-accel so wind can do its thing
+		acceleration.x = 0;
 
 		if (attached) {
 			// the player grabbed us too quickly, no need to open chute

@@ -54,7 +54,7 @@ class Player extends FlxSpriteGroup {
 	var playerNum = 0;
 
 	// roughly a scalar for percent decay per second
-	var horizontalDecay:Float = 0.30;
+	public static inline var horizontalDecay:Float = 0.30;
 
 	// All in units/second
 	var fallAccel:Float = WorldConstants.GRAVITY / 8;

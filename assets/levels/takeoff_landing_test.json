@@ -55,8 +55,8 @@
           "name": "para_box",
           "id": 11,
           "_eid": "06963184",
-          "x": 48,
-          "y": 24,
+          "x": 88,
+          "y": 0,
           "originX": 0,
           "originY": 0,
           "values": {"delay": 4, "open_at": 4}
@@ -66,7 +66,7 @@
           "id": 12,
           "_eid": "06963184",
           "x": 16,
-          "y": 24,
+          "y": 0,
           "originX": 0,
           "originY": 0,
           "values": {"delay": 4, "open_at": 4}

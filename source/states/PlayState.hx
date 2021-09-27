@@ -338,6 +338,13 @@ class PlayState extends FlxTransitionableState {
 
 		// boxes are FlxSpriteGroups which have a lot of weirdness... so loop through manually
 		for (box in boxes) {
+
+			FlxG.overlap(box.box, winds, function(p:ParentedSprite, w:Wind) {
+				if (box.isChuteOpen()) {
+					w.blowOn(box);
+				}
+			});
+
 			// check boxes against houses first
 			FlxG.overlap(box.box, activeHouses, (p:ParentedSprite, h:House) -> {
 				trace('box touch house. HouseDel: ${h.deliverable}     b.dropped: ${cast(p.parent, Box).dropped}');
