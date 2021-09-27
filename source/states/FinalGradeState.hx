@@ -46,6 +46,7 @@ class FinalGradeState extends FlxState {
 		#end
 
 		super.create();
+		FmodManager.PlaySong(FmodSongs.Wind);
 
 		FlxG.camera.pixelPerfectRender = true;
 
@@ -131,17 +132,17 @@ class FinalGradeState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+		FmodManager.Update();
 
 		if (!disableCursor) {
 			if (SimpleController.just_pressed(Button.A)) {
 				clickDone();
-				FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 			}
 		}
 	}
 
 	function clickDone():Void {
-		FmodFlxUtilities.TransitionToState(new CreditsState());
+		FmodFlxUtilities.TransitionToStateAndStopMusic(new CreditsState());
 	}
 
 	override public function onFocusLost() {

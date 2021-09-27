@@ -278,7 +278,7 @@ class PlayState extends FlxTransitionableState {
 				Bitlytics.Instance().ForceFlush();
 
 				new FlxTimer().start(2, (t) -> {
-					FmodFlxUtilities.TransitionToStateAndStopMusic(new SummaryState());
+					FmodFlxUtilities.TransitionToState(new SummaryState());
 				});
 			}
 		});
@@ -404,11 +404,13 @@ class PlayState extends FlxTransitionableState {
 		}
 
 		FlxG.overlap(bombs, birds, (bo, bi) -> {
-			// TODO: Hook up fancier deaths
-			bo.kill();
-			bi.die();
 
-			Trackers.points += Points.KILL_BIRD;
+			if(!bi.isDead()) {
+				// TODO: Hook up fancier deaths
+				bo.kill();
+				bi.die();
+				Trackers.points += Points.KILL_BIRD;
+			}
 		});
 
 		FlxG.overlap(bombs, trucks, (b, t:Truck) -> {
