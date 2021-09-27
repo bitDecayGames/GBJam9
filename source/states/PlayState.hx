@@ -91,6 +91,8 @@ class PlayState extends FlxTransitionableState {
 		FlxG.debugger.drawDebug = true;
 		#end
 
+		FmodManager.PlaySong(FmodSongs.Wind);
+
 		// TODO: Keep an eye on this and see if we get more split glitch/flicker
 		gustPool.preAllocate(100);
 
