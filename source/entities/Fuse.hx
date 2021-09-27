@@ -1,7 +1,5 @@
 package entities;
 
-import flixel.FlxSprite;
-
 class Fuse extends TriggerableSprite {
 	var next:TriggerableSprite;
 

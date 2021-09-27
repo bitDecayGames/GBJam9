@@ -6,7 +6,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 
 class Truck extends FlxSprite {
-
 	public var exploded = false;
 
 	public function new(x:Float, y:Float) {
@@ -31,7 +30,7 @@ class Truck extends FlxSprite {
 
 	public function hit() {
 		// TODO: SFX truck hit by player attack (explosion)
-		if (!exploded){
+		if (!exploded) {
 			FmodManager.PlaySoundOneShot(FmodSFX.TruckExplosion);
 			exploded = true;
 			animation.play("dead");

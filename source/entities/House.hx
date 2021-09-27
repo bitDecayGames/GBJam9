@@ -53,7 +53,6 @@ class House extends FlxSprite {
 		trace('HOUSE DELIVERED. ACCURACY: ${accuracy}');
 		#end
 
-
 		var timerDelay:Float = .1;
 
 		var rating:String;
@@ -98,10 +97,10 @@ class House extends FlxSprite {
 		}
 
 		var display = new AerostatRed(x + width / 2 - 4, y - height / 2, rating);
-		FlxTween.linearMotion(display, display.x, display.y, display.x, display.y - 24,
-			{
-				ease: FlxEase.quadOut,
-				onComplete: (t) -> { display.kill();
+		FlxTween.linearMotion(display, display.x, display.y, display.x, display.y - 24, {
+			ease: FlxEase.quadOut,
+			onComplete: (t) -> {
+				display.kill();
 			}
 		});
 		cast(FlxG.state, PlayState).addParticle(display);

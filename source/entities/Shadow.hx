@@ -1,6 +1,5 @@
 package entities;
 
-import flixel.FlxG;
 import flixel.FlxSprite;
 
 class Shadow extends FlxSprite {

@@ -8,7 +8,6 @@ import flixel.FlxG;
 import const.WorldConstants;
 import flixel.effects.FlxFlicker;
 import input.SimpleController;
-import flixel.util.FlxColor;
 import flixel.FlxSprite;
 
 using extensions.FlxObjectExt;
@@ -35,7 +34,6 @@ class Player extends FlxSpriteGroup {
 	public var sfxBalloonDeflate:String = "BalloonDeflate";
 
 	public var trackedSounds:Map<String, Bool> = new Map<String, Bool>();
-
 
 	public var controllable = false;
 
@@ -178,10 +176,10 @@ class Player extends FlxSpriteGroup {
 		}
 
 		#if tanner
-		if (FlxG.keys.pressed.F){
+		if (FlxG.keys.pressed.F) {
 			velocity.x += 100;
 		}
-		if (FlxG.keys.pressed.D){
+		if (FlxG.keys.pressed.D) {
 			velocity.x -= 100;
 		}
 		#end
@@ -212,7 +210,8 @@ class Player extends FlxSpriteGroup {
 
 		for (i in 0...boxes.length) {
 			var preferredHeight = balloon.y + balloon.height + BOX_SPACING + i * (8 + BOX_SPACING);
-			boxes[i].alignTo(balloon.x + balloon.width / 2, preferredHeight <= Player.PLAYER_LOWEST_ALTITUDE - 8 ? preferredHeight :  Player.PLAYER_LOWEST_ALTITUDE - 8);
+			boxes[i].alignTo(balloon.x + balloon.width / 2,
+				preferredHeight <= Player.PLAYER_LOWEST_ALTITUDE - 8 ? preferredHeight : Player.PLAYER_LOWEST_ALTITUDE - 8);
 			boxes[i].velocity.set(velocity.x, velocity.y);
 		}
 	}
@@ -225,7 +224,7 @@ class Player extends FlxSpriteGroup {
 				acceleration.y = riseAccel;
 
 				// TODO: SFX (done) Play ascending (burner) sound (happens every frame)
-				if (!FmodManager.IsSoundPlaying(sfxBalloonFire)){
+				if (!FmodManager.IsSoundPlaying(sfxBalloonFire)) {
 					FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonFire, sfxBalloonFire);
 				}
 				nextAnim = RISE_ANIM;
@@ -239,17 +238,17 @@ class Player extends FlxSpriteGroup {
 				acceleration.y = forceFallAccel;
 
 				// TODO: SFX (done) play deflating sound (happens every frame)
-				if (!FmodManager.IsSoundPlaying(sfxBalloonDeflate)){
+				if (!FmodManager.IsSoundPlaying(sfxBalloonDeflate)) {
 					FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonDeflate, sfxBalloonDeflate);
 					FmodManager.SetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound", 0);
 				} else {
-					if (FmodManager.GetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound") == 1){
+					if (FmodManager.GetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound") == 1) {
 						FmodManager.StopSoundImmediately(sfxBalloonDeflate);
 						FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonDeflate, sfxBalloonDeflate);
 					}
 				}
 			} else {
-				if (FmodManager.GetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound") == 0){
+				if (FmodManager.GetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound") == 0) {
 					FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
 				}
 				FmodManager.SetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound", 1);
@@ -277,7 +276,7 @@ class Player extends FlxSpriteGroup {
 
 			if (SimpleController.just_pressed(Button.LEFT, playerNum)) {
 				// TODO: SFX (done) Play selector sound
-				if (aimDirection > 0){
+				if (aimDirection > 0) {
 					FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
 				}
 
@@ -287,7 +286,7 @@ class Player extends FlxSpriteGroup {
 
 			if (SimpleController.just_pressed(Button.RIGHT, playerNum)) {
 				// TODO: SFX (done) Play selector sound
-				if (aimDirection < 3){
+				if (aimDirection < 3) {
 					FmodManager.PlaySoundOneShot(FmodSFX.ShootDirection);
 				}
 				aimDirection = Std.int(Math.min(3, aimDirection + 1));

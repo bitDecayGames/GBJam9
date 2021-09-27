@@ -1,18 +1,11 @@
 package;
 
-import states.FinalGradeState;
-import states.SplashScreenState;
-import misc.Macros;
-import states.MainMenuState;
-import flixel.FlxState;
 import config.Configure;
 import flixel.FlxG;
 import flixel.FlxGame;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.transition.TransitionData;
-import flixel.util.FlxColor;
-import misc.FlxTextFactory;
+import flixel.FlxState;
 import openfl.display.Sprite;
+import states.SplashScreenState;
 #if play
 import states.PlayState;
 #end
@@ -51,13 +44,5 @@ class Main extends Sprite {
 		#if debug
 		FlxG.autoPause = false;
 		#end
-
-		// I don't think "fade" transitions are really in the spirit of GB games
-		// Set up basic transitions. To override these see `transOut` and `transIn` on any FlxTransitionable states
-		// FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.35);
-		// FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.35);
-
-		// TODO: if we want another font, we gotta figure out how to get it to work at low resolution
-		// FlxTextFactory.defaultFont = AssetPaths.Brain_Slab_8__ttf;
 	}
 }

@@ -1,24 +1,20 @@
 package states;
 
-import ui.font.BitmapText.AerostatBig;
-import flixel.math.FlxPoint;
-import flixel.text.FlxBitmapText;
-import metrics.DropScore;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxStringUtil;
-import ui.font.BitmapText.Aerostat;
-import metrics.Trackers;
-import ui.font.BitmapText.AerostatRed;
-import flixel.util.FlxTimer;
-import flixel.addons.effects.chainable.FlxGlitchEffect;
-import flixel.addons.effects.chainable.FlxEffectSprite;
-import input.SimpleController;
-import flixel.FlxState;
-import config.Configure;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.math.FlxPoint;
+import flixel.text.FlxBitmapText;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxStringUtil;
+import flixel.util.FlxTimer;
 import haxefmod.flixel.FmodFlxUtilities;
+import input.SimpleController;
+import metrics.DropScore;
+import metrics.Trackers;
+import ui.font.BitmapText.AerostatBig;
+import ui.font.BitmapText.AerostatRed;
 
 using extensions.FlxStateExt;
 
@@ -38,7 +34,6 @@ class SummaryState extends FlxState {
 		// Next Button
 		FlxPoint.get(49, 72)
 	];
-
 
 	override public function create():Void {
 		super.create();
@@ -142,7 +137,7 @@ class SummaryState extends FlxState {
 
 	function updateTotalScore(mod:Int) {
 		totalScore += mod;
-		totalScoreDisplay.text =  StringTools.lpad(Std.string(totalScore), " ", 6);
+		totalScoreDisplay.text = StringTools.lpad(Std.string(totalScore), " ", 6);
 	}
 
 	function buildDrops(x:Int, y:Int):FlxTween {
@@ -162,12 +157,12 @@ class SummaryState extends FlxState {
 				drop = new DropScore(0, "-");
 			}
 
-			var txt = new AerostatRed(x, y-8, drop.grade);
+			var txt = new AerostatRed(x, y - 8, drop.grade);
 			txt.alpha = 0;
 			add(txt);
-			var alphaTween = FlxTween.tween(txt, { alpha: 1}, 0.01);
+			var alphaTween = FlxTween.tween(txt, {alpha: 1}, 0.01);
 			// appear, then slam down
-			lastTween =FlxTween.linearMotion(txt, txt.x, txt.y, txt.x, y, 0.2, {
+			lastTween = FlxTween.linearMotion(txt, txt.x, txt.y, txt.x, y, 0.2, {
 				onComplete: (t) -> {
 					updateTotalScore(drop.points);
 					FmodManager.PlaySoundOneShot(FmodSFX.CrateLand);
@@ -213,7 +208,6 @@ class SummaryState extends FlxState {
 
 		selector.x = buttonLocations[cursorIndex].x;
 		selector.y = buttonLocations[cursorIndex].y;
-
 	}
 
 	function checkControls() {

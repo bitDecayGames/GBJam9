@@ -141,7 +141,6 @@ class BitmapText extends flixel.text.FlxBitmapText {
 		return createMonospace("SABCDF", AssetPaths.ratings__png, 0, 10);
 	}
 
-
 	private static function createMonospace(chars:String, path:String, yOffset:Int = 0, size:Int = 8):FlxBitmapFont {
 		var spaceWidth = size;
 		var height = size;

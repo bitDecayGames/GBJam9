@@ -1,26 +1,15 @@
 package states;
 
-import flixel.util.FlxTimer;
-import flixel.addons.effects.chainable.FlxGlitchEffect;
-import flixel.addons.effects.chainable.FlxEffectSprite;
-import input.SimpleController;
-import flixel.FlxState;
-import config.Configure;
 import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.addons.ui.FlxUIState;
-import flixel.text.FlxText;
-import flixel.ui.FlxButton;
-import flixel.util.FlxColor;
+import flixel.FlxState;
+import flixel.util.FlxTimer;
 import haxefmod.flixel.FmodFlxUtilities;
-import helpers.UiHelpers;
-import misc.FlxTextFactory;
+import input.SimpleController;
 
 using extensions.FlxStateExt;
 
 class CreditsState extends FlxState {
-
 	var selector:FlxSprite;
 	var disableControls = true;
 

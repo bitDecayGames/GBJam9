@@ -1,25 +1,17 @@
 package states;
 
-import flixel.tweens.FlxEase;
-import ui.font.BitmapText.AerostatBig;
-import flixel.math.FlxPoint;
-import flixel.text.FlxBitmapText;
-import metrics.DropScore;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxStringUtil;
-import ui.font.BitmapText.Aerostat;
-import metrics.Trackers;
-import ui.font.BitmapText.AerostatRed;
-import flixel.util.FlxTimer;
-import flixel.addons.effects.chainable.FlxGlitchEffect;
-import flixel.addons.effects.chainable.FlxEffectSprite;
-import input.SimpleController;
-import flixel.FlxState;
-import config.Configure;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.math.FlxPoint;
+import flixel.text.FlxBitmapText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import haxefmod.flixel.FmodFlxUtilities;
+import input.SimpleController;
+import metrics.Trackers;
+import ui.font.BitmapText.AerostatBig;
 
 using extensions.FlxStateExt;
 
@@ -40,9 +32,7 @@ class FinalGradeState extends FlxState {
 		FlxPoint.get(49, 72)
 	];
 
-
 	override public function create():Void {
-
 		#if last
 		Trackers.levelScores = ["B", "A", "S", "F"];
 		#end
@@ -105,9 +95,9 @@ class FinalGradeState extends FlxState {
 			var txt = new AerostatBig(x, -10, value);
 			txt.alpha = 0;
 			add(txt);
-			var alphaTween = FlxTween.tween(txt, { alpha: 1}, 0.01);
+			var alphaTween = FlxTween.tween(txt, {alpha: 1}, 0.01);
 			// appear, then slam down
-			lastTween =FlxTween.linearMotion(txt, txt.x, -10, txt.x, y, 0.4, {
+			lastTween = FlxTween.linearMotion(txt, txt.x, -10, txt.x, y, 0.4, {
 				ease: FlxEase.quadIn,
 				onComplete: (t) -> {
 					FmodManager.PlaySoundOneShot(FmodSFX.CrateLand);

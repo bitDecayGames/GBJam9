@@ -1,14 +1,12 @@
 package entities;
 
+import const.WorldConstants;
 import entities.particle.Dust;
-import states.PlayState;
 import flixel.FlxG;
-import flixel.util.FlxTimer;
 import flixel.FlxObject;
 import flixel.group.FlxSpriteGroup;
-import const.WorldConstants;
-import flixel.util.FlxColor;
-import flixel.FlxSprite;
+import flixel.util.FlxTimer;
+import states.PlayState;
 
 class Box extends FlxSpriteGroup {
 	public static var BOX_ID = 0;
@@ -113,7 +111,6 @@ class Box extends FlxSpriteGroup {
 	}
 
 	public function released(?_callback:Dynamic->Void) {
-
 		callback = _callback;
 
 		acceleration.y = WorldConstants.GRAVITY;
@@ -153,7 +150,6 @@ class Box extends FlxSpriteGroup {
 	}
 
 	override public function kill():Void {
-
 		if (callback != null) {
 			callback(null);
 		}

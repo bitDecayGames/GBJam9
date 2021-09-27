@@ -3,7 +3,6 @@ package entities;
 import states.PlayState;
 import flixel.tweens.FlxTween;
 import flixel.FlxG;
-import flixel.FlxSprite;
 
 class Rocket extends TriggerableSprite {
 	// These are in distance from center

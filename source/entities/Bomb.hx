@@ -2,8 +2,8 @@ package entities;
 
 import entities.particle.Dust;
 import flixel.FlxG;
-import states.PlayState;
 import flixel.FlxSprite;
+import states.PlayState;
 
 class Bomb extends FlxSprite {
 	public function new(x:Float, y:Float) {

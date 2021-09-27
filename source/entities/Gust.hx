@@ -1,10 +1,7 @@
 package entities;
 
-import flixel.FlxG;
-import flixel.math.FlxVector;
-import spacial.Cardinal;
-import flixel.util.FlxColor;
 import flixel.FlxSprite;
+import spacial.Cardinal;
 
 class Gust extends FlxSprite {
 	public static var initCount = 0;

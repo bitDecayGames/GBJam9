@@ -1,11 +1,9 @@
 package entities;
 
-import states.PlayState;
-import flixel.FlxG;
 import const.WorldConstants;
-import flixel.FlxObject;
-import spacial.Cardinal;
+import flixel.FlxG;
 import flixel.FlxSprite;
+import spacial.Cardinal;
 
 class Bird extends FlxSprite implements PlayerDamager {
 	var speed:Float = 30;

@@ -1,51 +1,51 @@
 package states;
 
-import entities.particle.Arrow;
-import flixel.FlxObject;
-import entities.Shadow;
-import metrics.DropScore;
-import haxefmod.flixel.FmodFlxUtilities;
-import metrics.Metrics;
 import com.bitdecay.analytics.Bitlytics;
-import flixel.util.FlxTimer;
-import metrics.Points;
-import flixel.util.FlxStringUtil;
-import flixel.text.FlxBitmapText;
-import metrics.Trackers;
-import entities.Bomb;
-import entities.Truck;
-import entities.particle.Splash;
-import flixel.math.FlxPoint;
-import entities.Tree;
-import entities.Fuse;
-import flixel.util.FlxPool;
-import entities.Gust;
-import entities.Landing;
-import flixel.effects.FlxFlicker;
-import input.SimpleController;
-import levels.ogmo.Level;
-import ui.font.BitmapText;
-import entities.ParentedSprite;
-import entities.RocketBoom;
 import entities.Bird;
+import entities.Bomb;
 import entities.Box;
+import entities.Fuse;
+import entities.Gust;
 import entities.House;
+import entities.Landing;
+import entities.ParentedSprite;
 import entities.Player;
 import entities.Rocket;
+import entities.RocketBoom;
+import entities.Shadow;
+import entities.Tree;
+import entities.Truck;
 import entities.Wind;
+import entities.particle.Arrow;
+import entities.particle.Splash;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
+import flixel.text.FlxBitmapText;
 import flixel.util.FlxColor;
+import flixel.util.FlxPool;
+import flixel.util.FlxStringUtil;
+import flixel.util.FlxTimer;
+import haxefmod.flixel.FmodFlxUtilities;
+import input.SimpleController;
+import levels.ogmo.Level;
+import metrics.DropScore;
+import metrics.Metrics;
+import metrics.Points;
+import metrics.Trackers;
 import signals.Lifecycle;
 import spacial.Cardinal;
+import ui.font.BitmapText;
 
 using extensions.FlxStateExt;
 
 class PlayState extends FlxTransitionableState {
 	public static inline var WALL_WIDTH = 16;
 
+	// Not used for scrolling, but various constants use this in computation
 	public static inline var SCROLL_SPEED = 4;
 
 	public static var currentLevel = 0;
@@ -94,7 +94,6 @@ class PlayState extends FlxTransitionableState {
 	var rocketsBooms:FlxTypedGroup<RocketBoom> = new FlxTypedGroup();
 	var tutorial:FlxTypedGroup<Arrow> = new FlxTypedGroup();
 
-
 	var activeHouses:FlxTypedGroup<House> = new FlxTypedGroup();
 
 	var gustPool = new FlxPool<Gust>(Gust);
@@ -137,7 +136,6 @@ class PlayState extends FlxTransitionableState {
 		launchText = new AerostatRed(30, 30, "PRESS UP TO\n TAKE OFF! ");
 		launchText.x = (FlxG.width - launchText.width) / 2;
 		FlxFlicker.flicker(launchText, 0, 0.5);
-
 
 		// Adding these in proper rending order
 		level.bgDecals.forEach((decal) -> {
@@ -218,8 +216,6 @@ class PlayState extends FlxTransitionableState {
 					FlxFlicker.stopFlickering(launchText);
 					launchText.text = " PRESS V TO SHOOT\nPRESS C TO DROP BOX\n UP/DOWN TO FLOAT\nLEFT/RIGHT TO AIM\n USE WIND TO MOVE";
 					launchText.x = (FlxG.width - launchText.width) / 4;
-					// FlxFlicker.flicker(launchText, 0, 0.5);
-					// add(launchText);
 				} else {
 					FlxFlicker.stopFlickering(launchText);
 					launchText.kill();
@@ -271,8 +267,7 @@ class PlayState extends FlxTransitionableState {
 				Trackers.landingBonus = l.getScore(player.playerMiddleX());
 				levelFinished = true;
 
-				if (player.controllable){
-
+				if (player.controllable) {
 					FmodManager.PlaySoundOneShot(FmodSFX.BalloonLand);
 
 					if (FmodManager.IsSoundPlaying("BalloonDeflate")) {
@@ -327,13 +322,6 @@ class PlayState extends FlxTransitionableState {
 			player.y = Player.PLAYER_LOWEST_ALTITUDE - player.collisionHeight;
 		}
 
-		// TODO: This seems even more buggy. wtf.
-		// level.layer.overlapsWithCallback(player, (l, b) -> {
-		// 	player.y = l.y - 24 - 5;
-		// 	player.velocity.y = 0;
-		// 	return true;
-		// });
-
 		FlxG.overlap(player, winds, function(p:Player, w:Wind) {
 			w.blowOn(player);
 		});
@@ -362,7 +350,6 @@ class PlayState extends FlxTransitionableState {
 
 		// boxes are FlxSpriteGroups which have a lot of weirdness... so loop through manually
 		for (box in boxes) {
-
 			FlxG.overlap(box.box, winds, function(p:ParentedSprite, w:Wind) {
 				if (box.isChuteOpen()) {
 					w.blowOn(box);
@@ -371,7 +358,7 @@ class PlayState extends FlxTransitionableState {
 
 			// check boxes against houses first
 			FlxG.overlap(box.box, activeHouses, (p:ParentedSprite, h:House) -> {
-				trace('box touch house. HouseDel: ${h.deliverable}     b.dropped: ${cast(p.parent, Box).dropped}');
+				trace('box touch house. HouseDel: ${h.deliverable}     b.dropped: ${cast (p.parent, Box).dropped}');
 				if (h.deliverable) {
 					if (cast(p.parent, Box).dropped) {
 						h.packageArrived(cast(p.parent, Box));
@@ -422,8 +409,7 @@ class PlayState extends FlxTransitionableState {
 		}
 
 		FlxG.overlap(bombs, birds, (bo, bi) -> {
-
-			if(!bi.isDead()) {
+			if (!bi.isDead()) {
 				// TODO: Hook up fancier deaths
 				bo.kill();
 				bi.die();
@@ -565,7 +551,7 @@ class PlayState extends FlxTransitionableState {
 
 	public function addLanding(l:Landing) {
 		if (currentLevel == 0) {
-			landingArrow = new Arrow(l, 20, - 15, () -> {
+			landingArrow = new Arrow(l, 20, -15, () -> {
 				return levelFinished;
 			});
 			landingArrow.visible = false;
