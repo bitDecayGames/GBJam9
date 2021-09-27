@@ -10,6 +10,7 @@ class FmodSongs {
 }
 
 class FmodSFX {
+    public static inline var BirdBomb:String = "event:/SFX/Bird/BirdBomb";
     public static inline var BirdHit:String = "event:/SFX/Bird/BirdHit";
     public static inline var CrateDrop:String = "event:/SFX/Crate/CrateDrop";
     public static inline var CrateGet:String = "event:/SFX/Crate/CrateGet";
