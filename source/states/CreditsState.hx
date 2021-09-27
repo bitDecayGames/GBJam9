@@ -47,7 +47,7 @@ class CreditsState extends FlxState {
 		super.update(elapsed);
 
 		if (!disableControls) {
-			if (SimpleController.just_pressed(Button.A)) {
+			if (SimpleController.just_pressed(Button.A) || FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER) {
 				clickMainMenu();
 				FmodManager.PlaySoundOneShot(FmodSFX.MenuSelect);
 			}

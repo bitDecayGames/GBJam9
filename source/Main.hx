@@ -49,8 +49,8 @@ class Main extends Sprite {
 		FlxG.mouse.useSystemCursor = true;
 
 		#if debug
-		#end
 		FlxG.autoPause = false;
+		#end
 
 		// I don't think "fade" transitions are really in the spirit of GB games
 		// Set up basic transitions. To override these see `transOut` and `transIn` on any FlxTransitionable states
