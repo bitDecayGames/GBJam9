@@ -53,12 +53,12 @@ class FinalGradeState extends FlxState {
 		var resultBackdrop = new FlxSprite(AssetPaths.final__png);
 		add(resultBackdrop);
 
-		var finalScoreTxt = new AerostatRed(0, 8, "FINAL SCORE");
-		finalScoreTxt.x = (FlxG.width - finalScoreTxt.width) / 2;
-		add(finalScoreTxt);
+		// var finalScoreTxt = new AerostatRed(0, 8, "FINAL SCORE");
+		// finalScoreTxt.x = (FlxG.width - finalScoreTxt.width) / 2;
+		// add(finalScoreTxt);
 
-		var thanksTxt = new AerostatRed(0, FlxG.height - 16, "THANK YOU!");
-		thanksTxt.x = (FlxG.width - thanksTxt.width) / 2;
+		// var thanksTxt = new AerostatRed(0, FlxG.height - 16, "THANK YOU!");
+		// thanksTxt.x = (FlxG.width - thanksTxt.width) / 2;
 		// add(thanksTxt);
 
 		var menuOverlay = new FlxSprite(AssetPaths.next__png);
@@ -70,7 +70,7 @@ class FinalGradeState extends FlxState {
 
 		var next = () -> {
 			// Add these last so they are on top of everything
-			add(thanksTxt);
+			// add(thanksTxt);
 
 			// add(menuOverlay);
 			// add(selector);
