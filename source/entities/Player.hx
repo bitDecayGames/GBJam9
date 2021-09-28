@@ -32,6 +32,9 @@ class Player extends FlxSpriteGroup {
 	// SFX handles
 	public var sfxBalloonFire:String = "BalloonFire";
 	public var sfxBalloonDeflate:String = "BalloonDeflate";
+	
+	// Hack to cleanup console
+	private var pressedDownAtLeastOnce = false;
 
 	public var trackedSounds:Map<String, Bool> = new Map<String, Bool>();
 
@@ -236,6 +239,7 @@ class Player extends FlxSpriteGroup {
 			if (SimpleController.pressed(Button.DOWN, playerNum)) {
 				nextAnim = PLUMMET_ANIM;
 				acceleration.y = forceFallAccel;
+				pressedDownAtLeastOnce = true;
 
 				// TODO: SFX (done) play deflating sound (happens every frame)
 				if (!FmodManager.IsSoundPlaying(sfxBalloonDeflate)) {
@@ -247,7 +251,7 @@ class Player extends FlxSpriteGroup {
 						FmodManager.PlaySoundAndAssignId(FmodSFX.BalloonDeflate, sfxBalloonDeflate);
 					}
 				}
-			} else {
+			} else if (pressedDownAtLeastOnce) {
 				if (FmodManager.GetEventParameterOnSound(sfxBalloonDeflate, "EndDeflateSound") == 0) {
 					FmodManager.PlaySoundOneShot(FmodSFX.BalloonDeflateEndClick);
 				}
