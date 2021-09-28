@@ -77,7 +77,7 @@ class Bird extends FlxSprite implements PlayerDamager {
 	public function thud() {
 		if (alive) {
 			// only thud once
-			FmodManager.PlaySoundOneShot(FmodSFX.BirdBomb);
+			FmodManager.PlaySoundOneShot(FmodSFX.BirdBombLow);
 			alive = false;
 			animation.play("thud_" + direction.asString());
 		}
