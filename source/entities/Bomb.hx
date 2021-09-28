@@ -11,6 +11,15 @@ class Bomb extends FlxSprite {
 		loadGraphic(AssetPaths.bomb__png);
 	}
 
+	override public function update(delta:Float) {
+		super.update(delta);
+
+		// in case they shoot the bullets off screen
+		if (y > FlxG.height) {
+			kill();
+		}
+	}
+
 	public function hitLevel() {
 		// TODO: SFX (done) player attack strikes ground
 		FmodManager.PlaySoundOneShot(FmodSFX.ShootGround);
